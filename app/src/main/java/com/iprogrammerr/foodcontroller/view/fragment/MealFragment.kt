@@ -1,4 +1,4 @@
-package com.iprogrammerr.foodcontroller.fragment
+package com.iprogrammerr.foodcontroller.view.fragment
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentCategoriesBinding
 
-class ProductFragment : Fragment() {
+class MealFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentCategoriesBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_product, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
         return binding.root
     }
 }

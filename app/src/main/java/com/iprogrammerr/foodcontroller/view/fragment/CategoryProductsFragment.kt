@@ -1,4 +1,4 @@
-package com.iprogrammerr.foodcontroller.fragment
+package com.iprogrammerr.foodcontroller.view.fragment
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
-import com.iprogrammerr.foodcontroller.databinding.FragmentDayBinding
+import com.iprogrammerr.foodcontroller.databinding.FragmentCategoriesBinding
 
-class DayFragment : Fragment() {
+class CategoryProductsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentDayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_day, container, false)
+        val binding: FragmentCategoriesBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_category_products, container, false)
         return binding.root
     }
 }

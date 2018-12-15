@@ -1,4 +1,4 @@
-package com.iprogrammerr.foodcontroller.fragment
+package com.iprogrammerr.foodcontroller.view.fragment
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
