@@ -11,4 +11,4 @@ Simple application for controlling food intake. Requirements:
 * Shows difference between entry calories and protein and that of then required goals
 * Has easy to use, intuitive ui
 * Allows for making exceptions to daily goals based on more/less calories burned
-* Lets add notes to each entry
+* Lets adding notes to each entry
