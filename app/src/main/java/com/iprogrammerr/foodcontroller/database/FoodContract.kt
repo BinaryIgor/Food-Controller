@@ -1,4 +1,4 @@
-package com.iprogrammerr.foodcontroller.database.contract
+package com.iprogrammerr.foodcontroller.database
 
 class FoodContract : Contract {
 
