@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">FoodController</string>
     <string name="no_day_greeting">Witaj! Czyż nie aby czas najwyższy dzień rozpocząć?</string>
+    <string name="menu">Menu</string>
     <string name="begin">Rozpocznij</string>
     <string name="history">Historia</string>
     <string name="base">Baza</string>
     <string name="goals">Cele</string>
+    <string name="categories">Kategorie</string>
+    <string name="meal">Posiłek</string>
+    <string name="products">Produkty</string>
 </resources>
