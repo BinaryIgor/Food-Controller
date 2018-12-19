@@ -15,7 +15,6 @@ class ObjectsPoolThatCanAddAndRetrieve(private val item: Any) : TypeSafeMatcher<
             item.add(this.item)
             matched = item.single(this.item.javaClass).equals(this.item)
         } catch (e: Exception) {
-            e.printStackTrace()
             matched = false
         }
         return matched

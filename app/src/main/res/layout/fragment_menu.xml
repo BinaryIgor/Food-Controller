@@ -4,6 +4,52 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="@dimen/dpSmall">
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        <TextView
+                android:id="@+id/greetings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dpMedium"
+                android:text="@string/no_day_greeting"
+                />
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dpSmall"
+                android:text="@string/begin"/>
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dpSmall"
+                android:text="@string/history"/>
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/base"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dpSmall"
+                android:text="@string/base"/>
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/goals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/goals"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
     </LinearLayout>
 </layout>
