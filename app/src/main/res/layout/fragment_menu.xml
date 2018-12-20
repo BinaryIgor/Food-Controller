@@ -16,7 +16,9 @@
                 android:id="@+id/greetings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpMedium"
+                style="@style/TitleStyle"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/dpVeryLarge"
                 android:text="@string/no_day_greeting"
                 />
 
@@ -24,27 +26,31 @@
                 android:id="@+id/day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpSmall"
+                style="@style/MainButtonStyle"
+                android:layout_marginBottom="@dimen/dpMedium"
                 android:text="@string/begin"/>
 
         <com.iprogrammerr.foodcontroller.view.CustomButton
                 android:id="@+id/history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpSmall"
+                style="@style/MainButtonStyle"
+                android:layout_marginBottom="@dimen/dpMedium"
                 android:text="@string/history"/>
 
         <com.iprogrammerr.foodcontroller.view.CustomButton
                 android:id="@+id/base"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpSmall"
+                style="@style/MainButtonStyle"
+                android:layout_marginBottom="@dimen/dpMedium"
                 android:text="@string/base"/>
 
         <com.iprogrammerr.foodcontroller.view.CustomButton
                 android:id="@+id/goals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/MainButtonStyle"
                 android:text="@string/goals"/>
 
         <View

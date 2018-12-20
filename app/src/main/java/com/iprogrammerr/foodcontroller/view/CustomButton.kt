@@ -19,7 +19,6 @@ class CustomButton(context: Context, attrs: AttributeSet) : AppCompatButton(cont
     private var down = false
 
     init {
-        System.out.println("Init!")
         val array = context.theme.obtainStyledAttributes(attrs, R.styleable.CustomButton, 0, 0)
         val dpFromPx = { px: Float -> px * context.resources.displayMetrics.density }
         this.colors = mapOf(
@@ -49,7 +48,7 @@ class CustomButton(context: Context, attrs: AttributeSet) : AppCompatButton(cont
         val cornersRadii: FloatArray
         val cr = array.getDimension(R.styleable.CustomButton_cornersRadius, 0f)
         if (cr != 0f) {
-            cornersRadii = FloatArray(8, { cr })
+            cornersRadii = FloatArray(8, {dpFromPx(cr) })
         } else {
             val topLeft = dpFromPx(
                 array.getDimension(

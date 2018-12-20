@@ -38,6 +38,7 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLines="1"
+                        style="@style/ToolbarTitleStyle"
                         android:textColor="@android:color/white"
                         tools:text="Tytuł"/>
 

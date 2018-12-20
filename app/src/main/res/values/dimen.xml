@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="dpLittlest">1dp</dimen>
+    <dimen name="dpLittle">2dp</dimen>
     <dimen name="dpSmall">8dp</dimen>
     <dimen name="dpMedium">16dp</dimen>
     <dimen name="dpLarge">24dp</dimen>
+    <dimen name="dpVeryLarge">48dp</dimen>
     <dimen name="toolbarItem">24dp</dimen>
+    <dimen name="spSmall">8sp</dimen>
+    <dimen name="spMedium">16sp</dimen>
+    <dimen name="spLarge">24sp</dimen>
 </resources>
