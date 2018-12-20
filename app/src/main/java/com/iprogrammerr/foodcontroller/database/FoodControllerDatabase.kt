@@ -37,7 +37,6 @@ class FoodControllerDatabase(context: Context) :
         .append(")")
         .toString()
 
-    //hour range for allowing eating after midnight and still have proper meals order
     private val mealContract = StringBuilder()
         .append("CREATE TABLE meal")
         .append("(")
@@ -45,9 +44,7 @@ class FoodControllerDatabase(context: Context) :
         .append(",")
         .append("day_id INTEGER NOT NULL")
         .append(",")
-        .append("hour INTEGER NOT NULL CHECK(hour >= 0 && hour <= 36")
-        .append(",")
-        .append("minutes INTEGER NOT NULL CHECK(minutes >= 0 && minutes < 60)")
+        .append("time INTEGER NOT NULL")
         .append(",")
         .append("FOREIGN KEY(day_id) REFERENCES day(id) ON DELETE CASCADE")
         .append(")")

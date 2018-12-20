@@ -5,13 +5,13 @@ import com.iprogrammerr.foodcontroller.model.food.Food
 
 interface Meal {
 
-    fun id()
+    fun id(): Long
 
-    fun hourMinutes(): String
+    fun time(): Long
 
     fun food(): List<Food>
 
     fun nutritionalValues(): NutritionalValues
 
-    fun removeFood(id : Long)
+    fun removeFood(id: Long)
 }

@@ -5,7 +5,7 @@ import android.database.Cursor
 
 interface Database {
 
-    fun query(sql: String, mapping: (Cursor) -> Unit)
+    fun query(sql: String): Cursor
 
     fun insert(table: String, values: ContentValues)
 

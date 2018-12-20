@@ -2,13 +2,11 @@ package com.iprogrammerr.foodcontroller.model.food
 
 interface Food {
 
-    fun id(): Int
+    fun id(): Long
 
     fun name(): String
 
     fun weight(): Int
-
-    fun updateWeight(weight: Int)
 
     fun calories(): Int
 

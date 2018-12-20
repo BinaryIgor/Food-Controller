@@ -10,9 +10,10 @@ class DatabaseCategory(private val id: Long, private val database: Database) : C
 
     override fun name(): String {
         if (!this.fields.containsKey("name")) {
-            this.database.query("select name from category where id = $this.id", { c ->
-                this.fields["name"] = c.getString(0)
-            })
+            val cursor = this.database.query("select name from category where id = $this.id")
+            cursor.moveToNext()
+            this.fields["name"] = cursor.getString(0)
+            cursor.close()
         }
         return this.fields["name"] as String
     }
