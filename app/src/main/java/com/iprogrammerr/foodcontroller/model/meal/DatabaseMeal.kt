@@ -1,5 +1,6 @@
 package com.iprogrammerr.foodcontroller.model.meal
 
+import android.content.ContentValues
 import com.iprogrammerr.foodcontroller.database.Database
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.food.DatabaseFood
@@ -51,6 +52,14 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
 
             override fun protein() = protein.roundToInt()
         }
+    }
+
+    override fun addFood(food: Food) {
+        val values = ContentValues()
+        values.put("food_id", food.id())
+        values.put("meal_id", this.id)
+        this.database.insert("food_meal", values)
+        this.loaded = false
     }
 
     override fun removeFood(id: Long) {

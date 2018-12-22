@@ -7,13 +7,13 @@ class ObjectsPoolTest {
 
     @Test
     fun addAndRetrieve() {
-        assertThat(ObjectsPool, ObjectsPoolThatCanAddAndRetrieve(1))
+        assertThat(ObjectsPool, ObjectsPoolThatCanAddAndRetrieve(Any::class.java, 1))
     }
 
     @Test(expected = Exception::class)
     fun doesNotHaveDuplicates() {
         val item = "item"
-        ObjectsPool.add(item)
-        ObjectsPool.add(item)
+        ObjectsPool.add(String::class.java, item)
+        ObjectsPool.add(String::class.java, item)
     }
 }

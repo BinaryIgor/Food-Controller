@@ -4,11 +4,11 @@ import com.iprogrammerr.foodcontroller.model.NutritionalValues
 
 interface Days {
 
-    fun range(from: String, to: String): List<Day>
+    fun range(from: Long, to: Long): List<Day>
 
-    fun day(date: String): Day
+    fun day(date: Long): Day
 
-    fun exists(date: String): Boolean
+    fun exists(date: Long): Boolean
 
     fun create(goals: NutritionalValues)
 }

@@ -4,17 +4,17 @@ object ObjectsPool {
 
     private val pool = HashMap<Class<*>, Any>()
 
-    fun add(any: Any) {
-        if (this.pool.containsKey(any.javaClass)) {
-            throw Exception("Pool already contains class of ${any.javaClass} type")
+    fun add(clazz: Class<*>, any: Any) {
+        if (this.pool.containsKey(clazz)) {
+            throw Exception("Pool already contains class of $clazz type")
         }
-        this.pool[any.javaClass] = any
+        this.pool[clazz] = any
     }
 
     fun <T> single(clazz: Class<T>): T {
         val item = this.pool[clazz]
-        if (item == null || !item.javaClass.isAssignableFrom(clazz)) {
-            throw Exception("Pool does not contain class of ${clazz} type")
+        if (item == null || !clazz.isAssignableFrom(item.javaClass)) {
+            throw Exception("Pool does not contain class of $clazz type")
         }
         return clazz.cast(item)
     }

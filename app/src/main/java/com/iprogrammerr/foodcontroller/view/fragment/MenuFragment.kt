@@ -1,5 +1,7 @@
 package com.iprogrammerr.foodcontroller.view.fragment
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -10,10 +12,12 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMenuBinding
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.viewmodel.MenuViewModel
 
 class MenuFragment : Fragment() {
 
     private lateinit var root: RootView
+    private lateinit var binding: FragmentMenuBinding
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -21,12 +25,30 @@ class MenuFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentMenuBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
+        this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         this.root.changeTitle(getString(R.string.menu))
-        binding.day.setOnClickListener { _ -> this.root.replace(DayFragment(), true) }
-        binding.history.setOnClickListener { _ -> this.root.replace(HistoryFragment(), true) }
-        binding.base.setOnClickListener { _ -> this.root.replace(CategoriesFragment(), true) }
-        binding.goals.setOnClickListener { _ -> this.root.replace(GoalsFragment(), true) }
+        this.binding.day.setOnClickListener { this.root.replace(DayFragment(), true) }
+        this.binding.history.setOnClickListener { this.root.replace(HistoryFragment(), true) }
+        this.binding.base.setOnClickListener { this.root.replace(CategoriesFragment(), true) }
+        this.binding.goals.setOnClickListener { this.root.replace(GoalsFragment(), true) }
+        ViewModelProviders.of(this).get(MenuViewModel::class.java).dayStarted().observe(this,
+            Observer { r ->
+                if (r!!.isSuccess()) {
+                    drawGreetings(r!!.value())
+                } else {
+                    println("Exception ${r!!.exception()}")
+                }
+            })
         return binding.root
+    }
+
+    private fun drawGreetings(dayStarted: Boolean) {
+        if (dayStarted) {
+            this.binding.greetings.text = getString(R.string.day_greeting)
+            this.binding.day.text = getString(R.string.back)
+        } else {
+            this.binding.greetings.text = getString(R.string.no_day_greeting)
+            this.binding.day.text = getString(R.string.begin)
+        }
     }
 }

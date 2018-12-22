@@ -18,7 +18,7 @@ class FoodControllerDatabase(context: Context) :
         .append(",")
         .append("protein INTEGER NOT NULL CHECK(protein >= 0)")
         .append(",")
-        .append("deleted INTEGER DEFAULT 0 CHECK(deleted >= 0 && deleted <= 1)")
+        .append("deleted INTEGER DEFAULT 0 CHECK(deleted >= 0 & deleted <= 1)")
         .append(")")
         .toString()
 
@@ -31,7 +31,7 @@ class FoodControllerDatabase(context: Context) :
         .append(",")
         .append("weight INTEGER NOT NULL CHECK(weight > 0)")
         .append(",")
-        .append("UNIQUE(food_id, weight)")
+        .append("UNIQUE(definition_id, weight)")
         .append(",")
         .append("FOREIGN KEY(definition_id) REFERENCES food_definition(id) ON DELETE CASCADE")
         .append(")")
