@@ -1,8 +1,8 @@
 package com.iprogrammerr.foodcontroller.viewmodel
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
-import com.iprogrammerr.foodcontroller.livedata.ResultLiveData
+import com.iprogrammerr.foodcontroller.model.StickableScalar
+import com.iprogrammerr.foodcontroller.model.StickyScalar
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.model.result.ResultValue
@@ -11,30 +11,29 @@ import java.util.concurrent.Executor
 
 class MenuViewModel private constructor(
     private val executor: Executor,
-    private val days: Days,
-    private val started: ResultLiveData<Boolean>
+    private val days: Days
 ) : ViewModel() {
-
-    constructor(executor: Executor, days: Days) : this(executor, days, ResultLiveData())
 
     constructor() : this(ObjectsPool.single(Executor::class.java), ObjectsPool.single(Days::class.java))
 
-    fun dayStarted(): LiveData<Result<Boolean>> {
-        if (this.started.isEmptyOrFailure()) {
-            load()
+    private val started: StickableScalar<Result<Boolean>>
+
+    init {
+        this.started = StickyScalar {
+            try {
+                ResultValue(this.days.exists(System.currentTimeMillis()))
+            } catch (e: Exception) {
+                ResultValue<Boolean>(e.message as String)
+            }
         }
-        return this.started
     }
 
-    private fun load() {
+    fun dayStarted(result: (Result<Boolean>) -> Unit) {
         this.executor.execute {
-            var result: Result<Boolean>
-            try {
-                result = ResultValue(this.days.exists(System.currentTimeMillis()))
-            } catch (e: Exception) {
-                result = ResultValue(e.message as String)
+            if (!this.started.value().isSuccess()) {
+                this.started.unstick()
             }
-            this.started.postValue(result)
+            result(this.started.value())
         }
     }
 }

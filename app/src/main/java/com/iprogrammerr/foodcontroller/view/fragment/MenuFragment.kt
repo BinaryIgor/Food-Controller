@@ -1,6 +1,5 @@
 package com.iprogrammerr.foodcontroller.view.fragment
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -12,12 +11,16 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMenuBinding
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
 import com.iprogrammerr.foodcontroller.viewmodel.MenuViewModel
 
 class MenuFragment : Fragment() {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMenuBinding
+    private val viewModel: MenuViewModel by lazy {
+        ViewModelProviders.of(this).get(MenuViewModel::class.java)
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -31,14 +34,13 @@ class MenuFragment : Fragment() {
         this.binding.history.setOnClickListener { this.root.replace(HistoryFragment(), true) }
         this.binding.base.setOnClickListener { this.root.replace(CategoriesFragment(), true) }
         this.binding.goals.setOnClickListener { this.root.replace(GoalsFragment(), true) }
-        ViewModelProviders.of(this).get(MenuViewModel::class.java).dayStarted().observe(this,
-            Observer { r ->
-                if (r!!.isSuccess()) {
-                    drawGreetings(r!!.value())
-                } else {
-                    println("Exception ${r!!.exception()}")
-                }
-            })
+        this.viewModel.dayStarted { r ->
+            if (r.isSuccess()) {
+                drawGreetings(r.value())
+            } else {
+                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+            }
+        }
         return binding.root
     }
 
