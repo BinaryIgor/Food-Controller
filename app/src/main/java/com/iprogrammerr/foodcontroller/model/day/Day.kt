@@ -5,11 +5,15 @@ import com.iprogrammerr.foodcontroller.model.meal.Meal
 
 interface Day {
 
-    fun goals(): NutritionalValues
-
     fun date(): Long
 
+    fun weight(): Double
+
+    fun goals(): NutritionalValues
+
     fun meals(): List<Meal>
+
+    fun addMeal(id: Long)
 
     fun removeMeal(id: Long)
 }

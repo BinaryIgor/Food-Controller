@@ -76,13 +76,14 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
         val cursor = this.database.query(query.toString())
         this.food.clear()
         while (cursor.moveToNext()) {
-            val attributes: MutableMap<String, Any> = mutableMapOf(
-                "name" to cursor.getString(cursor.getColumnIndex("fd.name")),
-                "weight" to cursor.getInt(cursor.getColumnIndex("f.weight")),
-                "protein" to cursor.getInt(cursor.getColumnIndex("fd.protein")),
-                "calories" to cursor.getInt(cursor.getColumnIndex("fd.calories"))
-            )
-            this.food.add(DatabaseFood(cursor.getLong(cursor.getColumnIndex("f.id")), this.database, attributes))
+            this.food.add(
+                DatabaseFood(
+                    cursor.getLong(cursor.getColumnIndex("f.id")), this.database,
+                    cursor.getString(cursor.getColumnIndex("fd.name")),
+                    cursor.getInt(cursor.getColumnIndex("f.weight")),
+                    cursor.getInt(cursor.getColumnIndex("fd.protein")),
+                    cursor.getInt(cursor.getColumnIndex("fd.calories"))
+                ))
         }
         this.time = cursor.getLong(cursor.getColumnIndex("m.time"))
         this.loaded = true

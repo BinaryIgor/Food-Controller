@@ -5,11 +5,20 @@ import kotlin.math.roundToInt
 
 class DatabaseFood(
     private val id: Long,
-    private val database: Database,
-    private val attributes: MutableMap<String, Any>
+    private val database: Database
 ) : Food {
 
-    constructor(id: Long, database: Database) : this(id, database, HashMap())
+    private val attributes: MutableMap<String, Any> = HashMap()
+
+    constructor(id: Long, database: Database, name: String, weight: Int, calories: Int, protein: Int) : this(
+        id,
+        database
+    ) {
+        this.attributes["name"] = name
+        this.attributes["weight"] = weight
+        this.attributes["calories"] = calories
+        this.attributes["protein"] = protein
+    }
 
     override fun id() = this.id
 

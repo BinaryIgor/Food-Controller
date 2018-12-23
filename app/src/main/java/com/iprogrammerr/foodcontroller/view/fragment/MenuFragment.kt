@@ -43,7 +43,7 @@ class MenuFragment : Fragment(), WeightTarget {
                 InformationDialog.new(r.exception()).show(this.childFragmentManager)
             }
         }
-        return binding.root
+        return this.binding.root
     }
 
     private fun drawGreetings(dayStarted: Boolean) {
@@ -53,6 +53,17 @@ class MenuFragment : Fragment(), WeightTarget {
         } else {
             this.binding.greetings.text = getString(R.string.no_day_greeting)
             this.binding.day.text = getString(R.string.begin)
+            this.binding.day.setOnClickListener { showWeightDialog() }
+        }
+    }
+
+    private fun showWeightDialog() {
+        this.viewModel.lastWeight { r ->
+            if (r.isSuccess()) {
+               WeightDialog.new(r.value()).show(this.childFragmentManager)
+            } else {
+                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+            }
         }
     }
 
