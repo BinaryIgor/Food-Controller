@@ -18,4 +18,7 @@
     <string name="protein">Białko</string>
     <string name="weight">Waga</string>
     <string name="add">Dodaj</string>
+    <string name="colon">:</string>
+    <string name="meal_number">Posiłek %s</string>
+    <string name="time_template">%d:%d</string>
 </resources>

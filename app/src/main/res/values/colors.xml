@@ -7,4 +7,5 @@
     <color name="caloriesBackground">#836d8c</color>
     <color name="proteinForeground">#682323</color>
     <color name="proteinBackground">#af4f4f</color>
+    <color name="blue">#a9d6d1</color>
 </resources>
