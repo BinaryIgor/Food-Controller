@@ -60,15 +60,15 @@ class MenuFragment : Fragment(), WeightTarget {
     private fun showWeightDialog() {
         this.viewModel.lastWeight { r ->
             if (r.isSuccess()) {
-               WeightDialog.new(r.value()).show(this.childFragmentManager)
+                WeightDialog.new(r.value()).show(this.childFragmentManager)
             } else {
                 InformationDialog.new(r.exception()).show(this.childFragmentManager)
             }
         }
     }
 
-    //TODO handle value
+    //TODO handle value, create day
     override fun hit(weight: Double) {
-
+        this.root.replace(DayFragment.new(System.currentTimeMillis()), true)
     }
 }

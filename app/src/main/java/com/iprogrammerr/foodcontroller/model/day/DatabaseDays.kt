@@ -20,7 +20,7 @@ class DatabaseDays(private val database: Database) : Days {
         val sql = StringBuilder()
             .append("select * from day d inner join meal m on d.id = m.day_id ")
             .append("inner join food_meal fm on m.id = fm.meal_id ")
-            .append("inner join food f on fm.food_id = f.id")
+            .append("inner join food f on fm.food_id = f.id ")
             .append("inner join food_definition fd on f.definition_id = fd.id ")
             .append("where date ")
             .append(">= ${dayStart(date)} and date <= ${dayEnd(date)} limit 1")
