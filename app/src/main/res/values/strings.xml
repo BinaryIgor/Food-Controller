@@ -14,4 +14,8 @@
     <string name="dot">.</string>
     <string name="cancel">Anuluj</string>
     <string name="kg">kg</string>
+    <string name="calories">Kalorie</string>
+    <string name="protein">Białko</string>
+    <string name="weight">Waga</string>
+    <string name="add">Dodaj</string>
 </resources>
