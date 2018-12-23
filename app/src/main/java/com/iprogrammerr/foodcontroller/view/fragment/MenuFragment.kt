@@ -12,9 +12,11 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMenuBinding
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
+import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MenuViewModel
 
-class MenuFragment : Fragment() {
+class MenuFragment : Fragment(), WeightTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMenuBinding
@@ -52,5 +54,10 @@ class MenuFragment : Fragment() {
             this.binding.greetings.text = getString(R.string.no_day_greeting)
             this.binding.day.text = getString(R.string.begin)
         }
+    }
+
+    //TODO handle value
+    override fun hit(weight: Double) {
+
     }
 }

@@ -57,6 +57,8 @@ class FoodControllerDatabase(context: Context) :
         .append(",")
         .append("date INTEGER NOT NULL")
         .append(",")
+        .append("weight REAL NOT NULL CHECK(weight > 0)")
+        .append(",")
         .append("calories_goal INTEGER NOT NULL CHECK(calories_goal >= 0)")
         .append(",")
         .append("protein_goal INTEGER NOT NULL CHECK(protein_goal >= 0)")

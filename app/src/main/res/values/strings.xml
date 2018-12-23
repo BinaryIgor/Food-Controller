@@ -11,4 +11,7 @@
     <string name="categories">Kategorie</string>
     <string name="meal">Posiłek</string>
     <string name="products">Produkty</string>
+    <string name="dot">.</string>
+    <string name="cancel">Anuluj</string>
+    <string name="kg">kg</string>
 </resources>

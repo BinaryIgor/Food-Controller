@@ -10,5 +10,5 @@ interface Days {
 
     fun exists(date: Long): Boolean
 
-    fun create(goals: NutritionalValues)
+    fun create(goals: NutritionalValues, weight: Int)
 }

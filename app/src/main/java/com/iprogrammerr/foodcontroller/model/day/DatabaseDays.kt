@@ -21,7 +21,7 @@ class DatabaseDays(private val database: Database) : Days {
         return exists
     }
 
-    override fun create(goals: NutritionalValues) {
+    override fun create(goals: NutritionalValues, weight: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

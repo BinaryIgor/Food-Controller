@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), RootView {
         if (savedInstanceState == null) {
             replace(MenuFragment(), false)
         }
-        this.binding.back.setOnClickListener { _ ->
+        this.binding.back.setOnClickListener {
             if (this.supportFragmentManager.backStackEntryCount > 0)
                 onBackPressed()
         }

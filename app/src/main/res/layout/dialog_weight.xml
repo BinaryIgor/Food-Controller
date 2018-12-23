@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dpSmall"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dpSmall"
+                android:orientation="horizontal">
+
+            <NumberPicker
+                    android:id="@+id/kg"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/spLarge"
+                    android:text="@string/dot"/>
+
+            <NumberPicker
+                    android:id="@+id/g"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dpSmall"
+                    style="@style/DescriptionStyle"
+                    android:text="@string/kg"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <com.iprogrammerr.foodcontroller.view.CustomButton
+                    android:id="@+id/cancel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/dpSmall"
+                    android:layout_height="wrap_content"
+                    style="@style/MainButtonStyle"
+                    android:text="@string/cancel"/>
+
+
+            <com.iprogrammerr.foodcontroller.view.CustomButton
+                    android:id="@+id/ok"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/dpSmall"
+                    android:layout_height="wrap_content"
+                    style="@style/MainButtonStyle"
+                    android:text="@android:string/ok"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>
