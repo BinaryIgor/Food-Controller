@@ -9,7 +9,7 @@ class DatabaseRows(private val cursor: Cursor) : Rows {
         return DatabaseRow(this.cursor)
     }
 
-    override fun hasNext() = !this.cursor.isAfterLast
+    override fun hasNext() = !this.cursor.isLast
 
     override fun close() {
         this.cursor.close()

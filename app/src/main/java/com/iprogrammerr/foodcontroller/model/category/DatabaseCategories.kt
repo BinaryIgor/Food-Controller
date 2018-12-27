@@ -5,10 +5,13 @@ import com.iprogrammerr.foodcontroller.database.Database
 class DatabaseCategories(private val database: Database) : Categories {
 
     override fun all(): List<Category> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun create(name: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.database.query("select * from category").use { rs ->
+            val categories = ArrayList<Category>()
+            while (rs.hasNext()) {
+                val r = rs.next()
+                categories.add(DatabaseCategory(r.long("id"), r.string("name"), this.database))
+            }
+            return categories
+        }
     }
 }
