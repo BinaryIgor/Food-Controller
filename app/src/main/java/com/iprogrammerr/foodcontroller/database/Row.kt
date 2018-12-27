@@ -9,4 +9,6 @@ interface Row {
     fun double(name: String): Double
 
     fun string(name: String): String
+
+    fun isEmpty(): Boolean
 }

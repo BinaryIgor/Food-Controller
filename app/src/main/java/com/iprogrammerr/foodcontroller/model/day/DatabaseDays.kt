@@ -62,9 +62,7 @@ class DatabaseDays(private val database: Database) : Days {
 
     override fun exists(date: Long) = this.database
         .query("select id from day where date = ${dayStart(date)}")
-        .use { r ->
-            r.hasNext()
-        }
+        .use { r -> !r.next().isEmpty() }
 
     override fun create(goals: NutritionalValues, weight: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

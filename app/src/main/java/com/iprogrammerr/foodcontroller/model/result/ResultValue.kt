@@ -8,6 +8,8 @@ class ResultValue<T> private constructor(private val value: Potential<T>, privat
 
     constructor(exception: String) : this(Potential(), exception)
 
+    constructor(exception: Exception) : this(exception.message as String)
+
     override fun value(): T {
         if (this.value.isEmpty()) {
             throw Exception("Result have exception = ${this.exception}")

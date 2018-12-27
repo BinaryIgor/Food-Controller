@@ -6,6 +6,10 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 
 class DatabaseCategory(private val id: Long, private val database: Database) : Category {
 
+    constructor(id: Long, name: String, database: Database) : this(id, database) {
+        this.fields["name"] = name
+    }
+
     private val fields = HashMap<String, Any>()
 
     override fun name(): String {

@@ -3,14 +3,27 @@ package com.iprogrammerr.foodcontroller.database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.iprogrammerr.foodcontroller.database.script.PrepopulatingScript
+import org.json.JSONObject
 
-class FoodControllerDatabase(context: Context) :
+class FoodControllerDatabase(context: Context, private val source: JSONObject) :
     SQLiteOpenHelper(context, FoodControllerDatabase::javaClass.name, null, 1) {
+
+    private val categoryContract = StringBuilder()
+        .append("CREATE TABLE category")
+        .append("(")
+        .append("id INTEGER PRIMARY KEY AUTOINCREMENT")
+        .append(",")
+        .append("name TEXT NOT NULL UNIQUE")
+        .append(")")
+        .toString()
 
     private val foodDefinitionContract = StringBuilder()
         .append("CREATE TABLE food_definition")
         .append("(")
         .append("id INTEGER PRIMARY KEY AUTOINCREMENT")
+        .append(",")
+        .append("category_id INTEGER NOT NULL")
         .append(",")
         .append("name TEXT NOT NULL UNIQUE")
         .append(",")
@@ -19,6 +32,8 @@ class FoodControllerDatabase(context: Context) :
         .append("protein REAL NOT NULL CHECK(protein >= 0)")
         .append(",")
         .append("deleted INTEGER DEFAULT 0 CHECK(deleted >= 0 & deleted <= 1)")
+        .append(",")
+        .append("FOREIGN KEY(category_id) REFERENCES category(id)")
         .append(")")
         .toString()
 
@@ -82,11 +97,13 @@ class FoodControllerDatabase(context: Context) :
         .append(")").toString()
 
     override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(this.categoryContract)
         db.execSQL(this.foodDefinitionContract)
         db.execSQL(this.foodContract)
         db.execSQL(this.mealContract)
         db.execSQL(this.foodMealContract)
         db.execSQL(this.dayContract)
+        PrepopulatingScript(db, this.source).execute()
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
