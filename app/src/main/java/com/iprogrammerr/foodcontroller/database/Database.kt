@@ -1,11 +1,10 @@
 package com.iprogrammerr.foodcontroller.database
 
 import android.content.ContentValues
-import android.database.Cursor
 
 interface Database {
 
-    fun query(sql: String): Cursor
+    fun query(sql: String): Rows
 
     fun insert(table: String, values: ContentValues)
 
