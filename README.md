@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/Iprogrammerr/Food-Controller.svg?branch=master)](https://travis-ci.com/Iprogrammerr/Food-Controller)
 # Food Controller
 Simple application for controlling food intake. Requirements:
 * Absolutely self contained - all it's data is comming from and stored in SQLite database
