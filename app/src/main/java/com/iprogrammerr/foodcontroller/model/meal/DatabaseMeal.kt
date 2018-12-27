@@ -73,19 +73,21 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
             .append("inner join food f on fm.food_id = f.id")
             .append("inner join food_definition fd on f.definition_id = fd.id ")
             .append("where id = ${this.id}")
-        val cursor = this.database.query(query.toString())
         this.food.clear()
-        while (cursor.moveToNext()) {
-            this.food.add(
-                DatabaseFood(
-                    cursor.getLong(cursor.getColumnIndex("f.id")), this.database,
-                    cursor.getString(cursor.getColumnIndex("fd.name")),
-                    cursor.getInt(cursor.getColumnIndex("f.weight")),
-                    cursor.getInt(cursor.getColumnIndex("fd.protein")),
-                    cursor.getInt(cursor.getColumnIndex("fd.calories"))
-                ))
+        this.database.query(query.toString()).use { rs ->
+            var r = rs.next()
+            while (rs.hasNext()) {
+                this.food.add(
+                    DatabaseFood(
+                        r.long("f.id"), this.database,
+                        r.string("fd.name"), r.int("f.weight"),
+                        r.int("fd.protein"), r.int("fd.calories")
+                    )
+                )
+                r = rs.next()
+            }
+            this.time = r.long("m.time")
+            this.loaded = true
         }
-        this.time = cursor.getLong(cursor.getColumnIndex("m.time"))
-        this.loaded = true
     }
 }

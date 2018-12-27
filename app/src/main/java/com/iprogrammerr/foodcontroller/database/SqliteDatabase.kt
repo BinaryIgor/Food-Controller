@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class SqliteDatabase(private val origin: SQLiteOpenHelper) : Database {
 
-    override fun query(sql: String) = this.origin.readableDatabase.rawQuery(sql, null)
+    override fun query(sql: String) = DatabaseRows(this.origin.readableDatabase.rawQuery(sql, null))
 
     override fun insert(table: String, values: ContentValues) {
         this.origin.writableDatabase.insert(table, null, values)

@@ -51,14 +51,14 @@ class DatabaseFood(
     }
 
     private fun load() {
-        val cursor = this.database.query(
+        this.database.query(
             "select * fom food inner join food_definition on food.definition_id = food_definition.id where id = ${this.id}"
-        )
-        cursor.moveToNext()
-        this.attributes["name"] = cursor.getLong(cursor.getColumnIndex("name"))
-        this.attributes["weight"] = cursor.getInt(cursor.getColumnIndex("weight"))
-        this.attributes["calories"] = cursor.getInt(cursor.getColumnIndex("calories"))
-        this.attributes["protein"] = cursor.getInt(cursor.getColumnIndex("protein"))
-        cursor.close()
+        ).use { rs ->
+            val row = rs.next()
+            this.attributes["name"] = row.long("name")
+            this.attributes["weight"] = row.int("weight")
+            this.attributes["calories"] = row.int("calories")
+            this.attributes["protein"] = row.int("protein")
+        }
     }
 }

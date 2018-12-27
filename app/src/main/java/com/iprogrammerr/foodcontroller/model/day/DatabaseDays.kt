@@ -1,7 +1,7 @@
 package com.iprogrammerr.foodcontroller.model.day
 
-import android.database.Cursor
 import com.iprogrammerr.foodcontroller.database.Database
+import com.iprogrammerr.foodcontroller.database.Rows
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.food.DatabaseFood
 import com.iprogrammerr.foodcontroller.model.food.Food
@@ -24,54 +24,48 @@ class DatabaseDays(private val database: Database) : Days {
             .append("inner join food_definition fd on f.definition_id = fd.id ")
             .append("where date ")
             .append(">= ${dayStart(date)} and date <= ${dayEnd(date)} limit 1")
-        val cursor = this.database.query(sql.toString())
-        cursor.moveToNext()
-        val day = day(cursor)
-        cursor.close()
-        return day
+        this.database.query(sql.toString()).use { r ->
+            return day(r)
+        }
     }
 
-    private fun day(cursor: Cursor): Day {
+    private fun day(rows: Rows): Day {
         val meals: MutableList<Meal> = ArrayList()
+        var row = rows.next()
         do {
             var moved = false
-            val mealId = cursor.getLong(cursor.getColumnIndex("m.id"))
-            val time = cursor.getLong(cursor.getColumnIndex("m.time"))
+            val mealId = row.long("m.id")
+            val time = row.long("m.time")
             val food: MutableList<Food> = ArrayList()
             do {
-                if (cursor.getLong(cursor.getColumnIndex("m.id")) != mealId) {
+                if (row.long("m.id") != mealId) {
                     meals.add(DatabaseMeal(mealId, this.database, time, food))
                     break
                 }
                 food.add(
                     DatabaseFood(
-                        cursor.getLong(cursor.getColumnIndex("f.id")), this.database,
-                        cursor.getString(cursor.getColumnIndex("fd.name")),
-                        cursor.getInt(cursor.getColumnIndex("f.weight")),
-                        cursor.getInt(cursor.getColumnIndex("fd.protein")),
-                        cursor.getInt(cursor.getColumnIndex("fd.calories"))
+                        row.long("f.id"), this.database, row.string("fd.name"),
+                        row.int("f.weight"), row.int("fd.protein"),
+                        row.int("fd.calories")
                     )
                 )
-                moved = cursor.moveToNext()
+                row = rows.next()
+                moved = rows.hasNext()
             } while (moved)
         } while (moved)
         return DatabaseDay(
-            cursor.getLong(cursor.getColumnIndex("d.id")),
-            this.database,
-            cursor.getLong(cursor.getColumnIndex("date")),
-            cursor.getDouble(cursor.getColumnIndex("weight")),
-            cursor.getInt(cursor.getColumnIndex("caloriesGoal")),
-            cursor.getInt(cursor.getColumnIndex("proteinGoal")),
-            meals
+            row.long("d.id"),
+            this.database, row.long("date"), row.double("weight"),
+            row.int("caloriesGoal"), row.int("proteinGoal"), meals
         )
     }
 
-    override fun exists(date: Long): Boolean {
-        val cursor = this.database.query("select id from day where date = ${dayStart(date)}")
-        val exists = cursor.moveToNext()
-        cursor.close()
-        return exists
-    }
+    override fun exists(date: Long) = this.database
+        .query("select id from day where date = ${dayStart(date)}")
+        .use { r ->
+            r.hasNext()
+        }
+
 
     override fun create(goals: NutritionalValues, weight: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
