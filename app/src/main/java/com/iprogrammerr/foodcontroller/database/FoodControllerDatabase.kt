@@ -16,7 +16,7 @@ class FoodControllerDatabase(context: Context) :
         .append(",")
         .append("calories INTEGER NOT NULL CHECK(calories > 0)")
         .append(",")
-        .append("protein INTEGER NOT NULL CHECK(protein >= 0)")
+        .append("protein REAL NOT NULL CHECK(protein >= 0)")
         .append(",")
         .append("deleted INTEGER DEFAULT 0 CHECK(deleted >= 0 & deleted <= 1)")
         .append(")")
