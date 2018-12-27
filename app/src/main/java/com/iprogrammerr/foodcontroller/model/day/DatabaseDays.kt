@@ -66,7 +66,6 @@ class DatabaseDays(private val database: Database) : Days {
             r.hasNext()
         }
 
-
     override fun create(goals: NutritionalValues, weight: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

@@ -1,0 +1,39 @@
+{
+  "categories": [
+    "Produkty zbożowe",
+    "Produkty roślinne",
+    "Mleko i przetwory mleczne",
+    "Mięso, wędliny, ryby i jaja",
+    "Warzywa i owoce",
+    "Cukier i słodycze",
+    "Inne"
+  ],
+  "food_1": [
+    {"name": "Ryż", "calories": 350, "protein": 10},
+    {"name": "Kasza gryczana", "calories": 348, "protein": 11},
+    {"name": "Kasza jaglana", "calories": 350, "protein": 10}
+  ],
+  "food_2": [
+    {"name": "Ziemniak", "calories": 79, "protein": 1.9}
+  ],
+  "food_3": [
+    {"name": "Mleko 3.2%", "calories": 61, "protein": 3.2},
+    {"name": "Mleko 2%", "calories": 51, "protein": 3.2},
+    {"name": "Mleko 0.5%", "calories": 39, "protein": 3.2}
+  ],
+  "food_4": [
+    {"name": "Makrela wędzona", "calories": 221, "protein": 20.7},
+    {"name": "Filet z piersi kurczaka", "calories": 120, "protein": 18},
+    {"name": "Jaja", "calories": 140, "protein": 12.5}
+  ],
+  "food_5": [
+    {"name": "Warzywa", "calories": 50, "protein":1},
+    {"name": "Banan", "calories": 100, "protein": 1}
+  ],
+  "food_6": [
+    {"name": "Miód", "calories": 330, "protein": 0}
+  ],
+  "food_7": [
+    {"name": "Piwo", "calories":50, "protein": 0.5}
+  ]
+}
