@@ -7,10 +7,10 @@
         </shape>
     </item>
     <item
-        android:bottom="@dimen/dpLittle"
-        android:left="@dimen/dpLittle"
-        android:right="@dimen/dpLittle"
-        android:top="@dimen/dpLittle">
+        android:bottom="@dimen/dpLittlest"
+        android:left="@dimen/dpLittlest"
+        android:right="@dimen/dpLittlest"
+        android:top="@dimen/dpLittlest">
         <shape android:shape="rectangle">
             <solid android:color="@android:color/white" />
             <corners android:radius="@dimen/dpLittle" />
