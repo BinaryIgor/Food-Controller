@@ -6,8 +6,11 @@
     <dimen name="dpMedium">16dp</dimen>
     <dimen name="dpLarge">24dp</dimen>
     <dimen name="dpVeryLarge">48dp</dimen>
-    <dimen name="toolbarItem">24dp</dimen>
+
     <dimen name="spSmall">8sp</dimen>
     <dimen name="spMedium">16sp</dimen>
     <dimen name="spLarge">24sp</dimen>
+
+    <dimen name="toolbarItem">24dp</dimen>
+    <dimen name="arrow">24dp</dimen>
 </resources>

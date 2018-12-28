@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/adapter"
+            android:layout_marginBottom="@dimen/dpSmall"
+            android:padding="@dimen/dpMedium">
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                style="@style/TitleStyle"
+                tools:text="Posiłek I"
+                />
+
+        <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="@dimen/arrow"
+                android:layout_height="@dimen/arrow"
+                android:layout_gravity="center"
+                android:src="@drawable/next_black"
+                />
+    </LinearLayout>
+</layout>

@@ -12,6 +12,8 @@ class DatabaseCategory(private val id: Long, private val database: Database) : C
 
     private val fields = HashMap<String, Any>()
 
+    override fun id() = this.id
+
     override fun name(): String {
         if (!this.fields.containsKey("name")) {
             this.database.query("select name from category where id = $this.id").use { r ->

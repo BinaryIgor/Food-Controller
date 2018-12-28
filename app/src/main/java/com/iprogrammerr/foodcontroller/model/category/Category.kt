@@ -4,6 +4,8 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 
 interface Category {
 
+    fun id(): Long
+
     fun name(): String
 
     fun rename(name: String)
