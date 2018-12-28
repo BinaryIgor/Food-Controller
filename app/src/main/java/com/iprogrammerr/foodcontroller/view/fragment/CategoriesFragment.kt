@@ -45,7 +45,7 @@ class CategoriesFragment : Fragment(), IdTarget {
         binding.categories.layoutManager = LinearLayoutManager(this.context)
         this.viewModel.categories { r ->
             if (r.isSuccess()) {
-                binding.categories.adapter = CategoriesView(r.value(), this)
+                this.root.runOnMain { binding.categories.adapter = CategoriesView(r.value(), this) }
             } else {
                 InformationDialog.new(r.exception()).show(this.childFragmentManager)
             }
@@ -55,6 +55,6 @@ class CategoriesFragment : Fragment(), IdTarget {
     }
 
     override fun hit(id: Long) {
-        println("id = $id")
+        this.root.replace(CategoryProductsFragment.new(id), true)
     }
 }

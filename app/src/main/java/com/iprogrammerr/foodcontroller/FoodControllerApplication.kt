@@ -36,10 +36,9 @@ class FoodControllerApplication : Application() {
         val days = DatabaseDays(database)
         val categories = DatabaseCategories(database)
         ObjectsPool.add(Executor::class.java, executor)
+        ObjectsPool.add(Database::class.java, database)
         ObjectsPool.add(Days::class.java, days)
         ObjectsPool.add(Categories::class.java, categories)
         ObjectsPool.add(Weight::class.java, LastWeight(database, 65.0))
-
-
     }
 }

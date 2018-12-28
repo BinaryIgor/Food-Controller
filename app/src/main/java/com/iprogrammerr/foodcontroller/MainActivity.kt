@@ -49,6 +49,10 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     override fun changeTitle(title: String) {
-        this.binding.toolbarTitle.text = title
+        runOnUiThread { this.binding.toolbarTitle.text = title }
+    }
+
+    override fun runOnMain(runnable: () -> Unit) {
+        runOnUiThread(runnable)
     }
 }

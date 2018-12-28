@@ -38,7 +38,7 @@ class MenuFragment : Fragment(), WeightTarget {
         this.binding.goals.setOnClickListener { this.root.replace(GoalsFragment(), true) }
         this.viewModel.dayStarted { r ->
             if (r.isSuccess()) {
-                drawGreetings(r.value())
+                this.root.runOnMain { drawGreetings(r.value()) }
             } else {
                 InformationDialog.new(r.exception()).show(this.childFragmentManager)
             }

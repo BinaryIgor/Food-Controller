@@ -7,4 +7,6 @@ interface RootView {
     fun replace(fragment: Fragment, toBackStack: Boolean)
 
     fun changeTitle(title: String)
+
+    fun runOnMain(runnable: () -> Unit)
 }
