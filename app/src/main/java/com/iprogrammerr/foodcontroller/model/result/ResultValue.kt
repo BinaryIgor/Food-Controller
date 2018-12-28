@@ -6,6 +6,8 @@ class ResultValue<T> private constructor(private val value: Potential<T>, privat
 
     constructor(value: T) : this(Potential(value), "")
 
+    constructor(value: () -> T) : this(value.invoke())
+
     constructor(exception: String) : this(Potential(), exception)
 
     constructor(exception: Exception) : this(exception.message as String)

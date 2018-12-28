@@ -22,4 +22,5 @@
     <string name="meal_number">Posiłek %s</string>
     <string name="time_template">%d:%d</string>
     <string name="day">Dzień</string>
+    <string name="search_hint">Szukaj...</string>
 </resources>

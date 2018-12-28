@@ -11,11 +11,12 @@ object ObjectsPool {
         this.pool[clazz] = any
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun <T> single(clazz: Class<T>): T {
         val item = this.pool[clazz]
         if (item == null || !clazz.isAssignableFrom(item.javaClass)) {
             throw Exception("Pool does not contain class of $clazz type")
         }
-        return clazz.cast(item)
+        return item as T
     }
 }
