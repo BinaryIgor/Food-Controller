@@ -1,6 +1,7 @@
 package com.iprogrammerr.foodcontroller.view
 
 import android.support.v4.app.Fragment
+import com.iprogrammerr.foodcontroller.view.message.Message
 
 interface RootView {
 
@@ -9,4 +10,6 @@ interface RootView {
     fun changeTitle(title: String)
 
     fun runOnMain(runnable: () -> Unit)
+
+    fun propagate(message: Message)
 }

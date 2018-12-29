@@ -15,23 +15,6 @@ class DatabaseCategory(private val id: Long, private val database: Database) : C
     }
 
     private val fields = HashMap<String, Any>()
-    private val products by lazy {
-        this.database.query("select * from food_definition where category_id = ${this.id}")
-            .use { rs ->
-                val products: MutableList<FoodDefinition> = ArrayList()
-                while (rs.hasNext()) {
-                    val r = rs.next()
-                    products.add(
-                        DatabaseFoodDefinition(
-                            r.long("id"), this.database,
-                            r.string("name"), r.int("calories"),
-                            r.double("protein"), r.long("category_id")
-                        )
-                    )
-                }
-                products
-            }
-    }
 
     override fun id() = this.id
 
@@ -51,5 +34,21 @@ class DatabaseCategory(private val id: Long, private val database: Database) : C
         this.fields.remove("name")
     }
 
-    override fun food(): List<FoodDefinition> = this.products
+    override fun food(): List<FoodDefinition> {
+        return this.database.query("select * from food_definition where category_id = ${this.id}")
+            .use { rs ->
+                val products: MutableList<FoodDefinition> = ArrayList()
+                while (rs.hasNext()) {
+                    val r = rs.next()
+                    products.add(
+                        DatabaseFoodDefinition(
+                            r.long("id"), this.database,
+                            r.string("name"), r.int("calories"),
+                            r.double("protein"), r.long("category_id")
+                        )
+                    )
+                }
+                products
+            }
+    }
 }

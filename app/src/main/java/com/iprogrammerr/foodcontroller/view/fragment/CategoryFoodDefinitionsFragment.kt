@@ -21,16 +21,18 @@ import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
-import com.iprogrammerr.foodcontroller.view.items.CategoryProductsView
+import com.iprogrammerr.foodcontroller.view.items.CategoryFoodView
+import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.CategoryFoodDefinitionsViewModel
 import com.iprogrammerr.foodcontroller.viewmodel.factory.CategoryFoodDefinitionsViewModelFactory
 import java.util.concurrent.Executor
 
-class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget {
+class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentCategoryFoodDefinitionsBinding
-    private lateinit var products: CategoryProductsView
+    private lateinit var products: CategoryFoodView
     private val viewModel by lazy {
         ViewModelProviders.of(
             this,
@@ -84,8 +86,9 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget {
                 if (this::products.isInitialized) {
                     this.products.refresh(result.value())
                 } else {
-                    this.products = CategoryProductsView(result.value(), this)
+                    this.products = CategoryFoodView(result.value(), this)
                 }
+                println("Drawing....")
                 this.binding.products.adapter = this.products
             } else {
                 InformationDialog.new(result.exception()).show(this.childFragmentManager)
@@ -104,17 +107,27 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget {
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         s?.let { s ->
             val criteria = s.toString()
-            this.arguments!!.putString("criteria", criteria)
-            if (criteria.isNotBlank()) {
-                this.viewModel.filtered(criteria) { r -> drawListOrDialog(r) }
-            } else {
-                this.viewModel.products { r -> drawListOrDialog(r) }
+            val args = this.arguments as Bundle
+            if (args.getString("criteria", "") != criteria) {
+                args.putString("criteria", criteria)
+                if (criteria.isNotBlank()) {
+                    this.viewModel.filtered(criteria) { r -> drawListOrDialog(r) }
+                } else {
+                    this.viewModel.products { r -> drawListOrDialog(r) }
+                }
             }
         }
     }
 
     override fun hit(id: Long) {
         this.root.replace(FoodDefinitionFragment.withId(id), true)
+    }
+
+    override fun hit(message: Message) {
+        if (message == Message.FoodDefinitionsChanged) {
+            println("Unsticking...")
+            this.viewModel.refresh()
+        }
     }
 
     override fun onDestroyView() {
