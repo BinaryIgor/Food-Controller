@@ -99,7 +99,6 @@ class FoodDefinitionFragment : Fragment() {
         }
     }
 
-
     private fun onSaveResult(result: Result<Boolean>) {
         if (result.isSuccess()) {
             this.root.propagate(Message.FoodDefinitionsChanged)

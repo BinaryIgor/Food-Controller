@@ -33,12 +33,15 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
     private lateinit var root: RootView
     private lateinit var binding: FragmentCategoryFoodDefinitionsBinding
     private lateinit var products: CategoryFoodView
+    private val id by lazy {
+        this.arguments?.let { it.getLong("id", -1) } ?: -1
+    }
     private val viewModel by lazy {
         ViewModelProviders.of(
             this,
             CategoryFoodDefinitionsViewModelFactory(
                 ObjectsPool.single(Executor::class.java),
-                DatabaseCategory(this.arguments!!.getLong("id"), ObjectsPool.single(Database::class.java))
+                DatabaseCategory(this.id, ObjectsPool.single(Database::class.java))
             )
         ).get(CategoryFoodDefinitionsViewModel::class.java)
     }
@@ -69,6 +72,9 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
         } else {
             this.viewModel.filtered(criteria) { r -> drawListOrDialog(r) }
         }
+        this.binding.add.setOnClickListener {
+            this.root.replace(FoodDefinitionFragment.withCategoryId(this.id), true)
+        }
         this.viewModel.name { r ->
             if (r.isSuccess()) {
                 this.root.changeTitle(r.value())
@@ -88,7 +94,6 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
                 } else {
                     this.products = CategoryFoodView(result.value(), this)
                 }
-                println("Drawing....")
                 this.binding.products.adapter = this.products
             } else {
                 InformationDialog.new(result.exception()).show(this.childFragmentManager)
@@ -125,7 +130,6 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
 
     override fun hit(message: Message) {
         if (message == Message.FoodDefinitionsChanged) {
-            println("Unsticking...")
             this.viewModel.refresh()
         }
     }
