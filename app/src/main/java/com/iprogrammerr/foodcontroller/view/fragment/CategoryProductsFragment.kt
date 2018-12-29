@@ -114,7 +114,7 @@ class CategoryProductsFragment : Fragment(), TextWatcher, IdTarget {
     }
 
     override fun hit(id: Long) {
-        //TODO go to ProductDefinitionFragment
+        this.root.replace(ProductDefinitionFragment.new(id), true)
     }
 
     override fun onDestroyView() {
