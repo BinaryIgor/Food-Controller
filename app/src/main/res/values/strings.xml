@@ -24,8 +24,9 @@
     <string name="day">Dzień</string>
     <string name="name">Nazwa</string>
     <string name="save">Zapisz</string>
-    <string name="add_definition">Dodaj deinicję</string>
+    <string name="add_definition">Dodaj definicję</string>
     <string name="edit_definition">Edytuj definicję</string>
+    <string name="new_product">Nowy produkt</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
