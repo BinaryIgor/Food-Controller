@@ -9,13 +9,13 @@ import java.util.concurrent.Executor
 class CategoriesViewModelFactory(private val executor: Executor, private val categories: Categories) :
     ViewModelProvider.NewInstanceFactory() {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(clazz: Class<T>): T = when {
-        clazz.isAssignableFrom(CategoriesViewModel::class.java) -> clazz.cast(
+        clazz.isAssignableFrom(CategoriesViewModel::class.java) ->
             CategoriesViewModel(
                 this.executor,
                 this.categories
-            )
-        )
+            ) as T
         else -> throw Exception("$clazz is not a ${CategoriesViewModel::class.java.simpleName}")
     }
 }

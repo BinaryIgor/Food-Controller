@@ -10,6 +10,8 @@ import com.iprogrammerr.foodcontroller.model.day.DatabaseDays
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.day.LastWeight
 import com.iprogrammerr.foodcontroller.model.day.Weight
+import com.iprogrammerr.foodcontroller.model.food.DatabaseFoodDefinitions
+import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -38,7 +40,8 @@ class FoodControllerApplication : Application() {
         ObjectsPool.add(Executor::class.java, executor)
         ObjectsPool.add(Database::class.java, database)
         ObjectsPool.add(Days::class.java, days)
-        ObjectsPool.add(Categories::class.java, categories)
         ObjectsPool.add(Weight::class.java, LastWeight(database, 65.0))
+        ObjectsPool.add(Categories::class.java, categories)
+        ObjectsPool.add(FoodDefinitions::class.java, DatabaseFoodDefinitions(database))
     }
 }

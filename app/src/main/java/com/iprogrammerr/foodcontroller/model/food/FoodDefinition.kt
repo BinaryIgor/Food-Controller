@@ -10,5 +10,5 @@ interface FoodDefinition {
 
     fun protein(): Double
 
-    fun update(values: Map<String, Any>)
+    fun update(name: String, calories: Int, protein: Double)
 }

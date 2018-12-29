@@ -7,7 +7,7 @@ import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.model.result.ResultValue
 import java.util.concurrent.Executor
 
-class CategoryProductsViewModel(private val executor: Executor, private val category: Category) : ViewModel() {
+class CategoryFoodDefinitionsViewModel(private val executor: Executor, private val category: Category) : ViewModel() {
 
     private val products by lazy {
         try {
