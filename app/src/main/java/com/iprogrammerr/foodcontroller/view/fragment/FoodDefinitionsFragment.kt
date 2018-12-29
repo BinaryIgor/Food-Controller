@@ -8,10 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
-import com.iprogrammerr.foodcontroller.databinding.FragmentProductsBinding
+import com.iprogrammerr.foodcontroller.databinding.FragmentFoodDefinitionsBinding
 import com.iprogrammerr.foodcontroller.view.RootView
 
-class ProductsFragment : Fragment() {
+class FoodDefinitionsFragment : Fragment() {
 
     private lateinit var root: RootView
 
@@ -21,8 +21,8 @@ class ProductsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentProductsBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_products, container, false)
+        val binding: FragmentFoodDefinitionsBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_food_definitions, container, false)
         this.root.changeTitle(getString(R.string.products))
         return binding.root
     }

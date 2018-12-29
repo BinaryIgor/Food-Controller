@@ -1,5 +1,6 @@
 package com.iprogrammerr.foodcontroller.model.food
 
+import android.content.ContentValues
 import com.iprogrammerr.foodcontroller.database.Database
 
 class DatabaseFoodDefinition(private val id: Long, private val database: Database) :
@@ -29,8 +30,23 @@ class DatabaseFoodDefinition(private val id: Long, private val database: Databas
         return loadedOrCached("protein")
     }
 
-    override fun update(values: Map<String, Any>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun categoryId(): Long {
+        return loadedOrCached("categoryId")
+    }
+
+    override fun update(name: String, calories: Int, protein: Double) {
+        val values = ContentValues()
+        if (name() != name) {
+            values.put("name", name)
+        }
+        if (calories() != calories) {
+            values.put("calories", calories)
+        }
+        if (protein() != protein) {
+            values.put("protein", protein)
+        }
+        this.database.update("food_definition", "id = ${this.id}", values)
+        this.attributes.clear()
     }
 
     private fun load() {

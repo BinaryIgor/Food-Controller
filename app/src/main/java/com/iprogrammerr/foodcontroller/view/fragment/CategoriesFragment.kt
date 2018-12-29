@@ -55,6 +55,6 @@ class CategoriesFragment : Fragment(), IdTarget {
     }
 
     override fun hit(id: Long) {
-        this.root.replace(CategoryProductsFragment.new(id), true)
+        this.root.replace(CategoryFoodDefinitionsFragment.new(id), true)
     }
 }

@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.database.Database
-import com.iprogrammerr.foodcontroller.databinding.FragmentCategoryProductsBinding
+import com.iprogrammerr.foodcontroller.databinding.FragmentCategoryFoodDefinitionsBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.category.DatabaseCategory
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
@@ -22,29 +22,29 @@ import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
 import com.iprogrammerr.foodcontroller.view.items.CategoryProductsView
-import com.iprogrammerr.foodcontroller.viewmodel.CategoryProductsViewModel
-import com.iprogrammerr.foodcontroller.viewmodel.factory.CategoryProductViewModelFactory
+import com.iprogrammerr.foodcontroller.viewmodel.CategoryFoodDefinitionsViewModel
+import com.iprogrammerr.foodcontroller.viewmodel.factory.CategoryFoodDefinitionsViewModelFactory
 import java.util.concurrent.Executor
 
-class CategoryProductsFragment : Fragment(), TextWatcher, IdTarget {
+class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget {
 
     private lateinit var root: RootView
-    private lateinit var binding: FragmentCategoryProductsBinding
+    private lateinit var binding: FragmentCategoryFoodDefinitionsBinding
     private lateinit var products: CategoryProductsView
     private val viewModel by lazy {
         ViewModelProviders.of(
             this,
-            CategoryProductViewModelFactory(
+            CategoryFoodDefinitionsViewModelFactory(
                 ObjectsPool.single(Executor::class.java),
                 DatabaseCategory(this.arguments!!.getLong("id"), ObjectsPool.single(Database::class.java))
             )
-        ).get(CategoryProductsViewModel::class.java)
+        ).get(CategoryFoodDefinitionsViewModel::class.java)
     }
 
     companion object {
 
-        fun new(id: Long): CategoryProductsFragment {
-            val fragment = CategoryProductsFragment()
+        fun new(id: Long): CategoryFoodDefinitionsFragment {
+            val fragment = CategoryFoodDefinitionsFragment()
             val args = Bundle()
             args.putLong("id", id)
             fragment.arguments = args
@@ -59,7 +59,7 @@ class CategoryProductsFragment : Fragment(), TextWatcher, IdTarget {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.binding =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_category_products, container, false)
+                DataBindingUtil.inflate(inflater, R.layout.fragment_category_food_definitions, container, false)
         this.binding.products.layoutManager = LinearLayoutManager(this.context)
         val criteria = this.arguments!!.getString("criteria", "")
         if (criteria.isBlank()) {
@@ -114,7 +114,7 @@ class CategoryProductsFragment : Fragment(), TextWatcher, IdTarget {
     }
 
     override fun hit(id: Long) {
-        this.root.replace(ProductDefinitionFragment.new(id), true)
+        this.root.replace(FoodDefinitionFragment.withId(id), true)
     }
 
     override fun onDestroyView() {
