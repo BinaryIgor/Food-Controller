@@ -45,8 +45,10 @@ class DatabaseFoodDefinition(private val id: Long, private val database: Databas
         if (protein() != protein) {
             values.put("protein", protein)
         }
-        this.database.update("food_definition", "id = ${this.id}", values)
-        this.attributes.clear()
+        if (values.size() > 0) {
+            this.database.update("food_definition", "id = ${this.id}", values)
+            this.attributes.clear()
+        }
     }
 
     private fun load() {

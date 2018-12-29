@@ -15,6 +15,7 @@ import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.viewmodel.FoodDefinitionViewModel
 import com.iprogrammerr.foodcontroller.viewmodel.factory.FoodDefinitionsViewModelFactory
 import java.util.concurrent.Executor
@@ -60,6 +61,9 @@ class FoodDefinitionFragment : Fragment() {
         val args = this.arguments as Bundle
         if (args.getLong("id", -1) > 0) {
             initInputs(args.getLong("id"))
+            this.root.changeTitle(getString(R.string.edit_definition))
+        } else {
+            this.root.changeTitle(getString(R.string.add_definition))
         }
         this.binding.save.setOnClickListener { save() }
         return this.binding.root
@@ -98,7 +102,8 @@ class FoodDefinitionFragment : Fragment() {
 
     private fun onSaveResult(result: Result<Boolean>) {
         if (result.isSuccess()) {
-            //TODO messaging mechanism...
+            this.root.propagate(Message.FoodDefinitionsChanged)
+            this.fragmentManager?.popBackStack()
         } else {
             InformationDialog.new(result.exception()).show(this.childFragmentManager)
         }

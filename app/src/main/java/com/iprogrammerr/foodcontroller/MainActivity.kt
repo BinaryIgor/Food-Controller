@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.iprogrammerr.foodcontroller.databinding.ActivityMainBinding
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.view.fragment.CategoryFoodDefinitionsFragment
 import com.iprogrammerr.foodcontroller.view.fragment.MenuFragment
+import com.iprogrammerr.foodcontroller.view.message.Message
 
 class MainActivity : AppCompatActivity(), RootView {
 
@@ -40,10 +42,11 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     override fun replace(fragment: Fragment, toBackStack: Boolean) {
+        val tag = fragment.javaClass.simpleName
         val transaction = this.supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment, fragment)
+            .replace(R.id.fragment, fragment, tag)
         if (toBackStack) {
-            transaction.addToBackStack(fragment.javaClass.simpleName)
+            transaction.addToBackStack(tag)
         }
         transaction.commit()
     }
@@ -54,5 +57,13 @@ class MainActivity : AppCompatActivity(), RootView {
 
     override fun runOnMain(runnable: () -> Unit) {
         runOnUiThread(runnable)
+    }
+
+    override fun propagate(message: Message) {
+        val fragment =
+            this.supportFragmentManager.findFragmentByTag(CategoryFoodDefinitionsFragment::class.java.simpleName)
+        if (fragment is CategoryFoodDefinitionsFragment) {
+            fragment.hit(message)
+        }
     }
 }

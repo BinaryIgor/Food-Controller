@@ -10,7 +10,7 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.view.Refreshable
 import com.iprogrammerr.foodcontroller.view.item.ArrowedView
 
-class CategoryProductsView(products: List<FoodDefinition>, private val target: IdTarget) :
+class CategoryFoodView(products: List<FoodDefinition>, private val target: IdTarget) :
     RecyclerView.Adapter<ArrowedView>(), Refreshable<List<FoodDefinition>>, PositionTarget {
 
     private val products: MutableList<FoodDefinition> = ArrayList()
