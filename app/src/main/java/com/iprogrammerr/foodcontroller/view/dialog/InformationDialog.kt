@@ -47,7 +47,7 @@ class InformationDialog : DialogFragment() {
     }
 
     fun show(manager: FragmentManager) {
-        if (manager.findFragmentByTag(InformationDialog.tag()) == null) {
+        if (manager.findFragmentByTag(tag()) == null) {
             show(manager, tag())
         }
     }

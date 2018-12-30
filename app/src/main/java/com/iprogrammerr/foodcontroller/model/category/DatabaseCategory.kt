@@ -51,4 +51,10 @@ class DatabaseCategory(private val id: Long, private val database: Database) : C
                 products
             }
     }
+
+    override fun addFood(id: Long) {
+        val values = ContentValues()
+        values.put("category_id", this.id)
+        this.database.update("food_definition", "id = $id", values)
+    }
 }

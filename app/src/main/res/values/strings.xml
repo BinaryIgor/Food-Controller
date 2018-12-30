@@ -27,6 +27,9 @@
     <string name="add_definition">Dodaj definicję</string>
     <string name="edit_definition">Edytuj definicję</string>
     <string name="new_product">Nowy produkt</string>
+    <string name="move">Przenieś</string>
+    <string name="delete">Usuń</string>
+    <string name="definition_moved">Definicja została przeniesiona</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
@@ -39,5 +42,6 @@
     <string name="name_hint">Nazwa</string>
     <string name="kcal_hint">0 kcal</string>
     <string name="protein_hint">0 g</string>
+    <string name="choose_category">Wybierz Kategorię</string>
     <!--hints-->
 </resources>

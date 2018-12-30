@@ -1,0 +1,12 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+            android:id="@+id/description"
+            style="@style/DescriptionStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/dpSmall"
+            android:paddingBottom="@dimen/spSmall"
+            android:textColor="@android:color/white"/>
+</layout>

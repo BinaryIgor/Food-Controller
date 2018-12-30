@@ -1,10 +1,13 @@
 package com.iprogrammerr.foodcontroller.view.fragment
 
+import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +24,8 @@ import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.dialog.MoveDeleteFoodDialog
+import com.iprogrammerr.foodcontroller.view.items.AdapterTarget
 import com.iprogrammerr.foodcontroller.view.items.CategoryFoodView
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.view.message.MessageTarget
@@ -28,7 +33,8 @@ import com.iprogrammerr.foodcontroller.viewmodel.CategoryFoodDefinitionsViewMode
 import com.iprogrammerr.foodcontroller.viewmodel.factory.CategoryFoodDefinitionsViewModelFactory
 import java.util.concurrent.Executor
 
-class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
+class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, AdapterTarget<FoodDefinition>,
+    MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentCategoryFoodDefinitionsBinding
@@ -66,12 +72,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
         this.binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_category_food_definitions, container, false)
         this.binding.products.layoutManager = LinearLayoutManager(this.context)
-        val criteria = this.arguments!!.getString("criteria", "")
-        if (criteria.isBlank()) {
-            this.viewModel.products { r -> drawListOrDialog(r) }
-        } else {
-            this.viewModel.filtered(criteria) { r -> drawListOrDialog(r) }
-        }
+        drawAllOrFiltered()
         this.binding.add.setOnClickListener {
             this.root.replace(FoodDefinitionFragment.withCategoryId(this.id), true)
         }
@@ -86,13 +87,22 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
         return this.binding.root
     }
 
+    private fun drawAllOrFiltered() {
+        val criteria = this.arguments!!.getString("criteria", "")
+        if (criteria.isBlank()) {
+            this.viewModel.products { r -> drawListOrDialog(r) }
+        } else {
+            this.viewModel.filtered(criteria) { r -> drawListOrDialog(r) }
+        }
+    }
+
     private fun drawListOrDialog(result: Result<List<FoodDefinition>>) {
         this.root.runOnMain {
             if (result.isSuccess()) {
                 if (this::products.isInitialized) {
                     this.products.refresh(result.value())
                 } else {
-                    this.products = CategoryFoodView(result.value(), this)
+                    this.products = CategoryFoodView(result.value(), this, this)
                 }
                 this.binding.products.adapter = this.products
             } else {
@@ -115,11 +125,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
             val args = this.arguments as Bundle
             if (args.getString("criteria", "") != criteria) {
                 args.putString("criteria", criteria)
-                if (criteria.isNotBlank()) {
-                    this.viewModel.filtered(criteria) { r -> drawListOrDialog(r) }
-                } else {
-                    this.viewModel.products { r -> drawListOrDialog(r) }
-                }
+                drawAllOrFiltered()
             }
         }
     }
@@ -128,9 +134,19 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Messa
         this.root.replace(FoodDefinitionFragment.withId(id), true)
     }
 
+    override fun hit(item: FoodDefinition) {
+        MoveDeleteFoodDialog.new(item.id(), item.name()).show(this.fragmentManager as FragmentManager)
+    }
+
     override fun hit(message: Message) {
-        if (message == Message.FoodDefinitionsChanged) {
+        if (message == Message.FoodDefinitionsChanged || message == Message.FoodDefinitionMoved) {
             this.viewModel.refresh()
+            if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                drawAllOrFiltered()
+                if (message == Message.FoodDefinitionMoved) {
+                    Snackbar.make(this.binding.root, getString(R.string.definition_moved), Snackbar.LENGTH_LONG).show()
+                }
+            }
         }
     }
 

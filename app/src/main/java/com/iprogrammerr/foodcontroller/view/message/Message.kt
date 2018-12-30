@@ -6,4 +6,8 @@ interface Message {
     object FoodDefinitionsChanged : Message {
         override fun value() = "FoodDefinitionsChanged"
     }
+
+    object FoodDefinitionMoved : Message {
+        override fun value() = "FoodDefinitionMoved"
+    }
 }
