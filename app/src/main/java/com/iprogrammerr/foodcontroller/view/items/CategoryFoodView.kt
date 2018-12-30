@@ -10,10 +10,20 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.view.Refreshable
 import com.iprogrammerr.foodcontroller.view.item.ArrowedView
 
-class CategoryFoodView(products: List<FoodDefinition>, private val target: IdTarget) :
+class CategoryFoodView(
+    products: List<FoodDefinition>,
+    private val mainTarget: IdTarget,
+    private val secondaryTarget: AdapterTarget<FoodDefinition>
+) :
     RecyclerView.Adapter<ArrowedView>(), Refreshable<List<FoodDefinition>>, PositionTarget {
 
     private val products: MutableList<FoodDefinition> = ArrayList()
+    private val moreTarget = object : PositionTarget {
+
+        override fun hit(position: Int) {
+            this@CategoryFoodView.secondaryTarget.hit(this@CategoryFoodView.products[position])
+        }
+    }
 
     init {
         this.products.addAll(products)
@@ -21,7 +31,7 @@ class CategoryFoodView(products: List<FoodDefinition>, private val target: IdTar
 
     override fun onCreateViewHolder(group: ViewGroup, type: Int) = ArrowedView(
         DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_arrowed, group, false),
-        this
+        this, this.moreTarget
     )
 
     override fun getItemCount() = this.products.size
@@ -37,6 +47,6 @@ class CategoryFoodView(products: List<FoodDefinition>, private val target: IdTar
     }
 
     override fun hit(position: Int) {
-        this.target.hit(this.products[position].id())
+        this.mainTarget.hit(this.products[position].id())
     }
 }

@@ -30,7 +30,7 @@ class DatabaseFoodDefinitions(private val database: Database) : FoodDefinitions 
             StringBuilder()
                 .append("SELECT COUNT(*) c from food_definition fd ")
                 .append("INNER JOIN food f on fd.id = f.definition_id ")
-                .append("INNER JOIN food_meal fm on f.id = fm.food_id")
+                .append("INNER JOIN food_meal fm on f.id = fm.food_id ")
                 .append("WHERE fd.id = $id")
                 .toString()
         ).use { rs -> rs.next().int("c") }

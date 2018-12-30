@@ -9,7 +9,7 @@ import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.view.item.ArrowedView
 
-class CategoriesView(private val categories: List<Category>, private val target: IdTarget) :
+class CategoriesView(private val categories: List<Category>, private val mainTarget: IdTarget) :
     RecyclerView.Adapter<ArrowedView>(), PositionTarget {
 
     override fun onCreateViewHolder(group: ViewGroup, type: Int) =
@@ -25,6 +25,6 @@ class CategoriesView(private val categories: List<Category>, private val target:
     }
 
     override fun hit(position: Int) {
-        this.target.hit(this.categories[position].id())
+        this.mainTarget.hit(this.categories[position].id())
     }
 }
