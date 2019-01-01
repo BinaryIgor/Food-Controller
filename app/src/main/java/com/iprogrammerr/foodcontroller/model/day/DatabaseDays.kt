@@ -1,5 +1,6 @@
 package com.iprogrammerr.foodcontroller.model.day
 
+import android.content.ContentValues
 import com.iprogrammerr.foodcontroller.database.Database
 import com.iprogrammerr.foodcontroller.database.Rows
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
@@ -18,12 +19,12 @@ class DatabaseDays(private val database: Database) : Days {
 
     override fun day(date: Long): Day {
         val sql = StringBuilder()
-            .append("select * from day d inner join meal m on d.id = m.day_id ")
-            .append("inner join food_meal fm on m.id = fm.meal_id ")
-            .append("inner join food f on fm.food_id = f.id ")
-            .append("inner join food_definition fd on f.definition_id = fd.id ")
-            .append("where date ")
-            .append(">= ${dayStart(date)} and date <= ${dayEnd(date)} limit 1")
+            .append("SELECT * FROM day d INNER JOIN meal m ON d.id = m.day_id ")
+            .append("INNER JOIN food_meal fm ON m.id = fm.meal_id ")
+            .append("INNER JOIN food f ON fm.food_id = f.id ")
+            .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
+            .append("WHERE date ")
+            .append(">= ${dayStart(date)} AND date <= ${dayEnd(date)} LIMIT 1")
         this.database.query(sql.toString()).use { r ->
             return day(r)
         }
@@ -61,11 +62,16 @@ class DatabaseDays(private val database: Database) : Days {
     }
 
     override fun exists(date: Long) = this.database
-        .query("select id from day where date = ${dayStart(date)}")
+        .query("SELECT id FROM day WHERE date >= ${dayStart(date)} AND date <= ${dayEnd(date)}")
         .use { r -> !r.next().isEmpty() }
 
-    override fun create(goals: NutritionalValues, weight: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun create(weight: Double, goals: NutritionalValues) {
+        val values = ContentValues()
+        values.put("weight", weight)
+        values.put("date", System.currentTimeMillis())
+        values.put("calories_goal", goals.calories())
+        values.put("protein_goal", goals.protein())
+        this.database.insert("day", values)
     }
 
     private fun dayStart(date: Long) =
