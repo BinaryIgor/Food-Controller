@@ -33,12 +33,14 @@
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
+    <string name="weight_invalid">Waga musi być liczbą dodatnią</string>
     <string name="calories_invalid">Kalorie muszą być liczbą dodatnią</string>
     <string name="protein_invalid">Białko musi być liczbą nieujemną</string>
     <!--validation-->
 
     <!--hints-->
     <string name="search_hint">Szukaj...</string>
+    <string name="weight_hint">70 kg</string>
     <string name="name_hint">Nazwa</string>
     <string name="kcal_hint">0 kcal</string>
     <string name="protein_hint">0 g</string>

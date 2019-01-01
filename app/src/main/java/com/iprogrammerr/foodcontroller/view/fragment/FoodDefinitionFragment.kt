@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentFoodDefinitionBinding
+import com.iprogrammerr.foodcontroller.model.DoubleFromView
+import com.iprogrammerr.foodcontroller.model.IntFromView
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
@@ -85,8 +87,8 @@ class FoodDefinitionFragment : Fragment() {
 
     private fun save() {
         val name = this.binding.nameInput.text.toString()
-        val calories = calories()
-        val protein = protein()
+        val calories = IntFromView(this.binding.caloriesInput).value()
+        val protein = DoubleFromView(this.binding.proteinInput).value()
         val args = this.arguments as Bundle
         when {
             name.length < 3 -> InformationDialog.new(getString(R.string.name_invalid)).show(this.childFragmentManager)
@@ -105,22 +107,6 @@ class FoodDefinitionFragment : Fragment() {
             this.fragmentManager?.popBackStack()
         } else {
             InformationDialog.new(result.exception()).show(this.childFragmentManager)
-        }
-    }
-
-    private fun calories(): Int {
-        return try {
-            this.binding.caloriesInput.text.toString().trim().toInt()
-        } catch (e: Exception) {
-            0
-        }
-    }
-
-    private fun protein(): Double {
-        return try {
-            this.binding.proteinInput.text.toString().trim().toDouble()
-        } catch (e: Exception) {
-            -1.0
         }
     }
 }
