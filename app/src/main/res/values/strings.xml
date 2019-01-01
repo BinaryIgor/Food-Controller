@@ -30,6 +30,8 @@
     <string name="move">Przenieś</string>
     <string name="delete">Usuń</string>
     <string name="definition_moved">Definicja została przeniesiona</string>
+    <string name="no_change">Brak zmian</string>
+    <string name="save_success">Zapisywanie zakończyło się powodzeniem</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
