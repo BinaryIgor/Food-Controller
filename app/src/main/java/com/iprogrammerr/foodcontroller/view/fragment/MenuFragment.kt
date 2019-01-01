@@ -67,8 +67,14 @@ class MenuFragment : Fragment(), WeightTarget {
         }
     }
 
-    //TODO handle value, create day
     override fun hit(weight: Double) {
-        this.root.replace(DayFragment.new(System.currentTimeMillis()), true)
+        this.viewModel.createDay(weight) { r ->
+            if (r.isSuccess()) {
+                this.viewModel.refresh()
+                this.root.replace(DayFragment.new(System.currentTimeMillis()), true)
+            } else {
+                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+            }
+        }
     }
 }
