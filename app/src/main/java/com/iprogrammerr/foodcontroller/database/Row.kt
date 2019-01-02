@@ -10,5 +10,5 @@ interface Row {
 
     fun string(name: String): String
 
-    fun isEmpty(): Boolean
+    fun has(name: String): Boolean
 }

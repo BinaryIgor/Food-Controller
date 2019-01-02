@@ -23,6 +23,7 @@ class DayViewModel(private val executor: Executor, date: Long, private val days:
             try {
                 ResultValue(this.days.day(date))
             } catch (e: Exception) {
+                e.printStackTrace()
                 ResultValue<Day>(e.message as String)
             }
         }

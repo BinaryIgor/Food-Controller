@@ -19,51 +19,55 @@ class DatabaseDays(private val database: Database) : Days {
 
     override fun day(date: Long): Day {
         val sql = StringBuilder()
-            .append("SELECT * FROM day d INNER JOIN meal m ON d.id = m.day_id ")
-            .append("INNER JOIN food_meal fm ON m.id = fm.meal_id ")
-            .append("INNER JOIN food f ON fm.food_id = f.id ")
-            .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
+            .append("SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
+            .append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, fd.name, fd.calories, fd.protein ")
+            .append("FROM day d LEFT JOIN meal m ON d.id = m.id ")
+            .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
+            .append("LEFT JOIN food f ON fm.food_id = f.id ")
+            .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
             .append("WHERE date ")
-            .append(">= ${dayStart(date)} AND date <= ${dayEnd(date)} LIMIT 1")
-        this.database.query(sql.toString()).use { r ->
-            return day(r)
+            .append(">= ${dayStart(date)} AND d.date <= ${dayEnd(date)} LIMIT 1")
+        return this.database.query(sql.toString()).use { r ->
+            day(r)
         }
     }
 
     private fun day(rows: Rows): Day {
         val meals: MutableList<Meal> = ArrayList()
         var row = rows.next()
-        do {
-            var moved = false
-            val mealId = row.long("m.id")
-            val time = row.long("m.time")
-            val food: MutableList<Food> = ArrayList()
+        if (row.has("m_id")) {
             do {
-                if (row.long("m.id") != mealId) {
-                    meals.add(DatabaseMeal(mealId, this.database, time, food))
-                    break
-                }
-                food.add(
-                    DatabaseFood(
-                        row.long("f.id"), this.database, row.string("fd.name"),
-                        row.int("f.weight"), row.int("fd.protein"),
-                        row.int("fd.calories")
+                var moved = false
+                val mealId = row.long("m_id")
+                val time = row.long("time")
+                val food: MutableList<Food> = ArrayList()
+                do {
+                    if (row.long("m_id") != mealId) {
+                        meals.add(DatabaseMeal(mealId, this.database, time, food))
+                        break
+                    }
+                    food.add(
+                        DatabaseFood(
+                            row.long("f_id"), this.database, row.string("name"),
+                            row.int("f_weight"), row.int("protein"),
+                            row.int("calories")
+                        )
                     )
-                )
-                row = rows.next()
-                moved = rows.hasNext()
+                    row = rows.next()
+                    moved = rows.hasNext()
+                } while (moved)
             } while (moved)
-        } while (moved)
+        }
         return DatabaseDay(
-            row.long("d.id"),
-            this.database, row.long("date"), row.double("weight"),
-            row.int("caloriesGoal"), row.int("proteinGoal"), meals
+            row.long("d_id"),
+            this.database, row.long("date"), row.double("d_weight"),
+            row.int("calories_goal"), row.int("protein_goal"), meals
         )
     }
 
     override fun exists(date: Long) = this.database
         .query("SELECT id FROM day WHERE date >= ${dayStart(date)} AND date <= ${dayEnd(date)}")
-        .use { r -> !r.next().isEmpty() }
+        .use { r -> r.next().has("id") }
 
     override fun create(weight: Double, goals: NutritionalValues) {
         val values = ContentValues()

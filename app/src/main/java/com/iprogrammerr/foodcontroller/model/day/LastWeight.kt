@@ -8,10 +8,10 @@ class LastWeight(private val database: Database, private val default: Double) : 
         this.database.query("SELECT weight FROM day ORDER BY id DESC LIMIT 1")
             .use { rs ->
                 val r = rs.next()
-                return if (r.isEmpty()) {
-                    this.default
-                } else {
+                return if (r.has("weight")) {
                     r.double("weight")
+                } else {
+                    this.default
                 }
             }
     }

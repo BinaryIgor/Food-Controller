@@ -39,7 +39,7 @@ class DatabaseDay(
     }
 
     override fun meals(): List<Meal> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return this.meals
     }
 
     override fun weight(): Double {
