@@ -37,7 +37,7 @@ class DatabaseDays(private val database: Database) : Days {
         var row = rows.next()
         if (row.has("m_id")) {
             do {
-                var moved = false
+                var hasNext = false
                 val mealId = row.long("m_id")
                 val time = row.long("time")
                 val food: MutableList<Food> = ArrayList()
@@ -54,9 +54,9 @@ class DatabaseDays(private val database: Database) : Days {
                         )
                     )
                     row = rows.next()
-                    moved = rows.hasNext()
-                } while (moved)
-            } while (moved)
+                    hasNext = rows.hasNext()
+                } while (hasNext)
+            } while (hasNext)
         }
         return DatabaseDay(
             row.long("d_id"),
