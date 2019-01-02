@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.widget.NumberPicker
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.DialogWeightBinding
+import kotlin.math.roundToInt
 
 class WeightDialog : DialogFragment() {
 
@@ -53,7 +54,7 @@ class WeightDialog : DialogFragment() {
         setupPicker(binding.g, 0, 9)
         val weight = args.getDouble("weight")
         val kilograms: Int = weight.toInt()
-        val grams: Int = ((weight - kilograms) * 10).toInt() % 10
+        val grams: Int = ((weight - kilograms) * 10).roundToInt() % 10
         binding.kg.value = kilograms
         binding.g.value = grams
         binding.cancel.setOnClickListener { dialog.dismiss() }

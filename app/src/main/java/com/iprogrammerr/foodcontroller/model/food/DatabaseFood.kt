@@ -52,7 +52,7 @@ class DatabaseFood(
 
     private fun load() {
         this.database.query(
-            "select * fom food inner join food_definition on food.definition_id = food_definition.id where id = ${this.id}"
+            "select * from food inner join food_definition on food.definition_id = food_definition.id where id = ${this.id}"
         ).use { rs ->
             val row = rs.next()
             this.attributes["name"] = row.long("name")

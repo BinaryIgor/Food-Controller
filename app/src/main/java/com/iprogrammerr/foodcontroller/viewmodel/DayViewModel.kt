@@ -23,12 +23,24 @@ class DayViewModel(private val executor: Executor, date: Long, private val days:
             try {
                 ResultValue(this.days.day(date))
             } catch (e: Exception) {
+                e.printStackTrace()
                 ResultValue<Day>(e.message as String)
             }
         }
     }
 
-    fun day(result: (Result<Day>) -> Unit) {
-        this.executor.execute { result(this.day.value()) }
+    fun day(callback: (Result<Day>) -> Unit) {
+        this.executor.execute { callback(this.day.value()) }
+    }
+
+    fun changeWeight(weight: Double, callback: (Result<Boolean>) -> Unit) {
+        this.executor.execute {
+            try {
+                this.day.value().value().changeWeight(weight)
+                callback(ResultValue(true))
+            } catch (e: Exception) {
+                callback(ResultValue(e))
+            }
+        }
     }
 }
