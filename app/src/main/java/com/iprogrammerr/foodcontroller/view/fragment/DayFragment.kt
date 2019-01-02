@@ -5,6 +5,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentDayBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
+import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.view.RootView
@@ -67,12 +69,36 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
         }
     }
 
-    //TODO goals?
     //TODO update goals?
     private fun drawProgress(day: Day) {
+        val values = eatenValues(day)
+        val goals = day.goals()
+        this.binding.caloriesProgress.max = goals.calories()
+        this.binding.caloriesProgress.progress = values.calories()
+        if (values.calories() > goals.calories()) {
+            this.binding.caloriesValue.setTextColor(ContextCompat.getColor(this.context as Context, R.color.invalid))
+        }
+        this.binding.caloriesValue.text = "${values.calories()}/${goals.calories()}"
+        this.binding.proteinProgress.max = goals.protein()
+        this.binding.proteinProgress.progress = values.protein()
+        this.binding.proteinValue.text = "${values.protein()}/${goals.protein()}"
 
     }
 
+    private fun eatenValues(day: Day): NutritionalValues {
+        var calories = 0
+        var protein = 0
+        for (m in day.meals()) {
+            val values = m.nutritionalValues()
+            calories += values.calories()
+            protein += values.protein()
+        }
+        return object : NutritionalValues {
+            override fun calories() = calories
+
+            override fun protein() = protein
+        }
+    }
 
     override fun hit(id: Long) {
         this.root.replace(MealFragment.withMealId(id), true)

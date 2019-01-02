@@ -50,7 +50,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpSmall"
+                android:layout_marginBottom="@dimen/dpMedium"
                 android:orientation="horizontal">
 
             <TextView
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MainButtonStyle"
-                android:layout_marginBottom="@dimen/dpMedium"
+                android:layout_marginBottom="@dimen/dpSmall"
                 android:text="@string/weight"/>
 
         <com.iprogrammerr.foodcontroller.view.CustomButton
