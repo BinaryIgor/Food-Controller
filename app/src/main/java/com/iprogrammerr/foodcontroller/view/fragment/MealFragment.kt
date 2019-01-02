@@ -34,6 +34,7 @@ class MealFragment : Fragment() {
         this.root = context as RootView
     }
 
+    //TODO setup time picker, get data from view model
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMealBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)

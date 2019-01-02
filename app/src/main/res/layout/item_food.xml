@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/adapter"
+            android:layout_marginBottom="@dimen/dpSmall"
+            android:padding="@dimen/dpSmall">
+
+        <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/MediumTitleStyle"
+                    tools:text="Fasola"
+                    />
+
+            <TextView
+                    android:id="@+id/weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dpSmall"
+                    android:layout_toEndOf="@+id/name"
+                    style="@style/MediumTitleStyle"
+                    tools:text="100 g"
+                    />
+
+            <TextView
+                    android:id="@+id/values"
+                    android:layout_below="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/DescriptionStyle"
+                    tools:text="300 kcal, 100 g białka"
+                    />
+        </RelativeLayout>
+
+        <ImageView
+                android:id="@+id/more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/more"
+                />
+    </LinearLayout>
+</layout>
