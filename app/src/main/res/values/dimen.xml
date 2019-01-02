@@ -9,6 +9,7 @@
 
     <dimen name="spSmall">8sp</dimen>
     <dimen name="spMedium">16sp</dimen>
+    <dimen name="spMediumLarge">20sp</dimen>
     <dimen name="spLarge">24sp</dimen>
 
     <dimen name="toolbarItem">24dp</dimen>

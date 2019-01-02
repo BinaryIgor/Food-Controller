@@ -17,6 +17,11 @@
         <item name="android:textSize">@dimen/spLarge</item>
     </style>
 
+    <style name="MediumTitleStyle">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/spMediumLarge</item>
+    </style>
+
     <style name="DescriptionStyle">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/spMedium</item>

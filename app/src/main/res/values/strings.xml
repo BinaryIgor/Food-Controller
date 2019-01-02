@@ -32,6 +32,7 @@
     <string name="definition_moved">Definicja została przeniesiona</string>
     <string name="no_change">Brak zmian</string>
     <string name="save_success">Zapisywanie zakończyło się powodzeniem</string>
+    <string name="summary">Podsumowanie</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
@@ -48,4 +49,8 @@
     <string name="protein_hint">0 g</string>
     <string name="choose_category">Wybierz Kategorię</string>
     <!--hints-->
+
+    <!--templates-->
+    <string name="values_template">%d kcal, %d g białka</string>
+    <!--templates-->
 </resources>
