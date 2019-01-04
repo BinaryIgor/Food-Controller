@@ -5,6 +5,8 @@ import android.preference.PreferenceManager
 import com.iprogrammerr.foodcontroller.database.Database
 import com.iprogrammerr.foodcontroller.database.FoodControllerDatabase
 import com.iprogrammerr.foodcontroller.database.SqliteDatabase
+import com.iprogrammerr.foodcontroller.model.Asynchronous
+import com.iprogrammerr.foodcontroller.model.ReturningAsynchronous
 import com.iprogrammerr.foodcontroller.model.category.Categories
 import com.iprogrammerr.foodcontroller.model.category.DatabaseCategories
 import com.iprogrammerr.foodcontroller.model.day.DatabaseDays
@@ -19,7 +21,6 @@ import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 class FoodControllerApplication : Application() {
@@ -37,10 +38,10 @@ class FoodControllerApplication : Application() {
                 }
                 JSONObject(lines.toString())
             }))
-        val executor: Executor = Executors.newCachedThreadPool()
+        val asynchronous = ReturningAsynchronous(Executors.newCachedThreadPool())
         val days = DatabaseDays(database)
         val categories = DatabaseCategories(database)
-        ObjectsPool.add(Executor::class.java, executor)
+        ObjectsPool.add(Asynchronous::class.java, asynchronous)
         ObjectsPool.add(Database::class.java, database)
         ObjectsPool.add(Days::class.java, days)
         ObjectsPool.add(Weight::class.java, LastWeight(database, 65.0))

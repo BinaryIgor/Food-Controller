@@ -1,9 +1,10 @@
 package com.iprogrammerr.foodcontroller.model
 
-class Potential<T>(var value: T?) {
+class Potential<T>(private var value: T?) {
 
     constructor() : this(null)
 
+    @Suppress("UNCHECKED_CAST")
     fun value(): T {
         if (this.value == null) {
             throw Exception("Potential does not have any value")

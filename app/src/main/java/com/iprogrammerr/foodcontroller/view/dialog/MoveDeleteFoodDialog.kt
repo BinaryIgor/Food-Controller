@@ -15,27 +15,18 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.DialogMoveDeleteBinding
-import com.iprogrammerr.foodcontroller.model.category.Categories
 import com.iprogrammerr.foodcontroller.model.category.Category
-import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.items.CategoriesSelectableView
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.viewmodel.MoveDeleteFoodViewModel
-import com.iprogrammerr.foodcontroller.viewmodel.factory.MoveDeleteFoodViewModelFactory
-import java.util.concurrent.Executor
 
 class MoveDeleteFoodDialog : DialogFragment() {
 
     private lateinit var root: RootView
     private val viewModel by lazy {
-        ViewModelProviders.of(
-            this, MoveDeleteFoodViewModelFactory(
-                ObjectsPool.single(Executor::class.java), ObjectsPool.single(Categories::class.java),
-                ObjectsPool.single(FoodDefinitions::class.java)
-            )
-        ).get(MoveDeleteFoodViewModel::class.java)
+        ViewModelProviders.of(this).get(MoveDeleteFoodViewModel::class.java)
     }
 
     companion object {
@@ -63,13 +54,13 @@ class MoveDeleteFoodDialog : DialogFragment() {
             DataBindingUtil.inflate(LayoutInflater.from(this.context), R.layout.dialog_move_delete, null, false)
         val args = this.arguments as Bundle
         binding.title.text = args.getString("title")
-        this.viewModel.categories { r ->
+        this.viewModel.categories(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                this.root.runOnMain { setupSpinner(binding.categories, r.value()) }
+                setupSpinner(binding.categories, r.value())
             } else {
                 Snackbar.make(binding.root, r.exception(), Snackbar.LENGTH_LONG).show()
             }
-        }
+        })
         binding.move.setOnClickListener { moveFood(binding.root) }
         binding.delete.setOnClickListener { deleteFood(binding.root) }
         dialog.setView(binding.root)
@@ -97,26 +88,30 @@ class MoveDeleteFoodDialog : DialogFragment() {
         if (id < 0) {
             Snackbar.make(root, getString(R.string.choose_category), Snackbar.LENGTH_LONG).show()
         } else {
-            this.viewModel.move(id, this.arguments!!.getLong("id", -1)) { r ->
-                if (r.isSuccess()) {
-                    dismiss()
-                    this.root.propagate(Message.FoodDefinitionMoved)
-                } else {
-                    Snackbar.make(root, r.exception(), Snackbar.LENGTH_LONG).show()
+            this.viewModel.move(id, this.arguments!!.getLong("id", -1),
+                LifecycleCallback(this) { r ->
+                    if (r.isSuccess()) {
+                        dismiss()
+                        this.root.propagate(Message.FoodDefinitionMoved)
+                    } else {
+                        Snackbar.make(root, r.exception(), Snackbar.LENGTH_LONG).show()
+                    }
                 }
-            }
+            )
         }
     }
 
     private fun deleteFood(root: View) {
-        this.viewModel.delete(this.arguments!!.getLong("id")) { r ->
-            if (r.isSuccess()) {
-                dismiss()
-                this.root.propagate(Message.FoodDefinitionsChanged)
-            } else {
-                Snackbar.make(root, r.exception(), Snackbar.LENGTH_LONG).show()
+        this.viewModel.delete(this.arguments!!.getLong("id"),
+            LifecycleCallback(this) { r ->
+                if (r.isSuccess()) {
+                    dismiss()
+                    this.root.propagate(Message.FoodDefinitionsChanged)
+                } else {
+                    Snackbar.make(root, r.exception(), Snackbar.LENGTH_LONG).show()
+                }
             }
-        }
+        )
     }
 
     fun show(manager: FragmentManager) {

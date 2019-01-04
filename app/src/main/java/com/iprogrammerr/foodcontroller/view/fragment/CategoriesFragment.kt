@@ -12,26 +12,17 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentCategoriesBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
-import com.iprogrammerr.foodcontroller.model.category.Categories
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
 import com.iprogrammerr.foodcontroller.view.items.CategoriesView
 import com.iprogrammerr.foodcontroller.viewmodel.CategoriesViewModel
-import com.iprogrammerr.foodcontroller.viewmodel.factory.CategoriesViewModelFactory
-import java.util.concurrent.Executor
 
 class CategoriesFragment : Fragment(), IdTarget {
 
     private lateinit var root: RootView
     private val viewModel by lazy {
-        ViewModelProviders.of(
-            this,
-            CategoriesViewModelFactory(
-                ObjectsPool.single(Executor::class.java),
-                ObjectsPool.single(Categories::class.java)
-            )
-        ).get(CategoriesViewModel::class.java)
+        ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
     }
 
     override fun onAttach(context: Context?) {
@@ -43,13 +34,13 @@ class CategoriesFragment : Fragment(), IdTarget {
         val binding: FragmentCategoriesBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_categories, container, false)
         binding.categories.layoutManager = LinearLayoutManager(this.context)
-        this.viewModel.categories { r ->
+        this.viewModel.categories(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                this.root.runOnMain { binding.categories.adapter = CategoriesView(r.value(), this) }
+                binding.categories.adapter = CategoriesView(r.value(), this)
             } else {
                 InformationDialog.new(r.exception()).show(this.childFragmentManager)
             }
-        }
+        })
         this.root.changeTitle(getString(R.string.categories))
         return binding.root
     }

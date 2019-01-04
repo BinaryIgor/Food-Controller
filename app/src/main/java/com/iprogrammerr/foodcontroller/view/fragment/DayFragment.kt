@@ -15,6 +15,7 @@ import com.iprogrammerr.foodcontroller.databinding.FragmentDayBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.day.Day
+import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
@@ -49,17 +50,15 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_day, container, false)
         this.binding.meals.layoutManager = LinearLayoutManager(this.context)
-        this.viewModel.day { r -> onDayResult(r) }
+        this.viewModel.day(LifecycleCallback(this) { r -> onDayResult(r) })
         this.root.changeTitle(getString(R.string.day))
         return this.binding.root
     }
 
     private fun onDayResult(result: Result<Day>) {
         if (result.isSuccess()) {
-            this.root.runOnMain {
-                drawProgress(result.value())
-                this.binding.meals.adapter = MealsView(result.value().meals(), this)
-            }
+            drawProgress(result.value())
+            this.binding.meals.adapter = MealsView(result.value().meals(), this)
             this.binding.weight.setOnClickListener {
                 WeightDialog.new(result.value().weight()).show(this.childFragmentManager)
             }
@@ -105,10 +104,10 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
     }
 
     override fun hit(weight: Double) {
-        this.viewModel.changeWeight(weight) { r ->
+        this.viewModel.changeWeight(weight, LifecycleCallback(this) { r ->
             if (!r.isSuccess()) {
                 InformationDialog.new(r.exception()).show(this.childFragmentManager)
             }
-        }
+        })
     }
 }
