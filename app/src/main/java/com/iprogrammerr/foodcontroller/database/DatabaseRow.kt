@@ -14,7 +14,7 @@ class DatabaseRow(private val cursor: Cursor) : Row {
 
     override fun has(name: String): Boolean {
         val idx = this.cursor.getColumnIndex(name)
-        return idx > -1 && !this.cursor.isNull(idx)
+        return idx > -1 && this.cursor.count > 0 && !this.cursor.isNull(idx)
     }
 
     private fun index(name: String): Int {
