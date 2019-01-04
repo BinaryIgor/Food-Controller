@@ -1,68 +1,52 @@
 package com.iprogrammerr.foodcontroller.viewmodel
 
 import android.arch.lifecycle.ViewModel
+import com.iprogrammerr.foodcontroller.model.Asynchronous
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
-import com.iprogrammerr.foodcontroller.model.result.Result
-import com.iprogrammerr.foodcontroller.model.result.ResultValue
-import java.util.concurrent.Executor
+import com.iprogrammerr.foodcontroller.model.result.Callback
+import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 
-class FoodDefinitionViewModel(private val executor: Executor, private val definitions: FoodDefinitions) :
+class FoodDefinitionViewModel(private val asynchronous: Asynchronous, private val definitions: FoodDefinitions) :
     ViewModel() {
 
     private lateinit var last: FoodDefinition
 
+    constructor() : this(ObjectsPool.single(Asynchronous::class.java), ObjectsPool.single(FoodDefinitions::class.java))
+
     fun update(
         id: Long, name: String, calories: Int, protein: Double,
-        callback: (Result<Boolean>) -> Unit
+        callback: Callback<Boolean>
     ) {
-        this.executor.execute {
-            try {
-                this.definitions.definition(id).update(name, calories, protein)
-                callback(ResultValue(true))
-            } catch (e: Exception) {
-                callback(ResultValue(e))
-            }
-        }
+        this.asynchronous.execute({
+            this.definitions.definition(id).update(name, calories, protein)
+            true
+        }, callback)
     }
 
     fun add(
         name: String, calories: Int, protein: Double, categoryId: Long,
-        callback: (Result<Boolean>) -> Unit
+        callback: Callback<Boolean>
     ) {
-        this.executor.execute {
-            try {
-                this.definitions.create(name, calories, protein, categoryId)
-                callback(ResultValue(true))
-            } catch (e: Exception) {
-                callback(ResultValue(e))
-            }
-        }
+        this.asynchronous.execute({
+            this.definitions.create(name, calories, protein, categoryId)
+            true
+        }, callback)
     }
 
-    fun definition(id: Long, callback: (Result<FoodDefinition>) -> Unit) {
-        this.executor.execute {
-            if (this::last.isInitialized && this.last.id() == id) {
-                callback(ResultValue(this.last))
-            } else {
-                try {
-                    this.last = this.definitions.definition(id)
-                    callback(ResultValue(this.last))
-                } catch (e: Exception) {
-                    callback(ResultValue(e))
-                }
+    fun definition(id: Long, callback: Callback<FoodDefinition>) {
+        this.asynchronous.execute({
+            if (!this::last.isInitialized || this.last.id() != id) {
+                this.last = this.definitions.definition(id)
             }
-        }
+            this.last
+        }, callback)
     }
 
-    fun delete(id: Long, callback: (Result<Boolean>) -> Unit) {
-        this.executor.execute {
-            try {
-                this.definitions.delete(id)
-                callback(ResultValue(true))
-            } catch (e: Exception) {
-                callback(ResultValue(e))
-            }
-        }
+    fun delete(id: Long, callback: Callback<Boolean>) {
+        this.asynchronous.execute({
+            this.definitions.delete(id)
+            true
+        }, callback)
     }
 }

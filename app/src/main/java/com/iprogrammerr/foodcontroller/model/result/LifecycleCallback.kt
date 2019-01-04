@@ -23,15 +23,15 @@ class LifecycleCallback<T>(private val owner: LifecycleOwner, private val callba
     //TODO test
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun resumed() {
-        clearLast()
+        if (this.last.hasValue()) {
+            this.callback(this.last.value())
+            this.owner.lifecycle.removeObserver(this)
+            this.last.empty()
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun destroyed() {
-        clearLast()
-    }
-
-    private fun clearLast() {
         if (this.last.hasValue()) {
             this.owner.lifecycle.removeObserver(this)
             this.last.empty()

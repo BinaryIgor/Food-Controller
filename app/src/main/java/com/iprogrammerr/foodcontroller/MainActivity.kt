@@ -55,10 +55,6 @@ class MainActivity : AppCompatActivity(), RootView {
         runOnUiThread { this.binding.toolbarTitle.text = title }
     }
 
-    override fun runOnMain(runnable: () -> Unit) {
-        runOnUiThread(runnable)
-    }
-
     override fun propagate(message: Message) {
         val fragment =
             this.supportFragmentManager.findFragmentByTag(CategoryFoodDefinitionsFragment::class.java.simpleName)

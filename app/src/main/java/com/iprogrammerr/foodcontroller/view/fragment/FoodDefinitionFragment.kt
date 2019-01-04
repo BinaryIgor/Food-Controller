@@ -12,30 +12,22 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentFoodDefinitionBinding
 import com.iprogrammerr.foodcontroller.model.DoubleFromView
 import com.iprogrammerr.foodcontroller.model.IntFromView
-import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
+import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.viewmodel.FoodDefinitionViewModel
-import com.iprogrammerr.foodcontroller.viewmodel.factory.FoodDefinitionsViewModelFactory
-import java.util.concurrent.Executor
 
 class FoodDefinitionFragment : Fragment() {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentFoodDefinitionBinding
     private val viewModel by lazy {
-        ViewModelProviders.of(
-            this, FoodDefinitionsViewModelFactory(
-                ObjectsPool.single(Executor::class.java), ObjectsPool.single(FoodDefinitions::class.java)
-            )
-        ).get(FoodDefinitionViewModel::class.java)
+        ViewModelProviders.of(this).get(FoodDefinitionViewModel::class.java)
     }
 
     companion object {
-
         fun withId(id: Long): FoodDefinitionFragment {
             val fragment = FoodDefinitionFragment()
             val args = Bundle()
@@ -72,17 +64,15 @@ class FoodDefinitionFragment : Fragment() {
     }
 
     private fun initInputs(id: Long) {
-        this.viewModel.definition(id) { r ->
+        this.viewModel.definition(id, LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                this.root.runOnMain {
-                    this.binding.nameInput.setText(r.value().name())
-                    this.binding.caloriesInput.setText(r.value().calories().toString())
-                    this.binding.proteinInput.setText(r.value().protein().toString())
-                }
+                this.binding.nameInput.setText(r.value().name())
+                this.binding.caloriesInput.setText(r.value().calories().toString())
+                this.binding.proteinInput.setText(r.value().protein().toString())
             } else {
                 InformationDialog.new(r.exception()).show(this.childFragmentManager)
             }
-        }
+        })
     }
 
     private fun save() {
@@ -95,9 +85,11 @@ class FoodDefinitionFragment : Fragment() {
             calories < 1 -> InformationDialog.new(getString(R.string.calories_invalid)).show(this.childFragmentManager)
             protein < 0 -> InformationDialog.new(getString(R.string.protein_invalid)).show(this.childFragmentManager)
             args.getLong("id", -1) > 0 ->
-                this.viewModel.update(args.getLong("id"), name, calories, protein) { r -> onSaveResult(r) }
+                this.viewModel.update(args.getLong("id"), name, calories, protein,
+                    LifecycleCallback(this) { r -> onSaveResult(r) })
             else ->
-                this.viewModel.add(name, calories, protein, args.getLong("categoryId")) { r -> onSaveResult(r) }
+                this.viewModel.add(name, calories, protein, args.getLong("categoryId"),
+                    LifecycleCallback(this) { r -> onSaveResult(r) })
         }
     }
 

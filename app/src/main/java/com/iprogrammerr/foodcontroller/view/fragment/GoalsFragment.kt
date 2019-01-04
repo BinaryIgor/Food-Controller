@@ -12,20 +12,16 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentGoalsBinding
 import com.iprogrammerr.foodcontroller.model.DoubleFromView
 import com.iprogrammerr.foodcontroller.model.IntFromView
-import com.iprogrammerr.foodcontroller.model.goals.Goals
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
 import com.iprogrammerr.foodcontroller.viewmodel.GoalsViewModel
-import com.iprogrammerr.foodcontroller.viewmodel.factory.GoalsViewModelFactory
 
 class GoalsFragment : Fragment() {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentGoalsBinding
     private val viewModel by lazy {
-        ViewModelProviders.of(this, GoalsViewModelFactory(ObjectsPool.single(Goals::class.java)))
-            .get(GoalsViewModel::class.java)
+        ViewModelProviders.of(this).get(GoalsViewModel::class.java)
     }
 
     override fun onAttach(context: Context?) {

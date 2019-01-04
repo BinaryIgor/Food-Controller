@@ -21,7 +21,6 @@ import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 class FoodControllerApplication : Application() {
@@ -39,11 +38,9 @@ class FoodControllerApplication : Application() {
                 }
                 JSONObject(lines.toString())
             }))
-        val executor: Executor = Executors.newCachedThreadPool()
-        val asynchronous = ReturningAsynchronous(executor)
+        val asynchronous = ReturningAsynchronous(Executors.newCachedThreadPool())
         val days = DatabaseDays(database)
         val categories = DatabaseCategories(database)
-        ObjectsPool.add(Executor::class.java, executor)
         ObjectsPool.add(Asynchronous::class.java, asynchronous)
         ObjectsPool.add(Database::class.java, database)
         ObjectsPool.add(Days::class.java, days)

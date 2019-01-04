@@ -9,7 +9,5 @@ interface RootView {
 
     fun changeTitle(title: String)
 
-    fun runOnMain(runnable: () -> Unit)
-
     fun propagate(message: Message)
 }
