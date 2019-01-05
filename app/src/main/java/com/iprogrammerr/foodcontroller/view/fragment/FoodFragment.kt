@@ -41,9 +41,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_food, container, false)
-        this.binding.add.setOnClickListener {
-            //TODO categories dialog, then FoodDefinitionFragment
-        }
+        this.binding.add.setOnClickListener { this.root.replace(FoodDefinitionFragment.withCategories(), true) }
         this.binding.food.layoutManager = LinearLayoutManager(this.context)
         drawAllOrFiltered()
         this.binding.searchInput.addTextChangedListener(this)

@@ -2,17 +2,29 @@ package com.iprogrammerr.foodcontroller.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.iprogrammerr.foodcontroller.model.Asynchronous
+import com.iprogrammerr.foodcontroller.model.category.Categories
+import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.result.Callback
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 
-class FoodDefinitionViewModel(private val asynchronous: Asynchronous, private val definitions: FoodDefinitions) :
+class FoodDefinitionViewModel(
+    private val asynchronous: Asynchronous,
+    private val definitions: FoodDefinitions,
+    categories: Categories
+) :
     ViewModel() {
 
     private lateinit var last: FoodDefinition
+    private val categories by lazy {
+        categories.all()
+    }
 
-    constructor() : this(ObjectsPool.single(Asynchronous::class.java), ObjectsPool.single(FoodDefinitions::class.java))
+    constructor() : this(
+        ObjectsPool.single(Asynchronous::class.java), ObjectsPool.single(FoodDefinitions::class.java),
+        ObjectsPool.single(Categories::class.java)
+    )
 
     fun update(
         id: Long, name: String, calories: Int, protein: Double,
@@ -48,5 +60,9 @@ class FoodDefinitionViewModel(private val asynchronous: Asynchronous, private va
             this.definitions.delete(id)
             true
         }, callback)
+    }
+
+    fun categories(callback: Callback<List<Category>>) {
+        this.asynchronous.execute({ this.categories }, callback)
     }
 }
