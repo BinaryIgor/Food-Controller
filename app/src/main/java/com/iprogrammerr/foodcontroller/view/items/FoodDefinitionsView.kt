@@ -10,29 +10,46 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.view.Refreshable
 import com.iprogrammerr.foodcontroller.view.item.ArrowedView
 
-class CategoryFoodView(
-    products: List<FoodDefinition>,
-    private val mainTarget: IdTarget,
-    private val secondaryTarget: AdapterTarget<FoodDefinition>
+class FoodDefinitionsView(
+    food: List<FoodDefinition>,
+    private val mainTarget: IdTarget
 ) :
     RecyclerView.Adapter<ArrowedView>(), Refreshable<List<FoodDefinition>>, PositionTarget {
 
     private val products: MutableList<FoodDefinition> = ArrayList()
-    private val moreTarget = object : PositionTarget {
+    private lateinit var moreTarget: PositionTarget
 
-        override fun hit(position: Int) {
-            this@CategoryFoodView.secondaryTarget.hit(this@CategoryFoodView.products[position])
+    constructor(
+        food: List<FoodDefinition>,
+        mainTarget: IdTarget,
+        secondaryTarget: AdapterTarget<FoodDefinition>
+    ) : this(
+        food,
+        mainTarget
+    ) {
+        this.moreTarget = object : PositionTarget {
+
+            override fun hit(position: Int) {
+                secondaryTarget.hit(this@FoodDefinitionsView.products[position])
+            }
         }
     }
 
     init {
-        this.products.addAll(products)
+        this.products.addAll(food)
     }
 
-    override fun onCreateViewHolder(group: ViewGroup, type: Int) = ArrowedView(
-        DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_arrowed, group, false),
-        this, this.moreTarget
-    )
+    override fun onCreateViewHolder(group: ViewGroup, type: Int) =
+        when {
+            this::moreTarget.isInitialized -> ArrowedView(
+                DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_arrowed, group, false),
+                this, this.moreTarget
+            )
+            else -> ArrowedView(
+                DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_arrowed, group, false),
+                this
+            )
+        }
 
     override fun getItemCount() = this.products.size
 

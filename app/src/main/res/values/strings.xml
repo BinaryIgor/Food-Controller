@@ -34,6 +34,7 @@
     <string name="save_success">Zapisywanie zakończyło się powodzeniem</string>
     <string name="summary">Podsumowanie</string>
     <string name="error_title">Coś poszło nie tak...</string>
+    <string name="choose_food">Wybierz produkt</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
