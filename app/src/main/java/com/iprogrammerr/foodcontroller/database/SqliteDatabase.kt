@@ -7,9 +7,8 @@ class SqliteDatabase(private val origin: SQLiteOpenHelper) : Database {
 
     override fun query(sql: String) = DatabaseRows(this.origin.readableDatabase.rawQuery(sql, null))
 
-    override fun insert(table: String, values: ContentValues) {
+    override fun insert(table: String, values: ContentValues) =
         this.origin.writableDatabase.insert(table, null, values)
-    }
 
     override fun update(table: String, whereClause: String, values: ContentValues) {
         this.origin.writableDatabase.update(table, values, whereClause, null)
