@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
             android:orientation="vertical"
@@ -8,46 +9,40 @@
             android:padding="@dimen/dpSmall">
 
         <LinearLayout
+                android:id="@+id/timeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dpMedium"
+                android:background="@drawable/spinner_background"
+                android:padding="@dimen/dpSmall"
                 android:orientation="horizontal">
+
 
             <ImageView
                     android:layout_width="@dimen/icon"
-                    android:layout_gravity="center"
                     android:layout_height="@dimen/icon"
-                    android:src="@drawable/clock"
+                    android:layout_gravity="center"
+                    android:background="@drawable/clock"
+                    android:backgroundTint="@android:color/white"
+                    android:layout_marginStart="@dimen/dpSmall"
                     android:layout_marginEnd="@dimen/dpSmall"
                     />
 
-            <NumberPicker
-                    android:id="@+id/h"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"/>
-
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="@dimen/spLarge"
-                    android:text="@string/colon"/>
-
-            <NumberPicker
-                    android:id="@+id/min"
+                    android:id="@+id/timeValue"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"/>
-
-            <ImageView
-                    android:id="@+id/save"
-                    android:layout_width="@dimen/icon"
                     android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    style="@style/TitleStyle"
+                    android:textColor="@android:color/white"
+                    tools:text="12:00"/>
+            <ImageView
+                    android:layout_width="@dimen/icon"
                     android:layout_height="@dimen/icon"
-                    android:src="@drawable/ok"
-                    android:visibility="gone"
-                    android:layout_marginStart="@dimen/dpSmall"
+                    android:layout_gravity="center"
+                    android:background="@drawable/next_black"
+                    android:backgroundTint="@android:color/white"
                     />
         </LinearLayout>
 

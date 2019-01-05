@@ -3,7 +3,7 @@ package com.iprogrammerr.foodcontroller.viewmodel
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.iprogrammerr.foodcontroller.model.Asynchronous
-import com.iprogrammerr.foodcontroller.model.StickyScalar
+import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.model.meal.Meal
 import com.iprogrammerr.foodcontroller.model.meal.Meals
 import com.iprogrammerr.foodcontroller.model.result.Callback

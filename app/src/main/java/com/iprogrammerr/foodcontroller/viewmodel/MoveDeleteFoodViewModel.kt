@@ -2,7 +2,7 @@ package com.iprogrammerr.foodcontroller.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.iprogrammerr.foodcontroller.model.Asynchronous
-import com.iprogrammerr.foodcontroller.model.StickyScalar
+import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.model.category.Categories
 import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions

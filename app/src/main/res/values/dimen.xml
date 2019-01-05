@@ -15,4 +15,5 @@
     <dimen name="toolbarItem">24dp</dimen>
     <dimen name="arrow">24dp</dimen>
     <dimen name="icon">32dp</dimen>
+    <dimen name="largeIcon">48dp</dimen>
 </resources>

@@ -1,4 +1,4 @@
-package com.iprogrammerr.foodcontroller.model
+package com.iprogrammerr.foodcontroller.model.scalar
 
 class StickyScalar<T>(private val source: () -> T) : StickableScalar<T> {
 
