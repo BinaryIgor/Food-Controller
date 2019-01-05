@@ -6,7 +6,7 @@ interface Database {
 
     fun query(sql: String): Rows
 
-    fun insert(table: String, values: ContentValues)
+    fun insert(table: String, values: ContentValues): Long
 
     fun update(table: String, whereClause: String, values: ContentValues)
 

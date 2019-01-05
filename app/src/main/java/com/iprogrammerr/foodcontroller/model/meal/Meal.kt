@@ -9,6 +9,8 @@ interface Meal {
 
     fun time(): Long
 
+    fun changeTime(time: Long)
+
     fun food(): List<Food>
 
     fun nutritionalValues(): NutritionalValues

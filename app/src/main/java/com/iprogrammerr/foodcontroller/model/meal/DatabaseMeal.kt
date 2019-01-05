@@ -27,6 +27,13 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
         return this.time
     }
 
+    override fun changeTime(time: Long) {
+        val values = ContentValues()
+        values.put("time", time)
+        this.database.update("meal", "id = ${this.id}", values)
+        this.time = time
+    }
+
     override fun food(): List<Food> {
         if (!this.loaded) {
             load()
@@ -69,24 +76,25 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
 
     private fun load() {
         val query = StringBuilder()
-            .append("select * from meal m inner join food_meal fm on m.id = fm.meal_id ")
-            .append("inner join food f on fm.food_id = f.id")
-            .append("inner join food_definition fd on f.definition_id = fd.id ")
-            .append("where id = ${this.id}")
+            .append("SELECT time, f.id as f_id, f.weight, fd.name, fd.protein, fd.calories ")
+            .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
+            .append("INNER JOIN food f ON fm.food_id = f.id ")
+            .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
+            .append("WHERE id = ${this.id}")
         this.food.clear()
         this.database.query(query.toString()).use { rs ->
             var r = rs.next()
+            this.time = r.long("time")
             while (rs.hasNext()) {
                 this.food.add(
                     DatabaseFood(
-                        r.long("f.id"), this.database,
-                        r.string("fd.name"), r.int("f.weight"),
-                        r.int("fd.protein"), r.int("fd.calories")
+                        r.long("f_id"), this.database,
+                        r.string("name"), r.int("weight"),
+                        r.int("protein"), r.int("calories")
                     )
                 )
                 r = rs.next()
             }
-            this.time = r.long("m.time")
             this.loaded = true
         }
     }
