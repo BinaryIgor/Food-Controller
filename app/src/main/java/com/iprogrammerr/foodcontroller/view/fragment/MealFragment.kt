@@ -12,9 +12,11 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMealBinding
 import com.iprogrammerr.foodcontroller.model.scalar.HourMinutes
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.view.dialog.TimeDialog
+import com.iprogrammerr.foodcontroller.view.dialog.TimeTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MealViewModel
 
-class MealFragment : Fragment() {
+class MealFragment : Fragment(), TimeTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMealBinding
@@ -57,6 +59,13 @@ class MealFragment : Fragment() {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
         this.root.changeTitle(getString(R.string.meal))
         this.binding.timeValue.text = HourMinutes(System.currentTimeMillis()).value()
+        this.binding.timeLayout.setOnClickListener {
+            TimeDialog.new(System.currentTimeMillis()).show(this.childFragmentManager)
+        }
         return this.binding.root
+    }
+
+    override fun hit(time: Long) {
+        this.binding.timeValue.text = HourMinutes(time).value()
     }
 }
