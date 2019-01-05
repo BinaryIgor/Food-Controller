@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMealBinding
+import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.scalar.HourMinutes
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.TimeDialog
 import com.iprogrammerr.foodcontroller.view.dialog.TimeTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MealViewModel
@@ -67,5 +69,12 @@ class MealFragment : Fragment(), TimeTarget {
 
     override fun hit(time: Long) {
         this.binding.timeValue.text = HourMinutes(time).value()
+        if (this.mealId != -1L) {
+            this.viewModel.changeTime(time, LifecycleCallback(this) { r ->
+                if (!r.isSuccess()) {
+                    ErrorDialog.new(r.exception()).show(this.childFragmentManager)
+                }
+            })
+        }
     }
 }
