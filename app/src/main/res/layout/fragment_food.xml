@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+        <RelativeLayout
+                android:id="@+id/searchLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginBottom="@dimen/dpSmall"
+                android:padding="@dimen/dpSmall">
+
+            <ImageView
+                    android:id="@+id/searchIcon"
+                    android:layout_width="@dimen/icon"
+                    android:layout_height="@dimen/icon"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dpMedium"
+                    android:layout_marginEnd="@dimen/dpLittle"
+                    android:backgroundTint="@android:color/white"
+                    android:background="@drawable/search"/>
+
+            <EditText
+                    android:id="@+id/searchInput"
+                    android:layout_marginStart="@dimen/dpSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/searchIcon"
+                    style="@style/SearchInputStyle"
+                    android:hint="@string/search_hint"/>
+        </RelativeLayout>
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dpSmall"
+                android:text="@string/add_definition"
+                style="@style/MainButtonStyle"/>
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dpSmall">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 </layout>

@@ -27,7 +27,7 @@ import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.MoveDeleteFoodDialog
 import com.iprogrammerr.foodcontroller.view.items.AdapterTarget
-import com.iprogrammerr.foodcontroller.view.items.CategoryFoodView
+import com.iprogrammerr.foodcontroller.view.items.FoodDefinitionsView
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.CategoryFoodDefinitionsViewModel
@@ -37,7 +37,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentCategoryFoodDefinitionsBinding
-    private lateinit var products: CategoryFoodView
+    private lateinit var food: FoodDefinitionsView
     private val id by lazy {
         this.arguments?.let { it.getLong("id", -1) } ?: -1
     }
@@ -68,7 +68,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_category_food_definitions, container, false)
-        this.binding.products.layoutManager = LinearLayoutManager(this.context)
+        this.binding.food.layoutManager = LinearLayoutManager(this.context)
         drawAllOrFiltered()
         this.binding.add.setOnClickListener {
             this.root.replace(FoodDefinitionFragment.withCategoryId(this.id), true)
@@ -95,12 +95,12 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
 
     private fun drawListOrDialog(result: Result<List<FoodDefinition>>) {
         if (result.isSuccess()) {
-            if (this::products.isInitialized) {
-                this.products.refresh(result.value())
+            if (this::food.isInitialized) {
+                this.food.refresh(result.value())
             } else {
-                this.products = CategoryFoodView(result.value(), this, this)
+                this.food = FoodDefinitionsView(result.value(), this, this)
             }
-            this.binding.products.adapter = this.products
+            this.binding.food.adapter = this.food
         } else {
             ErrorDialog.new(result.exception()).show(this.childFragmentManager)
         }
@@ -136,7 +136,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     override fun hit(message: Message) {
         if (message == Message.FoodDefinitionsChanged || message == Message.FoodDefinitionMoved) {
             this.viewModel.refresh()
-            if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
                 drawAllOrFiltered()
                 if (message == Message.FoodDefinitionMoved) {
                     Snackbar.make(this.binding.root, getString(R.string.definition_moved), Snackbar.LENGTH_LONG).show()
