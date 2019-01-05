@@ -8,15 +8,18 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentFoodDefinitionBinding
-import com.iprogrammerr.foodcontroller.model.scalar.DoubleFromView
-import com.iprogrammerr.foodcontroller.model.scalar.IntFromView
+import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
+import com.iprogrammerr.foodcontroller.model.scalar.DoubleFromView
+import com.iprogrammerr.foodcontroller.model.scalar.IntFromView
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.items.CategoriesSelectableView
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.viewmodel.FoodDefinitionViewModel
 
@@ -29,18 +32,22 @@ class FoodDefinitionFragment : Fragment() {
     }
 
     companion object {
-        fun withId(id: Long): FoodDefinitionFragment {
+        fun withId(id: Long) = withId("id", id)
+
+        fun withCategoryId(id: Long) = withId("categoryId", id)
+
+        private fun withId(key: String, id: Long): FoodDefinitionFragment {
             val fragment = FoodDefinitionFragment()
             val args = Bundle()
-            args.putLong("id", id)
+            args.putLong(key, id)
             fragment.arguments = args
             return fragment
         }
 
-        fun withCategoryId(id: Long): FoodDefinitionFragment {
+        fun withCategories(): FoodDefinitionFragment {
             val fragment = FoodDefinitionFragment()
             val args = Bundle()
-            args.putLong("categoryId", id)
+            args.putBoolean("categories", true)
             fragment.arguments = args
             return fragment
         }
@@ -60,6 +67,14 @@ class FoodDefinitionFragment : Fragment() {
         } else {
             this.root.changeTitle(getString(R.string.add_definition))
         }
+        if (args.getBoolean("categories", false)) {
+            this.binding.categoriesTitle.visibility = View.VISIBLE
+            this.binding.categories.visibility = View.VISIBLE
+            getCategories()
+        } else {
+            this.binding.categoriesTitle.visibility = View.GONE
+            this.binding.categories.visibility = View.GONE
+        }
         this.binding.save.setOnClickListener { save() }
         return this.binding.root
     }
@@ -76,6 +91,32 @@ class FoodDefinitionFragment : Fragment() {
         })
     }
 
+    private fun getCategories() {
+        this.viewModel.categories(LifecycleCallback(this) { r ->
+            if (r.isSuccess()) {
+                setupCategories(r.value())
+            } else {
+                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
+            }
+        })
+    }
+
+    private fun setupCategories(categories: List<Category>) {
+        val items: MutableList<Category> = ArrayList(categories.size + 1)
+        items.add(Category.Fake(getString(R.string.choose_category)))
+        items.addAll(categories)
+        this.binding.categories.adapter = CategoriesSelectableView(this.context as Context, items)
+        this.binding.categories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                this@FoodDefinitionFragment.arguments?.putLong("categoryId", items[position].id())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+    }
+
     private fun save() {
         val name = this.binding.nameInput.text.toString()
         val calories = IntFromView(this.binding.caloriesInput).value()
@@ -88,9 +129,17 @@ class FoodDefinitionFragment : Fragment() {
             args.getLong("id", -1) > 0 ->
                 this.viewModel.update(args.getLong("id"), name, calories, protein,
                     LifecycleCallback(this) { r -> onSaveResult(r) })
-            else ->
-                this.viewModel.add(name, calories, protein, args.getLong("categoryId"),
-                    LifecycleCallback(this) { r -> onSaveResult(r) })
+            else -> addDefinition(name, calories, protein)
+        }
+    }
+
+    private fun addDefinition(name: String, calories: Int, protein: Double) {
+        val args = this.arguments as Bundle
+        val id = args.getLong("categoryId")
+        if (args.getBoolean("categories", false) && id < 0) {
+            InformationDialog.new(getString(R.string.choose_category)).show(this.childFragmentManager)
+        } else {
+            this.viewModel.add(name, calories, protein, id, LifecycleCallback(this) { r -> onSaveResult(r) })
         }
     }
 

@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.iprogrammerr.foodcontroller.databinding.ActivityMainBinding
 import com.iprogrammerr.foodcontroller.view.RootView
-import com.iprogrammerr.foodcontroller.view.fragment.CategoryFoodDefinitionsFragment
 import com.iprogrammerr.foodcontroller.view.fragment.MenuFragment
 import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 
 class MainActivity : AppCompatActivity(), RootView {
 
@@ -56,9 +56,14 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     override fun propagate(message: Message) {
-        val fragment =
-            this.supportFragmentManager.findFragmentByTag(CategoryFoodDefinitionsFragment::class.java.simpleName)
-        if (fragment is CategoryFoodDefinitionsFragment) {
+        val count = this.supportFragmentManager.backStackEntryCount
+        val tag = when (count) {
+            0 -> ""
+            1 -> this.supportFragmentManager.getBackStackEntryAt(0).name
+            else -> this.supportFragmentManager.getBackStackEntryAt(count - 2).name
+        }
+        val fragment = this.supportFragmentManager.findFragmentByTag(tag)
+        if (fragment is MessageTarget) {
             fragment.hit(message)
         }
     }

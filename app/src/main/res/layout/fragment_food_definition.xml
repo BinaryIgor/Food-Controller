@@ -47,15 +47,31 @@
                 android:id="@+id/proteinInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpMedium"
                 android:inputType="numberDecimal"
                 android:textSize="@dimen/spLarge"
                 android:hint="@string/protein_hint"/>
+
+        <TextView
+                android:id="@+id/categoriesTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleStyle"
+                android:layout_marginTop="@dimen/dpSmall"
+                android:text="@string/category"/>
+
+        <Spinner
+                android:id="@+id/categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dpSmall"
+                android:background="@drawable/spinner_background"
+                android:popupBackground="@drawable/spinner_background"/>
 
         <com.iprogrammerr.foodcontroller.view.CustomButton
                 android:id="@+id/save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dpMedium"
                 style="@style/MainButtonStyle"
                 android:text="@string/save"
                 />
