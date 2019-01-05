@@ -59,7 +59,9 @@ class MealFragment : Fragment(), TimeTarget {
     //TODO setup time picker, get data from view model
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
-        this.binding.add.setOnClickListener { this.root.replace(FoodFragment(), true) }
+        this.binding.add.setOnClickListener {
+            this.root.replace(FoodFragment(), true)
+        }
         this.binding.timeValue.text = HourMinutes(System.currentTimeMillis()).value()
         this.binding.timeLayout.setOnClickListener {
             TimeDialog.new(System.currentTimeMillis()).show(this.childFragmentManager)

@@ -1,10 +1,10 @@
 package com.iprogrammerr.foodcontroller.model.food
 
-interface FoodDefinition {
+import com.iprogrammerr.foodcontroller.model.Named
+
+interface FoodDefinition : Named {
 
     fun id(): Long
-
-    fun name(): String
 
     fun calories(): Int
 

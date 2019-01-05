@@ -2,6 +2,7 @@ package com.iprogrammerr.foodcontroller.model.food
 
 import android.content.ContentValues
 import com.iprogrammerr.foodcontroller.database.Database
+import com.iprogrammerr.foodcontroller.database.Row
 
 class DatabaseFoodDefinitions(private val database: Database) : FoodDefinitions {
 
@@ -14,14 +15,26 @@ class DatabaseFoodDefinitions(private val database: Database) : FoodDefinitions 
         this.database.insert("food_definition", values)
     }
 
+    override fun all(): List<FoodDefinition> {
+        return this.database.query("SELECT * from food_definition ORDER BY name ASC")
+            .use { rs ->
+                val food: MutableList<FoodDefinition> = ArrayList()
+                while (rs.hasNext()) {
+                    food.add(definition(rs.next()))
+                }
+                food
+            }
+    }
+
+    private fun definition(row: Row) = DatabaseFoodDefinition(
+        row.long("id"), this.database, row.string("name"),
+        row.int("calories"), row.double("protein"), row.long("category_id")
+    )
+
     override fun definition(id: Long): FoodDefinition {
         return this.database.query("SELECT * from food_definition WHERE id = $id")
             .use { rs ->
-                val r = rs.next()
-                DatabaseFoodDefinition(
-                    r.long("id"), this.database, r.string("name"),
-                    r.int("calories"), r.double("protein"), r.long("category_id")
-                )
+                definition(rs.next())
             }
     }
 

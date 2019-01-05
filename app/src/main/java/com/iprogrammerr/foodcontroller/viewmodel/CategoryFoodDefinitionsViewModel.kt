@@ -3,10 +3,11 @@ package com.iprogrammerr.foodcontroller.viewmodel
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.iprogrammerr.foodcontroller.model.Asynchronous
-import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.model.result.Callback
+import com.iprogrammerr.foodcontroller.model.scalar.StartsWithFilter
+import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 
 class CategoryFoodDefinitionsViewModel(private val asynchronous: Asynchronous, private val category: Category) :
@@ -32,15 +33,7 @@ class CategoryFoodDefinitionsViewModel(private val asynchronous: Asynchronous, p
     }
 
     fun filtered(criteria: String, callback: Callback<List<FoodDefinition>>) {
-        this.asynchronous.execute({
-            val filtered: MutableList<FoodDefinition> = ArrayList()
-            for (fd in this.food.value()) {
-                if (fd.name().startsWith(criteria, true)) {
-                    filtered.add(fd)
-                }
-            }
-            filtered
-        }, callback)
+        this.asynchronous.execute({ StartsWithFilter(this.food.value(), criteria).value() }, callback)
     }
 
     fun all(callback: Callback<List<FoodDefinition>>) {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -32,19 +33,10 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         ViewModelProviders.of(this).get(FoodViewModel::class.java)
     }
 
-    companion object {
-        fun new(mealId: Long): FoodFragment {
-            val fragment = FoodFragment()
-            val args = Bundle()
-            args.putLong("mealId", mealId)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
+        this.arguments = this.arguments?.let { it } ?: Bundle()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,6 +44,8 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         this.binding.add.setOnClickListener {
             //TODO categories dialog, then FoodDefinitionFragment
         }
+        this.binding.food.layoutManager = LinearLayoutManager(this.context)
+        drawAllOrFiltered()
         this.binding.searchInput.addTextChangedListener(this)
         this.root.changeTitle(getString(R.string.choose_food))
         return this.binding.root
