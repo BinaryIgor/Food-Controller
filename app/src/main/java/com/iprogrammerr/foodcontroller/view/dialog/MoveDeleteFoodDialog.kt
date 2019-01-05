@@ -30,7 +30,6 @@ class MoveDeleteFoodDialog : DialogFragment() {
     }
 
     companion object {
-
         fun new(id: Long, title: String): MoveDeleteFoodDialog {
             val fragment = MoveDeleteFoodDialog()
             val args = Bundle()

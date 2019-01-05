@@ -10,18 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMealBinding
+import com.iprogrammerr.foodcontroller.model.scalar.HourMinutes
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.viewmodel.MealViewModel
 
 class MealFragment : Fragment() {
 
     private lateinit var root: RootView
+    private lateinit var binding: FragmentMealBinding
+    private var mealId = -1L
     private val viewModel by lazy {
-        val args = this.arguments as Bundle
-        if (args.getLong("mealId", 0L) == 0L) {
+        if (this.mealId == -1L) {
             ViewModelProviders.of(this).get(MealViewModel::class.java)
         } else {
-            ViewModelProviders.of(this, MealViewModel.factory(args.getLong("mealId")))
+            ViewModelProviders.of(this, MealViewModel.factory(this.mealId))
                 .get(MealViewModel::class.java)
         }
     }
@@ -45,11 +47,16 @@ class MealFragment : Fragment() {
         this.root = context as RootView
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.mealId = (this.arguments as Bundle).getLong("mealId", -1L)
+    }
+
     //TODO setup time picker, get data from view model
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentMealBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
+        this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
         this.root.changeTitle(getString(R.string.meal))
-        return binding.root
+        this.binding.timeValue.text = HourMinutes(System.currentTimeMillis()).value()
+        return this.binding.root
     }
 }

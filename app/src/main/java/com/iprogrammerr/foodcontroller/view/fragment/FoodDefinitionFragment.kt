@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentFoodDefinitionBinding
-import com.iprogrammerr.foodcontroller.model.DoubleFromView
-import com.iprogrammerr.foodcontroller.model.IntFromView
+import com.iprogrammerr.foodcontroller.model.scalar.DoubleFromView
+import com.iprogrammerr.foodcontroller.model.scalar.IntFromView
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.view.RootView

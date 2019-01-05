@@ -1,8 +1,9 @@
-package com.iprogrammerr.foodcontroller.model
+package com.iprogrammerr.foodcontroller.model.scalar
 
 import android.widget.EditText
 
-class DoubleFromView(private val source: EditText, private val default: Double) : Scalar<Double> {
+class DoubleFromView(private val source: EditText, private val default: Double) :
+    Scalar<Double> {
 
     constructor(source: EditText) : this(source, -1.0)
 

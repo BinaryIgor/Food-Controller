@@ -3,8 +3,8 @@ package com.iprogrammerr.foodcontroller.viewmodel
 import android.arch.lifecycle.ViewModel
 import com.iprogrammerr.foodcontroller.model.Asynchronous
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
-import com.iprogrammerr.foodcontroller.model.StickableScalar
-import com.iprogrammerr.foodcontroller.model.StickyScalar
+import com.iprogrammerr.foodcontroller.model.scalar.StickableScalar
+import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.day.Weight
 import com.iprogrammerr.foodcontroller.model.goals.Goals
@@ -18,8 +18,10 @@ class MenuViewModel(
     private val goals: Goals
 ) : ViewModel() {
 
-    private val started: StickableScalar<Boolean> = StickyScalar { this.days.exists(System.currentTimeMillis()) }
-    private val lastWeight: StickableScalar<Double> = StickyScalar { this.weight.value() }
+    private val started: StickableScalar<Boolean> =
+        StickyScalar { this.days.exists(System.currentTimeMillis()) }
+    private val lastWeight: StickableScalar<Double> =
+        StickyScalar { this.weight.value() }
 
     constructor() : this(
         ObjectsPool.single(Asynchronous::class.java), ObjectsPool.single(Days::class.java),
