@@ -22,8 +22,6 @@ class DayViewModel(private val asynchronous: Asynchronous, date: Long, private v
 
     fun day(callback: Callback<Day>) {
         this.asynchronous.execute({
-            Thread.sleep(2000)
-            throw Exception("We can not check something of that kind!")
             this.day.value()
         }, callback)
     }

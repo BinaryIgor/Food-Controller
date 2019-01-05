@@ -9,7 +9,7 @@ import com.iprogrammerr.foodcontroller.model.Potential
 class LifecycleCallback<T>(private val owner: LifecycleOwner, private val callback: (Result<T>) -> Unit) : Callback<T>,
     LifecycleObserver {
 
-    private val last: Potential<Result<T>> = Potential()
+    private val last = Potential<Result<T>>()
 
     override fun call(result: Result<T>) {
         if (this.owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
@@ -20,7 +20,6 @@ class LifecycleCallback<T>(private val owner: LifecycleOwner, private val callba
         }
     }
 
-    //TODO test
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun resumed() {
         if (this.last.hasValue()) {
