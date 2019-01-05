@@ -24,7 +24,7 @@ import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import com.iprogrammerr.foodcontroller.view.RootView
-import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.MoveDeleteFoodDialog
 import com.iprogrammerr.foodcontroller.view.items.AdapterTarget
 import com.iprogrammerr.foodcontroller.view.items.CategoryFoodView
@@ -77,7 +77,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
             if (r.isSuccess()) {
                 this.root.changeTitle(r.value())
             } else {
-                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
         this.binding.searchInput.addTextChangedListener(this)
@@ -102,7 +102,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
             }
             this.binding.products.adapter = this.products
         } else {
-            InformationDialog.new(result.exception()).show(this.childFragmentManager)
+            ErrorDialog.new(result.exception()).show(this.childFragmentManager)
         }
     }
 

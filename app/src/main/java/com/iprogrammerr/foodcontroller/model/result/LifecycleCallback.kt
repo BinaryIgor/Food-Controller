@@ -12,7 +12,7 @@ class LifecycleCallback<T>(private val owner: LifecycleOwner, private val callba
     private val last: Potential<Result<T>> = Potential()
 
     override fun call(result: Result<T>) {
-        if (this.owner.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+        if (this.owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
             this.callback(result)
         } else {
             this.last.revalue(result)

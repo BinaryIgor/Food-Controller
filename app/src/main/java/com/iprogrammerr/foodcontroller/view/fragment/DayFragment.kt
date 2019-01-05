@@ -18,7 +18,7 @@ import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.view.RootView
-import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
 import com.iprogrammerr.foodcontroller.view.items.MealsView
@@ -64,7 +64,7 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
             }
             this.binding.add.setOnClickListener { this.root.replace(MealFragment.withDayId(result.value().id()), true) }
         } else {
-            InformationDialog.new(result.exception()).show(this.childFragmentManager)
+            ErrorDialog.new(result.exception()).show(this.childFragmentManager)
         }
     }
 
@@ -106,7 +106,7 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
     override fun hit(weight: Double) {
         this.viewModel.changeWeight(weight, LifecycleCallback(this) { r ->
             if (!r.isSuccess()) {
-                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
     }

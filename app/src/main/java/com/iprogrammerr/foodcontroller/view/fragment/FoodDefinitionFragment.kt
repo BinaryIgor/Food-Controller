@@ -15,6 +15,7 @@ import com.iprogrammerr.foodcontroller.model.IntFromView
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.viewmodel.FoodDefinitionViewModel
@@ -98,7 +99,7 @@ class FoodDefinitionFragment : Fragment() {
             this.root.propagate(Message.FoodDefinitionsChanged)
             this.fragmentManager?.popBackStack()
         } else {
-            InformationDialog.new(result.exception()).show(this.childFragmentManager)
+            ErrorDialog.new(result.exception()).show(this.childFragmentManager)
         }
     }
 }

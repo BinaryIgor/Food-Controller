@@ -12,7 +12,7 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMenuBinding
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.view.RootView
-import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MenuViewModel
@@ -41,7 +41,7 @@ class MenuFragment : Fragment(), WeightTarget {
             if (r.isSuccess()) {
                 drawGreetings(r.value())
             } else {
-                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
         return this.binding.root
@@ -63,7 +63,7 @@ class MenuFragment : Fragment(), WeightTarget {
             if (r.isSuccess()) {
                 WeightDialog.new(r.value()).show(this.childFragmentManager)
             } else {
-                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
     }
@@ -74,7 +74,7 @@ class MenuFragment : Fragment(), WeightTarget {
                 this.viewModel.refresh()
                 this.root.replace(DayFragment.new(System.currentTimeMillis()), true)
             } else {
-                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
     }

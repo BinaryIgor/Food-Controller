@@ -21,7 +21,11 @@ class DayViewModel(private val asynchronous: Asynchronous, date: Long, private v
     private val day = StickyScalar { this.days.day(date) }
 
     fun day(callback: Callback<Day>) {
-        this.asynchronous.execute({ this.day.value() }, callback)
+        this.asynchronous.execute({
+            Thread.sleep(2000)
+            throw Exception("We can not check something of that kind!")
+            this.day.value()
+        }, callback)
     }
 
     fun changeWeight(weight: Double, callback: Callback<Boolean>) {

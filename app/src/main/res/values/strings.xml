@@ -33,6 +33,7 @@
     <string name="no_change">Brak zmian</string>
     <string name="save_success">Zapisywanie zakończyło się powodzeniem</string>
     <string name="summary">Podsumowanie</string>
+    <string name="error_title">Coś poszło nie tak...</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
