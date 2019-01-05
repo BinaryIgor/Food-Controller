@@ -14,7 +14,7 @@ import com.iprogrammerr.foodcontroller.databinding.FragmentCategoriesBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.view.RootView
-import com.iprogrammerr.foodcontroller.view.dialog.InformationDialog
+import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.CategoriesView
 import com.iprogrammerr.foodcontroller.viewmodel.CategoriesViewModel
 
@@ -38,7 +38,7 @@ class CategoriesFragment : Fragment(), IdTarget {
             if (r.isSuccess()) {
                 binding.categories.adapter = CategoriesView(r.value(), this)
             } else {
-                InformationDialog.new(r.exception()).show(this.childFragmentManager)
+                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
         this.root.changeTitle(getString(R.string.categories))
