@@ -11,28 +11,32 @@ class DatabaseMeals(private val database: Database) : Meals {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    //TODO LEFT JOIN
     override fun meal(id: Long): Meal {
-        val query = StringBuilder()
-            .append("SELECT m.id as m_id, time, f.id as f_id, f.weight, fd.name, fd.protein, fd.calories ")
-            .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
-            .append("INNER JOIN food f ON fm.food_id = f.id ")
-            .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
-            .append("WHERE m.id = $id")
+        val query =
+            StringBuilder().append("SELECT m.id as m_id, time, f.id as f_id, f.weight, fd.name, fd.protein, fd.calories ")
+                .append("FROM meal m LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
+                .append("LEFT JOIN food f ON fm.food_id = f.id ")
+                .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
+                .append("WHERE m.id = $id")
         var time = System.currentTimeMillis()
         val food: MutableList<Food> = ArrayList()
         this.database.query(query.toString()).use { rs ->
             var r = rs.next()
             time = r.long("time")
-            while (rs.hasNext()) {
-                food.add(
-                    DatabaseFood(
-                        r.long("f_id"), this.database,
-                        r.string("name"), r.int("weight"),
-                        r.int("protein"), r.int("calories")
+            if (r.has("f_id")) {
+                while (rs.hasNext()) {
+                    food.add(
+                        DatabaseFood(
+                            r.long("f_id"),
+                            this.database,
+                            r.string("name"),
+                            r.int("weight"),
+                            r.int("protein"),
+                            r.int("calories")
+                        )
                     )
-                )
-                r = rs.next()
+                    r = rs.next()
+                }
             }
         }
         return DatabaseMeal(id, this.database, time, food)
@@ -43,5 +47,9 @@ class DatabaseMeals(private val database: Database) : Meals {
         values.put("time", time)
         values.put("day_id", dayId)
         return this.database.insert("meal", values)
+    }
+
+    override fun delete(id: Long) {
+        this.database.delete("meal", "id = $id")
     }
 }

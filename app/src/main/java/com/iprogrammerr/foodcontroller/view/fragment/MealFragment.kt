@@ -57,14 +57,17 @@ class MealFragment : Fragment(), TimeTarget {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.mealId = (this.arguments as Bundle).getLong("mealId", -1L)
+        val args = this.arguments as Bundle
+        this.mealId = args.getLong("mealId", -1L)
+        if (!hasMeal()) {
+            args.putLong("time", System.currentTimeMillis())
+        }
     }
 
     //TODO setup time picker, get data from view model
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal,
-            container, false)
+        this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
         this.binding.add.setOnClickListener { addFoodOr() }
         setupTimeView()
         this.root.changeTitle(getString(R.string.meal))
@@ -76,12 +79,12 @@ class MealFragment : Fragment(), TimeTarget {
             this.root.replace(FoodFragment.new(this.mealId), true)
         } else {
             val args = this.arguments as Bundle
-            this.viewModel.create(args.getLong("time"), args.getLong("dayId"),
+            this.viewModel.create(args.getLong("time"),
+                args.getLong("dayId"),
                 LifecycleCallback(this) { r ->
                     if (r.isSuccess()) {
                         args.putLong("mealId", r.value())
                         this.mealId = r.value()
-                        println("Newly created id = ${this.mealId}")
                         this.root.replace(FoodFragment.new(this.mealId), true)
                     } else {
                         ErrorDialog.new(r.exception()).show(this.childFragmentManager)
@@ -104,13 +107,10 @@ class MealFragment : Fragment(), TimeTarget {
                 }
             })
         } else {
-            val args = this.arguments as Bundle
-            if (args.getLong("time", 0L) == 0L) {
-                args.putLong("time", System.currentTimeMillis())
-            }
-            this.binding.timeValue.text = HourMinutes(args.getLong("time")).value()
+            val time = (this.arguments as Bundle).getLong("time")
+            this.binding.timeValue.text = HourMinutes(time).value()
             this.binding.timeLayout.setOnClickListener {
-                TimeDialog.new(args.getLong("time")).show(this.childFragmentManager)
+                TimeDialog.new(time).show(this.childFragmentManager)
             }
         }
     }
@@ -130,7 +130,8 @@ class MealFragment : Fragment(), TimeTarget {
         if (hasMeal()) {
             this.viewModel.changeTime(time, LifecycleCallback(this) { r ->
                 if (!r.isSuccess()) {
-                    ErrorDialog.new(r.exception()).show(this.childFragmentManager)
+                    ErrorDialog.new(r.exception())
+                        .show(this.childFragmentManager)
                 }
             })
         } else {

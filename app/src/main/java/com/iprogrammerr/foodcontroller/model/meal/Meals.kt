@@ -7,4 +7,6 @@ interface Meals {
     fun meal(id: Long): Meal
 
     fun create(time: Long, dayId: Long): Long
+
+    fun delete(id: Long)
 }

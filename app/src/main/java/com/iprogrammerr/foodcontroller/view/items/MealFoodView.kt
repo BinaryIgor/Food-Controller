@@ -16,28 +16,30 @@ class MealFoodView(private val meal: Meal, private val target: IdTarget) :
     private val food = 1
     private val summary = 2
 
-    override fun onCreateViewHolder(group: ViewGroup, type: Int): RecyclerView.ViewHolder =
-        when (type) {
-            this.food -> FoodView(
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(group.context),
-                    R.layout.item_food,
-                    group,
-                    false
-                ), this.target
+    override fun onCreateViewHolder(group: ViewGroup,
+        type: Int): RecyclerView.ViewHolder = when (type) {
+        this.food -> FoodView(DataBindingUtil.inflate(
+                LayoutInflater.from(group.context),
+                R.layout.item_food,
+                group,
+                false
+            ), this.target
+        )
+        this.summary -> SummaryView(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(group.context),
+                R.layout.item_summary,
+                group,
+                false
             )
-            this.summary -> SummaryView(
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(group.context),
-                    R.layout.item_summary,
-                    group,
-                    false
-                )
-            )
-            else -> throw Exception("$type is not a valid type")
-        }
+        )
+        else -> throw Exception("$type is not a valid type")
+    }
 
-    override fun getItemCount() = this.meal.food().size + 1
+    override fun getItemCount() = when {
+        this.meal.food().isEmpty() -> 0
+        else -> this.meal.food().size + 1
+    }
 
     override fun onBindViewHolder(view: RecyclerView.ViewHolder, position: Int) {
         if (view is FoodView) {
@@ -47,9 +49,8 @@ class MealFoodView(private val meal: Meal, private val target: IdTarget) :
         }
     }
 
-    override fun getItemViewType(position: Int) =
-        when {
-            position < this.meal.food().size -> this.food
-            else -> this.summary
-        }
+    override fun getItemViewType(position: Int) = when {
+        position < this.meal.food().size -> this.food
+        else -> this.summary
+    }
 }
