@@ -36,6 +36,10 @@
     <string name="summary">Podsumowanie</string>
     <string name="error_title">Coś poszło nie tak...</string>
     <string name="choose_food">Wybierz produkt</string>
+    <string name="one">1</string>
+    <string name="ten">10</string>
+    <string name="hundred">100</string>
+    <string name="choose">Wybierz</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>

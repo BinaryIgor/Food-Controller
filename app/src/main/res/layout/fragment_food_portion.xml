@@ -1,8 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        >
+
     <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dpSmall">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleStyle"
+                android:layout_marginBottom="@dimen/dpSmall"
+                android:text="@string/calories"
+                />
+
+        <TextView
+                android:id="@+id/calories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleStyle"
+                android:layout_marginBottom="@dimen/dpMedium"
+                tools:text="3000"
+                android:textColor="@color/darkBlue"
+                />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleStyle"
+                android:layout_marginBottom="@dimen/dpSmall"
+                android:text="@string/protein"/>
+
+        <TextView
+                android:id="@+id/progress_circular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleStyle"
+                android:textColor="@color/darkBlue"
+                android:layout_marginBottom="@dimen/dpMedium"
+                tools:text="120 g"
+                />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TitleStyle"
+                android:text="@string/weight"/>
+
+        <EditText
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:textSize="@dimen/spLarge"
+                android:hint="@string/protein_hint"/>
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dpMedium"
+                style="@style/MainButtonStyle"
+                android:text="@string/save"
+                />
     </LinearLayout>
 </layout>

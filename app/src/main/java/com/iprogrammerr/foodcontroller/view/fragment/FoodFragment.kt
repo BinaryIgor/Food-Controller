@@ -33,15 +33,28 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         ViewModelProviders.of(this).get(FoodViewModel::class.java)
     }
 
+    companion object {
+        fun new(mealId: Long): FoodFragment {
+            val fragment = FoodFragment()
+            val args = Bundle()
+            args.putLong("mealId", mealId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
-        this.arguments = this.arguments?.let { it } ?: Bundle()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_food, container, false)
-        this.binding.add.setOnClickListener { this.root.replace(FoodDefinitionFragment.withCategories(), true) }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
+        this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_food,
+                container, false)
+        this.binding.add.setOnClickListener {
+            this.root.replace(FoodDefinitionFragment.withCategories(), true)
+        }
         this.binding.food.layoutManager = LinearLayoutManager(this.context)
         drawAllOrFiltered()
         this.binding.searchInput.addTextChangedListener(this)
@@ -52,9 +65,11 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     private fun drawAllOrFiltered() {
         val criteria = this.arguments!!.getString("criteria", "")
         if (criteria.isBlank()) {
-            this.viewModel.all(LifecycleCallback(this) { r -> drawListOrDialog(r) })
+            this.viewModel.all(
+                    LifecycleCallback(this) { r -> drawListOrDialog(r) })
         } else {
-            this.viewModel.filtered(criteria, LifecycleCallback(this) { r -> drawListOrDialog(r) })
+            this.viewModel.filtered(criteria,
+                    LifecycleCallback(this) { r -> drawListOrDialog(r) })
         }
     }
 
@@ -75,11 +90,13 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
     }
 
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int,
+            after: Int) {
 
     }
 
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int,
+            count: Int) {
         s?.let { s ->
             val criteria = s.toString()
             val args = this.arguments as Bundle
@@ -91,7 +108,13 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     }
 
     override fun hit(id: Long) {
-        this.root.replace(FoodPortionFragment.new(id), true)
+        this.root.replace(
+                FoodPortionFragment.new(
+                        id,
+                        (this.arguments as Bundle).getLong("mealId")
+                ), true
+        )
+
     }
 
     override fun hit(message: Message) {

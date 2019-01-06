@@ -17,6 +17,8 @@ import com.iprogrammerr.foodcontroller.model.food.DatabaseFoodDefinitions
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.goals.Goals
 import com.iprogrammerr.foodcontroller.model.goals.PreferencesGoals
+import com.iprogrammerr.foodcontroller.model.meal.DatabaseMeals
+import com.iprogrammerr.foodcontroller.model.meal.Meals
 import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -28,16 +30,17 @@ class FoodControllerApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         val database: Database =
-            SqliteDatabase(FoodControllerDatabase(this, this.resources.openRawResource(R.raw.database).use { i ->
-                val reader = BufferedReader(InputStreamReader(i))
-                val lines = StringBuilder()
-                var line = reader.readLine()
-                while (line != null) {
-                    lines.append(line)
-                    line = reader.readLine()
-                }
-                JSONObject(lines.toString())
-            }))
+            SqliteDatabase(FoodControllerDatabase(this,
+                this.resources.openRawResource(R.raw.database).use { i ->
+                    val reader = BufferedReader(InputStreamReader(i))
+                    val lines = StringBuilder()
+                    var line = reader.readLine()
+                    while (line != null) {
+                        lines.append(line)
+                        line = reader.readLine()
+                    }
+                    JSONObject(lines.toString())
+                }))
         val asynchronous = ReturningAsynchronous(Executors.newCachedThreadPool())
         val days = DatabaseDays(database)
         val categories = DatabaseCategories(database)
@@ -45,6 +48,7 @@ class FoodControllerApplication : Application() {
         ObjectsPool.add(Database::class.java, database)
         ObjectsPool.add(Days::class.java, days)
         ObjectsPool.add(Weight::class.java, LastWeight(database, 65.0))
+        ObjectsPool.add(Meals::class.java, DatabaseMeals(database))
         ObjectsPool.add(Categories::class.java, categories)
         ObjectsPool.add(FoodDefinitions::class.java, DatabaseFoodDefinitions(database))
         ObjectsPool.add(

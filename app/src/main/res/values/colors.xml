@@ -8,5 +8,6 @@
     <color name="proteinForeground">#682323</color>
     <color name="proteinBackground">#af4f4f</color>
     <color name="blue">#a9d6d1</color>
+    <color name="darkBlue">#041a3d</color>
     <color name="invalid">#ed0212</color>
 </resources>
