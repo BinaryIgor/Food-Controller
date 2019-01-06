@@ -7,11 +7,15 @@ import com.iprogrammerr.foodcontroller.model.food.DatabaseFood
 import com.iprogrammerr.foodcontroller.model.food.Food
 import kotlin.math.roundToInt
 
-class DatabaseMeal(private val id: Long, private val database: Database) : Meal {
+class DatabaseMeal(private val id: Long, private val database: Database) :
+    Meal {
 
-    constructor(id: Long, database: Database, time: Long, food: MutableList<Food>) : this(id, database) {
+    constructor(
+        id: Long, database: Database, time: Long, food: MutableList<Food>
+    ) : this(id, database) {
         this.time = time
         this.food.addAll(food)
+        this.loaded = true
     }
 
     private var time = 0L
@@ -51,8 +55,10 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
             calories += f.calories()
             protein += f.protein()
         }
-        calories /= this.food.size
-        protein /= this.food.size
+        if (this.food.size > 0) {
+            calories /= this.food.size
+            protein /= this.food.size
+        }
         return object : NutritionalValues {
 
             override fun calories() = calories.roundToInt()
@@ -70,17 +76,20 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
     }
 
     override fun removeFood(id: Long) {
-        this.database.delete("food_meal", "meal_id = ${this.id} and food_id = $id")
+        this.database.delete(
+            "food_meal", "meal_id = ${this.id} and food_id = $id"
+        )
         this.loaded = false
     }
 
     private fun load() {
-        val query = StringBuilder()
-            .append("SELECT time, f.id as f_id, f.weight, fd.name, fd.protein, fd.calories ")
-            .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
-            .append("INNER JOIN food f ON fm.food_id = f.id ")
-            .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
-            .append("WHERE id = ${this.id}")
+        val query =
+            StringBuilder().append(
+                "SELECT time, f.id as f_id, f.weight, fd.name, fd.protein, fd.calories ")
+                .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
+                .append("INNER JOIN food f ON fm.food_id = f.id ")
+                .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
+                .append("WHERE m.id = ${this.id}")
         this.food.clear()
         this.database.query(query.toString()).use { rs ->
             var r = rs.next()
@@ -88,9 +97,12 @@ class DatabaseMeal(private val id: Long, private val database: Database) : Meal 
             while (rs.hasNext()) {
                 this.food.add(
                     DatabaseFood(
-                        r.long("f_id"), this.database,
-                        r.string("name"), r.int("weight"),
-                        r.int("protein"), r.int("calories")
+                        r.long("f_id"),
+                        this.database,
+                        r.string("name"),
+                        r.int("weight"),
+                        r.int("protein"),
+                        r.int("calories")
                     )
                 )
                 r = rs.next()

@@ -21,7 +21,7 @@ class DatabaseDays(private val database: Database) : Days {
         val sql = StringBuilder()
             .append("SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
             .append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, fd.name, fd.calories, fd.protein ")
-            .append("FROM day d LEFT JOIN meal m ON d.id = m.id ")
+            .append("FROM day d INNER JOIN meal m ON d.id = m.id ")
             .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
             .append("LEFT JOIN food f ON fm.food_id = f.id ")
             .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
@@ -35,7 +35,7 @@ class DatabaseDays(private val database: Database) : Days {
     private fun day(rows: Rows): Day {
         val meals: MutableList<Meal> = ArrayList()
         var row = rows.next()
-        if (row.has("m_id")) {
+        if (row.has("f_id")) {
             do {
                 var hasNext = false
                 val mealId = row.long("m_id")
