@@ -1,7 +1,5 @@
 package com.iprogrammerr.foodcontroller.model.day
 
-import com.iprogrammerr.foodcontroller.model.NutritionalValues
-
 interface Days {
 
     fun range(from: Long, to: Long): List<Day>
@@ -10,5 +8,5 @@ interface Days {
 
     fun exists(date: Long): Boolean
 
-    fun create(weight: Double, goals: NutritionalValues)
+    fun create(weight: Double, caloriesGoal: Int, proteinGoal: Int)
 }

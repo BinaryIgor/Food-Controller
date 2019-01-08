@@ -15,7 +15,5 @@ interface Meal {
 
     fun nutritionalValues(): NutritionalValues
 
-    fun addFood(food: Food)
-
     fun removeFood(id: Long)
 }

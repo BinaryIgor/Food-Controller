@@ -20,9 +20,11 @@ import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.TimeDialog
 import com.iprogrammerr.foodcontroller.view.dialog.TimeTarget
 import com.iprogrammerr.foodcontroller.view.items.MealFoodView
+import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MealViewModel
 
-class MealFragment : Fragment(), TimeTarget {
+class MealFragment : Fragment(), TimeTarget, MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMealBinding
@@ -136,6 +138,13 @@ class MealFragment : Fragment(), TimeTarget {
             })
         } else {
             this.arguments!!.putLong("time", time)
+        }
+    }
+
+    override fun hit(message: Message) {
+        if (message == Message.PortionAdded) {
+            println("Refreshed!")
+            this.viewModel.refresh()
         }
     }
 

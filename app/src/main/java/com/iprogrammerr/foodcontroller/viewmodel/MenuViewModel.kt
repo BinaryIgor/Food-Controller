@@ -38,13 +38,7 @@ class MenuViewModel(
 
     fun createDay(weight: Double, callback: Callback<Boolean>) {
         this.asynchronous.execute({
-            this.days.create(weight,
-                object : NutritionalValues {
-
-                    override fun calories() = this@MenuViewModel.goals.calories().value()
-
-                    override fun protein() = this@MenuViewModel.goals.protein().value()
-                })
+            this.days.create(weight, this.goals.calories().value(), this.goals.protein().value())
             true
         }, callback)
     }

@@ -32,7 +32,7 @@ class DatabaseMeals(private val database: Database) : Meals {
                             r.string("name"),
                             r.int("weight"),
                             r.int("protein"),
-                            r.int("calories")
+                            r.double("calories")
                         )
                     )
                     r = rs.next()

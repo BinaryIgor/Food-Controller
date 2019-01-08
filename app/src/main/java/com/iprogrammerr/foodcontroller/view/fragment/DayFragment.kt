@@ -23,6 +23,7 @@ import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
 import com.iprogrammerr.foodcontroller.view.items.MealsView
 import com.iprogrammerr.foodcontroller.viewmodel.DayViewModel
+import kotlin.math.roundToInt
 
 class DayFragment : Fragment(), IdTarget, WeightTarget {
 
@@ -78,15 +79,15 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
             this.binding.caloriesValue.setTextColor(ContextCompat.getColor(this.context as Context, R.color.invalid))
         }
         this.binding.caloriesValue.text = "${values.calories()}/${goals.calories()}"
-        this.binding.proteinProgress.max = goals.protein()
-        this.binding.proteinProgress.progress = values.protein()
-        this.binding.proteinValue.text = "${values.protein()}/${goals.protein()}"
+        this.binding.proteinProgress.max = goals.protein().roundToInt()
+        this.binding.proteinProgress.progress = values.protein().roundToInt()
+        this.binding.proteinValue.text = "${values.protein().roundToInt()}/${goals.protein().roundToInt()}"
 
     }
 
     private fun eatenValues(day: Day): NutritionalValues {
         var calories = 0
-        var protein = 0
+        var protein = 0.0
         for (m in day.meals()) {
             val values = m.nutritionalValues()
             calories += values.calories()

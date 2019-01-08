@@ -10,5 +10,5 @@ interface Food {
 
     fun calories(): Int
 
-    fun protein(): Int
+    fun protein(): Double
 }

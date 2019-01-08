@@ -49,9 +49,9 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_food,
-                container, false)
+            container, false)
         this.binding.add.setOnClickListener {
             this.root.replace(FoodDefinitionFragment.withCategories(), true)
         }
@@ -66,10 +66,10 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         val criteria = this.arguments!!.getString("criteria", "")
         if (criteria.isBlank()) {
             this.viewModel.all(
-                    LifecycleCallback(this) { r -> drawListOrDialog(r) })
+                LifecycleCallback(this) { r -> drawListOrDialog(r) })
         } else {
             this.viewModel.filtered(criteria,
-                    LifecycleCallback(this) { r -> drawListOrDialog(r) })
+                LifecycleCallback(this) { r -> drawListOrDialog(r) })
         }
     }
 
@@ -91,12 +91,12 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int,
-            after: Int) {
+        after: Int) {
 
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int,
-            count: Int) {
+        count: Int) {
         s?.let { s ->
             val criteria = s.toString()
             val args = this.arguments as Bundle
@@ -109,10 +109,10 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
     override fun hit(id: Long) {
         this.root.replace(
-                FoodPortionFragment.new(
-                        id,
-                        (this.arguments as Bundle).getLong("mealId")
-                ), true
+            FoodPortionFragment.new(
+                id,
+                (this.arguments as Bundle).getLong("mealId")
+            ), true
         )
 
     }

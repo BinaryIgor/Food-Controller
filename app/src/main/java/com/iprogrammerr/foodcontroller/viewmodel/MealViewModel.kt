@@ -71,6 +71,10 @@ class MealViewModel(
         }, callback)
     }
 
+    fun refresh() {
+        this.meal.unstick()
+    }
+
     override fun onCleared() {
         super.onCleared()
         this.asynchronous.execute({

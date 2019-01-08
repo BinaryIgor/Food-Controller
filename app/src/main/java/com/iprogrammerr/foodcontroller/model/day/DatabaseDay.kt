@@ -26,7 +26,7 @@ class DatabaseDay(
         proteinGoal: Int,
         meals: List<Meal>
     ) :
-            this(id, database) {
+        this(id, database) {
         this.attributes["date"] = date
         this.attributes["weight"] = weight
         this.attributes["caloriesGoal"] = caloriesGoal
@@ -47,7 +47,7 @@ class DatabaseDay(
 
             override fun calories() = calories
 
-            override fun protein() = protein
+            override fun protein() = protein.toDouble()
         }
     }
 
@@ -93,7 +93,8 @@ class DatabaseDay(
     private fun loadMeals() {
         this.database.query(
             StringBuilder()
-                .append("SELECT m.id as m_id, m.time, f.id as f_id, f.weight, fd.name, fd.calories, fd.protein ")
+                .append(
+                    "SELECT m.id as m_id, m.time, f.id as f_id, f.weight, fd.name, fd.calories, fd.protein ")
                 .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
                 .append("INNER JOIN food f ON f.id = fm.food_id ")
                 .append("INNER JOIN food_definition fd on f.definition_id = fd.id ")
@@ -115,7 +116,7 @@ class DatabaseDay(
                         DatabaseFood(
                             row.long("f_id"), this.database, row.string("name"),
                             row.int("f_weight"), row.int("protein"),
-                            row.int("calories")
+                            row.double("calories")
                         )
                     )
                     row = rs.next()
