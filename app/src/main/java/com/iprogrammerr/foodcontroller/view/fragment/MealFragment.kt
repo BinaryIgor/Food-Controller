@@ -142,11 +142,12 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (message == Message.PortionAdded) {
-            println("Refreshed!")
+        if (message == Message.PORTION_ADDED) {
             this.viewModel.refresh()
         }
     }
+
+    override fun isInterested(message: Message) = message == Message.PORTION_ADDED
 
     private fun hasMeal() = this.mealId != -1L
 }

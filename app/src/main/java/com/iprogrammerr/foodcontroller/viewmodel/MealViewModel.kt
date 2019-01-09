@@ -79,6 +79,7 @@ class MealViewModel(
         super.onCleared()
         this.asynchronous.execute({
             if (this.id > 0 && this.meal.value().food().isEmpty()) {
+                println("deleting meal of id = ${this.id}")
                 this.meals.delete(this.id)
             }
             true

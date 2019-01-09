@@ -134,16 +134,19 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     }
 
     override fun hit(message: Message) {
-        if (message == Message.FoodDefinitionsChanged || message == Message.FoodDefinitionMoved) {
+        if (message == Message.FOOD_DEFINITION_CHANGED || message == Message.FOOD_DEFINITION_MOVED) {
             this.viewModel.refresh()
             if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
                 drawAllOrFiltered()
-                if (message == Message.FoodDefinitionMoved) {
+                if (message == Message.FOOD_DEFINITION_MOVED) {
                     Snackbar.make(this.binding.root, getString(R.string.definition_moved), Snackbar.LENGTH_LONG).show()
                 }
             }
         }
     }
+
+    override fun isInterested(message: Message) =
+        message == Message.FOOD_DEFINITION_MOVED || message == Message.FOOD_DEFINITION_CHANGED
 
     override fun onDestroyView() {
         super.onDestroyView()

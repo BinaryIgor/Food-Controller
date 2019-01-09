@@ -83,7 +83,7 @@ class FoodPortionFragment : Fragment(), TextWatcher {
             this.viewModel.add(this.weight.value(), this.arguments!!.getLong("mealId"),
                 LifecycleCallback(this) { r ->
                     if (r.isSuccess()) {
-                        this.root.propagate(Message.PortionAdded)
+                        this.root.propagate(Message.PORTION_ADDED)
                     } else {
                         ErrorDialog.new(r.exception()).show(this.childFragmentManager)
                     }

@@ -39,26 +39,26 @@ class DatabaseDays(private val database: Database) : Days {
         var row = rows.next()
         if (row.has("f_id")) {
             do {
-                var hasNext = false
                 val mealId = row.long("m_id")
                 val time = row.long("time")
                 val food: MutableList<Food> = ArrayList()
                 do {
                     if (row.long("m_id") != mealId) {
-                        meals.add(DatabaseMeal(mealId, this.database, time, food))
                         break
                     }
                     food.add(
                         DatabaseFood(
                             row.long("f_id"), this.database, row.string("name"),
-                            row.int("f_weight"), row.int("protein"),
-                            row.double("calories")
+                            row.int("f_weight"), row.int("calories"),
+                            row.double("protein")
                         )
                     )
-                    row = rows.next()
-                    hasNext = rows.hasNext()
-                } while (hasNext)
-            } while (hasNext)
+                    if (rows.hasNext()) {
+                        row = rows.next()
+                    }
+                } while (rows.hasNext())
+                meals.add(DatabaseMeal(mealId, this.database, time, food))
+            } while (rows.hasNext())
         }
         return DatabaseDay(
             row.long("d_id"),

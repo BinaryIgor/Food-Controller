@@ -57,20 +57,22 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     override fun propagate(message: Message) {
-        val count = this.supportFragmentManager.backStackEntryCount
-        val tag = when (count) {
-            0 -> ""
-            1 -> this.supportFragmentManager.getBackStackEntryAt(0).name
-            else -> this.supportFragmentManager.getBackStackEntryAt(count - 2).name
-        }
-        val fragment = this.supportFragmentManager.findFragmentByTag(tag)
-        if (fragment is MessageTarget) {
-            resolveMessage(message, fragment)
+        for (i in 0..this.supportFragmentManager.backStackEntryCount) {
+            val fragment = this.supportFragmentManager
+                .findFragmentByTag(
+                    this.supportFragmentManager.getBackStackEntryAt(i).name
+                )
+            if (fragment is MessageTarget) {
+                if (fragment.isInterested(message)) {
+                    resolveMessage(message, fragment)
+                    break
+                }
+            }
         }
     }
 
     private fun resolveMessage(message: Message, target: MessageTarget) {
-        if (message == Message.PortionAdded) {
+        if (message == Message.PORTION_ADDED) {
             this.supportFragmentManager.popBackStack(MealFragment::class.java.simpleName, 0)
         }
         target.hit(message)

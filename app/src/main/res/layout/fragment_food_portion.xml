@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/protein_hint"
             android:inputType="number"
+            android:maxLength="4"
             android:textSize="@dimen/spLarge" />
 
         <com.iprogrammerr.foodcontroller.view.CustomButton

@@ -1,17 +1,5 @@
 package com.iprogrammerr.foodcontroller.view.message
 
-interface Message {
-    fun value(): String
-
-    object FoodDefinitionsChanged : Message {
-        override fun value() = "FoodDefinitionsChanged"
-    }
-
-    object FoodDefinitionMoved : Message {
-        override fun value() = "FoodDefinitionMoved"
-    }
-
-    object PortionAdded : Message {
-        override fun value() = "PortionAdded"
-    }
+enum class Message {
+    FOOD_DEFINITION_CHANGED, FOOD_DEFINITION_MOVED, PORTION_ADDED
 }
