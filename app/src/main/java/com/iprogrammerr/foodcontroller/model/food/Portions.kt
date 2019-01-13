@@ -7,4 +7,6 @@ interface Portions {
     fun create(definitionId: Long, weight: Int)
 
     fun add(definitionId: Long, weight: Int, mealId: Long)
+
+    fun update(foodId: Long, mealId: Long, definitionId: Long, weight: Int)
 }

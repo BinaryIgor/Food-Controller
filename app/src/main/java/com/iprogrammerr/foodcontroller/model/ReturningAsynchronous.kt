@@ -15,6 +15,7 @@ class ReturningAsynchronous(private val executor: Executor, private val returnin
             val result = try {
                 ResultValue(function())
             } catch (e: Exception) {
+                e.printStackTrace()
                 ResultValue<T>(e)
             }
             this.returning.post { callback.call(result) }
