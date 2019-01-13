@@ -12,25 +12,29 @@ import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentDayBinding
-import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
+import com.iprogrammerr.foodcontroller.view.dialog.TwoOptionsDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
+import com.iprogrammerr.foodcontroller.view.items.IdWithActionTarget
 import com.iprogrammerr.foodcontroller.view.items.MealsView
 import com.iprogrammerr.foodcontroller.viewmodel.DayViewModel
 import kotlin.math.roundToInt
 
-class DayFragment : Fragment(), IdTarget, WeightTarget {
+class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDialog.Target {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentDayBinding
     private val viewModel: DayViewModel by lazy {
-        ViewModelProviders.of(this).get(DayViewModel::class.java)
+        ViewModelProviders.of(
+            this,
+            DayViewModel.factory(this.arguments?.getLong("date", System.currentTimeMillis()) ?: System.currentTimeMillis())
+        ).get(DayViewModel::class.java)
     }
 
     companion object {
@@ -46,9 +50,11 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
+        this.arguments = this.arguments?.let { it } ?: Bundle()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_day, container, false)
         this.binding.meals.layoutManager = LinearLayoutManager(this.context)
         this.viewModel.day(LifecycleCallback(this) { r -> onDayResult(r) })
@@ -63,7 +69,9 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
             this.binding.weight.setOnClickListener {
                 WeightDialog.new(result.value().weight()).show(this.childFragmentManager)
             }
-            this.binding.add.setOnClickListener { this.root.replace(MealFragment.withDayId(result.value().id()), true) }
+            this.binding.add.setOnClickListener {
+                this.root.replace(MealFragment.withDayId(result.value().id()), true)
+            }
         } else {
             ErrorDialog.new(result.exception()).show(this.childFragmentManager)
         }
@@ -76,7 +84,8 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
         this.binding.caloriesProgress.max = goals.calories()
         this.binding.caloriesProgress.progress = values.calories()
         if (values.calories() > goals.calories()) {
-            this.binding.caloriesValue.setTextColor(ContextCompat.getColor(this.context as Context, R.color.invalid))
+            this.binding.caloriesValue.setTextColor(
+                ContextCompat.getColor(this.context as Context, R.color.invalid))
         }
         this.binding.caloriesValue.text = "${values.calories()}/${goals.calories()}"
         this.binding.proteinProgress.max = goals.protein().roundToInt()
@@ -100,8 +109,16 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
         }
     }
 
-    override fun hit(id: Long) {
-        this.root.replace(MealFragment.withMealId(id), true)
+    override fun hit(id: Long, action: IdWithActionTarget.Action) {
+        if (action == IdWithActionTarget.Action.EDIT) {
+            this.root.replace(MealFragment.withMealId(id), true)
+        } else if (action == IdWithActionTarget.Action.DELETE) {
+            this.arguments?.putLong("mealId", id)
+            TwoOptionsDialog.new(
+                getString(R.string.delete_meal_confirmation), getString(R.string.cancel),
+                getString(R.string.ok)
+            ).show(this.childFragmentManager)
+        }
     }
 
     override fun hit(weight: Double) {
@@ -110,5 +127,20 @@ class DayFragment : Fragment(), IdTarget, WeightTarget {
                 ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
+    }
+
+    override fun hitLeft() {
+
+    }
+
+    override fun hitRight() {
+        this.viewModel.deleteMeal((this.arguments as Bundle).getLong("mealId"),
+            LifecycleCallback(this) { r1 ->
+                if (r1.isSuccess()) {
+                    this.viewModel.day(LifecycleCallback(this) { r2 -> onDayResult(r2) })
+                } else {
+                    ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
+                }
+            })
     }
 }

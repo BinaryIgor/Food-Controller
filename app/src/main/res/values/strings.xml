@@ -14,6 +14,7 @@
     <string name="products">Produkty</string>
     <string name="dot">.</string>
     <string name="cancel">Anuluj</string>
+    <string name="ok">Ok</string>
     <string name="kg">kg</string>
     <string name="calories">Kalorie</string>
     <string name="protein">Białko</string>
@@ -29,6 +30,7 @@
     <string name="edit_definition">Edytuj definicję</string>
     <string name="new_product">Nowy produkt</string>
     <string name="move">Przenieś</string>
+    <string name="edit">Edytuj</string>
     <string name="delete">Usuń</string>
     <string name="definition_moved">Definicja została przeniesiona</string>
     <string name="no_change">Brak zmian</string>
@@ -60,4 +62,8 @@
     <!--templates-->
     <string name="values_template">%d kcal, %d g białka</string>
     <!--templates-->
+
+    <!--day-->
+    <string name="delete_meal_confirmation">Czy na pewno chcesz usunąć wybrany posiłek?</string>
+    <!--day-->
 </resources>

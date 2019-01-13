@@ -18,18 +18,20 @@ class DatabaseDays(private val database: Database) : Days {
     }
 
     override fun day(date: Long): Day {
-        val sql = StringBuilder()
-            .append(
-                "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
-            .append(
-                "m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, fd.name, fd.calories, fd.protein ")
-            .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
-            .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
-            .append("LEFT JOIN food f ON fm.food_id = f.id ")
-            .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
-            .append("WHERE date ")
-            .append(">= ${dayStart(date)} AND date <= ${dayEnd(date)} LIMIT 1")
-        return this.database.query(sql.toString()).use { r ->
+        return this.database.query(
+            StringBuilder()
+                .append(
+                    "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
+                .append(
+                    "m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, fd.name, fd.calories, fd.protein ")
+                .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
+                .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
+                .append("LEFT JOIN food f ON fm.food_id = f.id ")
+                .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
+                .append("WHERE date ")
+                .append(">= ${dayStart(date)} AND date <= ${dayEnd(date)} LIMIT 1")
+                .toString()
+        ).use { r ->
             day(r)
         }
     }

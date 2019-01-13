@@ -9,7 +9,7 @@ import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.meal.Meal
 import com.iprogrammerr.foodcontroller.view.item.MealView
 
-class MealsView(private val meals: List<Meal>, private val target: IdTarget) : RecyclerView.Adapter<MealView>() {
+class MealsView(private val meals: List<Meal>, private val target: IdWithActionTarget) : RecyclerView.Adapter<MealView>() {
 
     override fun onCreateViewHolder(group: ViewGroup, position: Int) = MealView(
         DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_meal, group, false),
