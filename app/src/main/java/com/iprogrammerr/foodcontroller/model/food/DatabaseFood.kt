@@ -10,9 +10,9 @@ class DatabaseFood(
 
     private val attributes: MutableMap<String, Any> = HashMap()
 
-    constructor(id: Long, database: Database, name: String, weight: Int, calories: Int, protein: Int) : this(
-        id,
-        database
+    constructor(id: Long, database: Database, name: String, weight: Int, calories: Int,
+        protein: Double) : this(
+        id, database
     ) {
         this.attributes["name"] = name
         this.attributes["weight"] = weight
@@ -43,11 +43,11 @@ class DatabaseFood(
         return ((weight() / 100.0) * this.attributes["calories"] as Int).roundToInt()
     }
 
-    override fun protein(): Int {
+    override fun protein(): Double {
         if (!this.attributes.contains("protein")) {
             load()
         }
-        return ((weight() / 100.0) * this.attributes["protein"] as Int).roundToInt()
+        return (weight() / 100.0) * this.attributes["protein"] as Double
     }
 
     private fun load() {
@@ -58,7 +58,7 @@ class DatabaseFood(
             this.attributes["name"] = row.long("name")
             this.attributes["weight"] = row.int("weight")
             this.attributes["calories"] = row.int("calories")
-            this.attributes["protein"] = row.int("protein")
+            this.attributes["protein"] = row.double("protein")
         }
     }
 }

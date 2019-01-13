@@ -94,7 +94,8 @@ class FoodControllerDatabase(context: Context, private val source: JSONObject) :
         .append("FOREIGN KEY (food_id) REFERENCES food(id) ON DELETE CASCADE")
         .append(",")
         .append("FOREIGN KEY (meal_id) REFERENCES meal(id) ON DELETE CASCADE")
-        .append(")").toString()
+        .append(")")
+        .toString()
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(this.categoryContract)

@@ -63,16 +63,8 @@ class DatabaseMeal(private val id: Long, private val database: Database) :
 
             override fun calories() = calories.roundToInt()
 
-            override fun protein() = protein.roundToInt()
+            override fun protein() = protein
         }
-    }
-
-    override fun addFood(food: Food) {
-        val values = ContentValues()
-        values.put("food_id", food.id())
-        values.put("meal_id", this.id)
-        this.database.insert("food_meal", values)
-        this.loaded = false
     }
 
     override fun removeFood(id: Long) {
@@ -102,7 +94,7 @@ class DatabaseMeal(private val id: Long, private val database: Database) :
                         r.string("name"),
                         r.int("weight"),
                         r.int("protein"),
-                        r.int("calories")
+                        r.double("calories")
                     )
                 )
                 r = rs.next()

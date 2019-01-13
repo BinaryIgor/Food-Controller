@@ -48,10 +48,14 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         this.root = context as RootView
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_food,
-                container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        this.binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_food,
+            container, false
+        )
         this.binding.add.setOnClickListener {
             this.root.replace(FoodDefinitionFragment.withCategories(), true)
         }
@@ -66,10 +70,10 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         val criteria = this.arguments!!.getString("criteria", "")
         if (criteria.isBlank()) {
             this.viewModel.all(
-                    LifecycleCallback(this) { r -> drawListOrDialog(r) })
+                LifecycleCallback(this) { r -> drawListOrDialog(r) })
         } else {
             this.viewModel.filtered(criteria,
-                    LifecycleCallback(this) { r -> drawListOrDialog(r) })
+                LifecycleCallback(this) { r -> drawListOrDialog(r) })
         }
     }
 
@@ -90,13 +94,17 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
     }
 
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int,
-            after: Int) {
+    override fun beforeTextChanged(
+        s: CharSequence?, start: Int, count: Int,
+        after: Int
+    ) {
 
     }
 
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int,
-            count: Int) {
+    override fun onTextChanged(
+        s: CharSequence?, start: Int, before: Int,
+        count: Int
+    ) {
         s?.let { s ->
             val criteria = s.toString()
             val args = this.arguments as Bundle
@@ -109,19 +117,21 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
     override fun hit(id: Long) {
         this.root.replace(
-                FoodPortionFragment.new(
-                        id,
-                        (this.arguments as Bundle).getLong("mealId")
-                ), true
+            FoodPortionFragment.new(
+                id,
+                (this.arguments as Bundle).getLong("mealId")
+            ), true
         )
 
     }
 
     override fun hit(message: Message) {
-        if (message == Message.FoodDefinitionsChanged) {
+        if (message == Message.FOOD_DEFINITION_CHANGED) {
             this.viewModel.refresh()
         }
     }
+
+    override fun isInterested(message: Message) = message == Message.FOOD_DEFINITION_CHANGED
 
     override fun onDestroyView() {
         super.onDestroyView()

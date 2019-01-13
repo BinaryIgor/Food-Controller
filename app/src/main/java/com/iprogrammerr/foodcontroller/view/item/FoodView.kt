@@ -5,6 +5,7 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.ItemFoodBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.food.Food
+import kotlin.math.roundToInt
 
 //TODO more menu
 class FoodView(private val binding: ItemFoodBinding, private val target: IdTarget) :
@@ -17,7 +18,7 @@ class FoodView(private val binding: ItemFoodBinding, private val target: IdTarge
         this.binding.values.text = String.format(
             this.binding.root.context.getString(R.string.values_template),
             item.calories(),
-            item.protein()
+            item.protein().roundToInt()
         )
         this.binding.root.setOnClickListener { this.target.hit(item.id()) }
     }

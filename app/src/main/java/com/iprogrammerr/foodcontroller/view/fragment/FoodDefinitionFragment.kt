@@ -145,7 +145,7 @@ class FoodDefinitionFragment : Fragment() {
 
     private fun onSaveResult(result: Result<Boolean>) {
         if (result.isSuccess()) {
-            this.root.propagate(Message.FoodDefinitionsChanged)
+            this.root.propagate(Message.FOOD_DEFINITION_CHANGED)
             this.fragmentManager?.popBackStack()
         } else {
             ErrorDialog.new(result.exception()).show(this.childFragmentManager)

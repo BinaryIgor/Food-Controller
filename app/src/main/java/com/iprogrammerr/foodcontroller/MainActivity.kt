@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.iprogrammerr.foodcontroller.databinding.ActivityMainBinding
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.view.fragment.MealFragment
 import com.iprogrammerr.foodcontroller.view.fragment.MenuFragment
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.view.message.MessageTarget
@@ -56,15 +57,24 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     override fun propagate(message: Message) {
-        val count = this.supportFragmentManager.backStackEntryCount
-        val tag = when (count) {
-            0 -> ""
-            1 -> this.supportFragmentManager.getBackStackEntryAt(0).name
-            else -> this.supportFragmentManager.getBackStackEntryAt(count - 2).name
+        for (i in 0..this.supportFragmentManager.backStackEntryCount) {
+            val fragment = this.supportFragmentManager
+                .findFragmentByTag(
+                    this.supportFragmentManager.getBackStackEntryAt(i).name
+                )
+            if (fragment is MessageTarget) {
+                if (fragment.isInterested(message)) {
+                    resolveMessage(message, fragment)
+                    break
+                }
+            }
         }
-        val fragment = this.supportFragmentManager.findFragmentByTag(tag)
-        if (fragment is MessageTarget) {
-            fragment.hit(message)
+    }
+
+    private fun resolveMessage(message: Message, target: MessageTarget) {
+        if (message == Message.PORTION_ADDED) {
+            this.supportFragmentManager.popBackStack(MealFragment::class.java.simpleName, 0)
         }
+        target.hit(message)
     }
 }

@@ -7,7 +7,7 @@ import com.iprogrammerr.foodcontroller.model.meal.Meal
 import com.iprogrammerr.foodcontroller.model.meal.Meals
 import com.iprogrammerr.foodcontroller.model.result.Callback
 import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.ObjectsPool
 
 class MealViewModel(
     private val asynchronous: Asynchronous,
@@ -71,10 +71,15 @@ class MealViewModel(
         }, callback)
     }
 
+    fun refresh() {
+        this.meal.unstick()
+    }
+
     override fun onCleared() {
         super.onCleared()
         this.asynchronous.execute({
             if (this.id > 0 && this.meal.value().food().isEmpty()) {
+                println("deleting meal of id = ${this.id}")
                 this.meals.delete(this.id)
             }
             true

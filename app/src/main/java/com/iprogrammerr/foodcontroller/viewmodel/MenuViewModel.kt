@@ -2,14 +2,13 @@ package com.iprogrammerr.foodcontroller.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import com.iprogrammerr.foodcontroller.model.Asynchronous
-import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.scalar.StickableScalar
 import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.day.Weight
 import com.iprogrammerr.foodcontroller.model.goals.Goals
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.ObjectsPool
 
 class MenuViewModel(
     private val asynchronous: Asynchronous,
@@ -38,13 +37,7 @@ class MenuViewModel(
 
     fun createDay(weight: Double, callback: Callback<Boolean>) {
         this.asynchronous.execute({
-            this.days.create(weight,
-                object : NutritionalValues {
-
-                    override fun calories() = this@MenuViewModel.goals.calories().value()
-
-                    override fun protein() = this@MenuViewModel.goals.protein().value()
-                })
+            this.days.create(weight, this.goals.calories().value(), this.goals.protein().value())
             true
         }, callback)
     }

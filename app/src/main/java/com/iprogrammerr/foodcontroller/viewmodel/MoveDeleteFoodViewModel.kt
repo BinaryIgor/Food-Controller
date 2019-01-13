@@ -7,7 +7,7 @@ import com.iprogrammerr.foodcontroller.model.category.Categories
 import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.ObjectsPool
 
 class MoveDeleteFoodViewModel(
     private val asynchronous: Asynchronous,

@@ -6,7 +6,7 @@ import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.ObjectsPool
 
 class DayViewModel(private val asynchronous: Asynchronous, date: Long, private val days: Days) : ViewModel() {
 

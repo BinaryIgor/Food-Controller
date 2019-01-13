@@ -7,7 +7,7 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.result.Callback
 import com.iprogrammerr.foodcontroller.model.scalar.StartsWithFilter
 import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.ObjectsPool
 
 class FoodViewModel(private val asynchronous: Asynchronous, private val food: FoodDefinitions) : ViewModel() {
 

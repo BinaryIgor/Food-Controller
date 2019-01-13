@@ -5,6 +5,7 @@ class StickyScalar<T>(private val source: () -> T) : StickableScalar<T> {
     private var value: T? = null
     private var sticky = true
 
+    @Suppress("UNCHECKED_CAST")
     override fun value(): T {
         if (this.value == null || !this.sticky) {
             this.value = this.source()

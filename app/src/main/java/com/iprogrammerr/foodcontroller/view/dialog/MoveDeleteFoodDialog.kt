@@ -91,7 +91,7 @@ class MoveDeleteFoodDialog : DialogFragment() {
                 LifecycleCallback(this) { r ->
                     if (r.isSuccess()) {
                         dismiss()
-                        this.root.propagate(Message.FoodDefinitionMoved)
+                        this.root.propagate(Message.FOOD_DEFINITION_MOVED)
                     } else {
                         Snackbar.make(root, r.exception(), Snackbar.LENGTH_LONG).show()
                     }
@@ -105,7 +105,7 @@ class MoveDeleteFoodDialog : DialogFragment() {
             LifecycleCallback(this) { r ->
                 if (r.isSuccess()) {
                     dismiss()
-                    this.root.propagate(Message.FoodDefinitionsChanged)
+                    this.root.propagate(Message.FOOD_DEFINITION_CHANGED)
                 } else {
                     Snackbar.make(root, r.exception(), Snackbar.LENGTH_LONG).show()
                 }

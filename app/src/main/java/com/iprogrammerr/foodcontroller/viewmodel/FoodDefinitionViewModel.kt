@@ -7,14 +7,13 @@ import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
+import com.iprogrammerr.foodcontroller.ObjectsPool
 
 class FoodDefinitionViewModel(
     private val asynchronous: Asynchronous,
     private val definitions: FoodDefinitions,
     categories: Categories
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private lateinit var last: FoodDefinition
     private val categories by lazy {
@@ -22,24 +21,21 @@ class FoodDefinitionViewModel(
     }
 
     constructor() : this(
-        ObjectsPool.single(Asynchronous::class.java), ObjectsPool.single(FoodDefinitions::class.java),
+        ObjectsPool.single(Asynchronous::class.java),
+        ObjectsPool.single(FoodDefinitions::class.java),
         ObjectsPool.single(Categories::class.java)
     )
 
-    fun update(
-        id: Long, name: String, calories: Int, protein: Double,
-        callback: Callback<Boolean>
-    ) {
+    fun update(id: Long, name: String, calories: Int, protein: Double,
+        callback: Callback<Boolean>) {
         this.asynchronous.execute({
             this.definitions.definition(id).update(name, calories, protein)
             true
         }, callback)
     }
 
-    fun add(
-        name: String, calories: Int, protein: Double, categoryId: Long,
-        callback: Callback<Boolean>
-    ) {
+    fun add(name: String, calories: Int, protein: Double, categoryId: Long,
+        callback: Callback<Boolean>) {
         this.asynchronous.execute({
             this.definitions.create(name, calories, protein, categoryId)
             true
