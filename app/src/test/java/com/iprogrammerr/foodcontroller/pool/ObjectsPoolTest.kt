@@ -1,5 +1,6 @@
 package com.iprogrammerr.foodcontroller.pool
 
+import com.iprogrammerr.foodcontroller.ObjectsPool
 import org.junit.Assert.assertThat
 import org.junit.Test
 

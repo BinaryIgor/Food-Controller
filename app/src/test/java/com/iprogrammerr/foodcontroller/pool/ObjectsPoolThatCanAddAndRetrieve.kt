@@ -1,5 +1,6 @@
 package com.iprogrammerr.foodcontroller.pool
 
+import com.iprogrammerr.foodcontroller.ObjectsPool
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
 

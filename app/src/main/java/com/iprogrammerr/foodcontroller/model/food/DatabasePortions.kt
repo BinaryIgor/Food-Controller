@@ -40,7 +40,6 @@ class DatabasePortions(private val database: Database) : Portions {
                 rs.next().long("id")
             }
         )
-        println("Id = ${values.getAsLong("food_id")}")
         this.database.update("food_meal", "food_id = $foodId AND meal_id = $mealId", values)
     }
 }

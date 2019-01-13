@@ -21,7 +21,6 @@ import com.iprogrammerr.foodcontroller.model.goals.Goals
 import com.iprogrammerr.foodcontroller.model.goals.PreferencesGoals
 import com.iprogrammerr.foodcontroller.model.meal.DatabaseMeals
 import com.iprogrammerr.foodcontroller.model.meal.Meals
-import com.iprogrammerr.foodcontroller.pool.ObjectsPool
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader

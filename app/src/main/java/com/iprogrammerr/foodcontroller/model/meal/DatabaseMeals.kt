@@ -36,10 +36,11 @@ class DatabaseMeals(private val database: Database) : Meals {
                             r.double("protein")
                         )
                     )
-                    if (rs.hasNext()) {
-                        r = rs.next()
+                    if (!rs.hasNext()) {
+                        break
                     }
-                } while (rs.hasNext())
+                    r = rs.next()
+                } while (true)
             }
             DatabaseMeal(id, this.database, r.long("time"), food)
         }
