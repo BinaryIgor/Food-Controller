@@ -47,4 +47,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">1</item>
     </style>
+
+    <style name="PopUpStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@android:color/background_dark</item>
+        <item name="android:itemBackground">@drawable/drop_down_popup_item</item>
+        <item name="android:layout_marginEnd">@dimen/dpLarge</item>
+    </style>
 </resources>
