@@ -23,17 +23,21 @@ import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
 import com.iprogrammerr.foodcontroller.view.items.IdWithActionTarget
 import com.iprogrammerr.foodcontroller.view.items.MealsView
+import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
+import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.DayViewModel
 import kotlin.math.roundToInt
 
-class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDialog.Target {
+class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDialog.Target, MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentDayBinding
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(
             this,
-            DayViewModel.factory(this.arguments?.getLong("date", System.currentTimeMillis()) ?: System.currentTimeMillis())
+            DayViewModel.factory(this.arguments?.getLong("date", System.currentTimeMillis())
+                ?: System.currentTimeMillis())
         ).get(DayViewModel::class.java)
     }
 
@@ -91,7 +95,6 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         this.binding.proteinProgress.max = goals.protein().roundToInt()
         this.binding.proteinProgress.progress = values.protein().roundToInt()
         this.binding.proteinValue.text = "${values.protein().roundToInt()}/${goals.protein().roundToInt()}"
-
     }
 
     private fun eatenValues(day: Day): NutritionalValues {
@@ -109,11 +112,11 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         }
     }
 
-    override fun hit(id: Long, action: IdWithActionTarget.Action) {
-        if (action == IdWithActionTarget.Action.EDIT) {
-            this.root.replace(MealFragment.withMealId(id), true)
-        } else if (action == IdWithActionTarget.Action.DELETE) {
-            this.arguments?.putLong("mealId", id)
+    override fun hit(item: Long, action: WithActionTarget.Action) {
+        if (action == WithActionTarget.Action.EDIT) {
+            this.root.replace(MealFragment.withMealId(item), true)
+        } else if (action == WithActionTarget.Action.DELETE) {
+            this.arguments?.putLong("mealId", item)
             TwoOptionsDialog.new(
                 getString(R.string.delete_meal_confirmation), getString(R.string.cancel),
                 getString(R.string.ok)
@@ -143,4 +146,12 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
                 }
             })
     }
+
+    override fun hit(message: Message) {
+        if (message == Message.MEALS_CHANGED) {
+            this.viewModel.refresh()
+        }
+    }
+
+    override fun isInterested(message: Message) = message == Message.MEALS_CHANGED
 }

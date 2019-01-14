@@ -15,6 +15,7 @@ import com.iprogrammerr.foodcontroller.databinding.FragmentFoodPortionBinding
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.NutritionalValuesFromView
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
+import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.model.scalar.IntFromView
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
@@ -34,15 +35,19 @@ class FoodPortionFragment : Fragment(), TextWatcher {
     }
 
     companion object {
-        fun new(id: Long, mealId: Long) =
-            withWeight(id, mealId, 100)
+        fun new(definitionId: Long, mealId: Long): FoodPortionFragment {
+            val fragment = withWeight(definitionId, mealId, 100)
+            fragment.arguments?.putBoolean("update", false)
+            return fragment
+        }
 
-        fun withWeight(id: Long, mealId: Long, weight: Int): FoodPortionFragment {
+        fun withWeight(definitionId: Long, mealId: Long, weight: Int): FoodPortionFragment {
             val fragment = FoodPortionFragment()
             val args = Bundle()
-            args.putLong("id", id)
+            args.putLong("id", definitionId)
             args.putLong("mealId", mealId)
             args.putInt("weight", weight)
+            args.putBoolean("update", true)
             fragment.arguments = args
             return fragment
         }
@@ -80,14 +85,22 @@ class FoodPortionFragment : Fragment(), TextWatcher {
             InformationDialog.new(getString(R.string.weight_invalid))
                 .show(this.childFragmentManager)
         } else {
-            this.viewModel.add(this.weight.value(), this.arguments!!.getLong("mealId"),
-                LifecycleCallback(this) { r ->
-                    if (r.isSuccess()) {
-                        this.root.propagate(Message.PORTION_ADDED)
-                    } else {
-                        ErrorDialog.new(r.exception()).show(this.childFragmentManager)
-                    }
-                })
+            val args = this.arguments as Bundle
+            if (args.getBoolean("update")) {
+                this.viewModel.update(this.weight.value(), args.getLong("mealId"),
+                    LifecycleCallback(this) { r -> onPortionsChanged(r) })
+            } else {
+                this.viewModel.add(this.weight.value(), args.getLong("mealId"),
+                    LifecycleCallback(this) { r -> onPortionsChanged(r) })
+            }
+        }
+    }
+
+    private fun onPortionsChanged(result: Result<Boolean>) {
+        if (result.isSuccess()) {
+            this.root.propagate(Message.PORTIONS_CHANGED)
+        } else {
+            ErrorDialog.new(result.exception()).show(this.childFragmentManager)
         }
     }
 

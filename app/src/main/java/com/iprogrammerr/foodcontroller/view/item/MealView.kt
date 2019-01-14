@@ -6,6 +6,7 @@ import com.iprogrammerr.foodcontroller.databinding.ItemMealBinding
 import com.iprogrammerr.foodcontroller.model.meal.Meal
 import com.iprogrammerr.foodcontroller.view.EditDeletePopup
 import com.iprogrammerr.foodcontroller.view.items.IdWithActionTarget
+import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
 import java.util.*
 
 class MealView(private val binding: ItemMealBinding, private val target: IdWithActionTarget) :
@@ -24,8 +25,8 @@ class MealView(private val binding: ItemMealBinding, private val target: IdWithA
         this.binding.root.setOnClickListener {
             EditDeletePopup(
                 this.binding.root,
-                { this.target.hit(item.id(), IdWithActionTarget.Action.EDIT) },
-                { this.target.hit(item.id(), IdWithActionTarget.Action.DELETE) }
+                { this.target.hit(item.id(), WithActionTarget.Action.EDIT) },
+                { this.target.hit(item.id(), WithActionTarget.Action.DELETE) }
             ).show()
         }
     }

@@ -39,6 +39,7 @@ class DayViewModel(
 
     fun day(callback: Callback<Day>) {
         this.asynchronous.execute({
+            println("Has day = ${this.day.value()}")
             this.day.value()
         }, callback)
     }
@@ -56,5 +57,9 @@ class DayViewModel(
             this.day.unstick()
             true
         }, callback)
+    }
+
+    fun refresh() {
+        this.day.unstick()
     }
 }

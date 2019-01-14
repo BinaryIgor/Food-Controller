@@ -5,12 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
-import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.meal.Meal
 import com.iprogrammerr.foodcontroller.view.item.FoodView
 import com.iprogrammerr.foodcontroller.view.item.SummaryView
 
-class MealFoodView(private val meal: Meal, private val target: IdTarget) :
+class MealFoodView(private val meal: Meal, private val target: FoodWithActionTarget) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val food = 1
@@ -19,11 +18,11 @@ class MealFoodView(private val meal: Meal, private val target: IdTarget) :
     override fun onCreateViewHolder(group: ViewGroup,
         type: Int): RecyclerView.ViewHolder = when (type) {
         this.food -> FoodView(DataBindingUtil.inflate(
-                LayoutInflater.from(group.context),
-                R.layout.item_food,
-                group,
-                false
-            ), this.target
+            LayoutInflater.from(group.context),
+            R.layout.item_food,
+            group,
+            false
+        ), this.target
         )
         this.summary -> SummaryView(
             DataBindingUtil.inflate(
@@ -37,8 +36,8 @@ class MealFoodView(private val meal: Meal, private val target: IdTarget) :
     }
 
     override fun getItemCount() = when {
-        this.meal.food().isEmpty() -> 0
-        else -> this.meal.food().size + 1
+        this.meal.food().size > 1 -> this.meal.food().size + 1
+        else -> this.meal.food().size
     }
 
     override fun onBindViewHolder(view: RecyclerView.ViewHolder, position: Int) {

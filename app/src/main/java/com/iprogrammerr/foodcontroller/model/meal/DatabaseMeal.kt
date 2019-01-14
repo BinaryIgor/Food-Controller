@@ -52,12 +52,9 @@ class DatabaseMeal(private val id: Long, private val database: Database) :
         var calories = 0.0
         var protein = 0.0
         for (f in this.food) {
-            calories += f.calories()
-            protein += f.protein()
-        }
-        if (this.food.size > 0) {
-            calories /= this.food.size
-            protein /= this.food.size
+            val v = f.values()
+            calories += v.calories()
+            protein += v.protein()
         }
         return object : NutritionalValues {
 
@@ -69,7 +66,7 @@ class DatabaseMeal(private val id: Long, private val database: Database) :
 
     override fun removeFood(id: Long) {
         this.database.delete(
-            "food_meal", "meal_id = ${this.id} and food_id = $id"
+            "food_meal", "meal_id = ${this.id} AND food_id = $id"
         )
         this.loaded = false
     }
@@ -77,27 +74,33 @@ class DatabaseMeal(private val id: Long, private val database: Database) :
     private fun load() {
         val query =
             StringBuilder().append(
-                "SELECT time, f.id as f_id, f.weight, fd.name, fd.protein, fd.calories ")
-                .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
-                .append("INNER JOIN food f ON fm.food_id = f.id ")
-                .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
+                "SELECT time, f.id as f_id, f.weight, fd.id as fd_id, fd.name, fd.protein, fd.calories ")
+                .append("FROM meal m LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
+                .append("LEFT JOIN food f ON fm.food_id = f.id ")
+                .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
                 .append("WHERE m.id = ${this.id}")
         this.food.clear()
         this.database.query(query.toString()).use { rs ->
             var r = rs.next()
             this.time = r.long("time")
-            while (rs.hasNext()) {
-                this.food.add(
-                    DatabaseFood(
-                        r.long("f_id"),
-                        this.database,
-                        r.string("name"),
-                        r.int("weight"),
-                        r.int("protein"),
-                        r.double("calories")
+            if (r.has("f_id")) {
+                do {
+                    this.food.add(
+                        DatabaseFood(
+                            r.long("f_id"),
+                            this.database,
+                            r.string("name"),
+                            r.int("weight"),
+                            r.int("protein"),
+                            r.double("calories"),
+                            r.long("fd_id")
+                        )
                     )
-                )
-                r = rs.next()
+                    if (!rs.hasNext()) {
+                        break
+                    }
+                    r = rs.next()
+                } while (true)
             }
             this.loaded = true
         }
