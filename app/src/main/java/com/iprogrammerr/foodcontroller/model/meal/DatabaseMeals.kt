@@ -15,7 +15,7 @@ class DatabaseMeals(private val database: Database) : Meals {
     override fun meal(id: Long): Meal {
         return this.database.query(
             StringBuilder().append(
-                "SELECT m.id as m_id, time, f.id as f_id, f.weight, fd.name, fd.protein, fd.calories ")
+                "SELECT m.id as m_id, time, f.id as f_id, f.weight, f.definition_id, fd.name, fd.protein, fd.calories ")
                 .append("FROM meal m LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
                 .append("LEFT JOIN food f ON fm.food_id = f.id ")
                 .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
@@ -33,7 +33,8 @@ class DatabaseMeals(private val database: Database) : Meals {
                             r.string("name"),
                             r.int("weight"),
                             r.int("calories"),
-                            r.double("protein")
+                            r.double("protein"),
+                            r.long("definition_id")
                         )
                     )
                     if (!rs.hasNext()) {

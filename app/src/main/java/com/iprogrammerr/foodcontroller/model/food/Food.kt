@@ -1,5 +1,7 @@
 package com.iprogrammerr.foodcontroller.model.food
 
+import com.iprogrammerr.foodcontroller.model.NutritionalValues
+
 interface Food {
 
     fun id(): Long
@@ -8,7 +10,7 @@ interface Food {
 
     fun weight(): Int
 
-    fun calories(): Int
+    fun values(): NutritionalValues
 
-    fun protein(): Double
+    fun definition(): FoodDefinition
 }

@@ -22,14 +22,13 @@ class DatabaseDays(private val database: Database) : Days {
             StringBuilder()
                 .append(
                     "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
-                .append(
-                    "m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, fd.name, fd.calories, fd.protein ")
+                .append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
+                .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
                 .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
                 .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
                 .append("LEFT JOIN food f ON fm.food_id = f.id ")
                 .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
-                .append("WHERE date ")
-                .append(">= ${dayStart(date)} AND date <= ${dayEnd(date)} LIMIT 1")
+                .append("WHERE date >= ${dayStart(date)} AND date <= ${dayEnd(date)}")
                 .toString()
         ).use { r ->
             day(r)
@@ -52,7 +51,7 @@ class DatabaseDays(private val database: Database) : Days {
                         DatabaseFood(
                             row.long("f_id"), this.database, row.string("name"),
                             row.int("f_weight"), row.int("calories"),
-                            row.double("protein")
+                            row.double("protein"), row.long("fd_id")
                         )
                     )
                     if (rows.hasNext()) {

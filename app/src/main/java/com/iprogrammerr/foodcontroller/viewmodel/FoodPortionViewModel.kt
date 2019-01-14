@@ -2,6 +2,7 @@ package com.iprogrammerr.foodcontroller.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.iprogrammerr.foodcontroller.ObjectsPool
 import com.iprogrammerr.foodcontroller.model.Asynchronous
 import com.iprogrammerr.foodcontroller.model.food.Food
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
@@ -9,7 +10,6 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.food.Portions
 import com.iprogrammerr.foodcontroller.model.meal.Meals
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.ObjectsPool
 import kotlin.math.roundToInt
 
 class FoodPortionViewModel(
@@ -68,6 +68,21 @@ class FoodPortionViewModel(
                     this.portions.create(this.definitionId, newWeight)
                 }
                 this.portions.update(previous[0].id(), mealId, this.definitionId, newWeight)
+            }
+            true
+        }, callback)
+    }
+
+    fun update(weight: Int, mealId: Long, callback: Callback<Boolean>) {
+        this.asynchronous.execute({
+            if (!this.portions.exists(this.definitionId, weight)) {
+                this.portions.create(this.definitionId, weight)
+            }
+            val previous = previousMealFood(mealId)
+            if (previous.isEmpty()) {
+                this.portions.add(this.definitionId, weight, mealId)
+            } else {
+                this.portions.update(previous[0].id(), mealId, this.definitionId, weight)
             }
             true
         }, callback)

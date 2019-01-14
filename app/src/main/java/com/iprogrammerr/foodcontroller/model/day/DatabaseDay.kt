@@ -94,7 +94,8 @@ class DatabaseDay(
         this.database.query(
             StringBuilder()
                 .append(
-                    "SELECT m.id as m_id, m.time, f.id as f_id, f.weight, fd.name, fd.calories, fd.protein ")
+                    "SELECT m.id as m_id, m.time, f.id as f_id, f.weight, ")
+                .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
                 .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
                 .append("INNER JOIN food f ON f.id = fm.food_id ")
                 .append("INNER JOIN food_definition fd on f.definition_id = fd.id ")
@@ -116,7 +117,7 @@ class DatabaseDay(
                         DatabaseFood(
                             row.long("f_id"), this.database, row.string("name"),
                             row.int("f_weight"), row.int("protein"),
-                            row.double("calories")
+                            row.double("calories"), row.long("fd_id")
                         )
                     )
                     row = rs.next()

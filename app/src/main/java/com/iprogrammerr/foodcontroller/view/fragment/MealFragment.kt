@@ -11,20 +11,21 @@ import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMealBinding
-import com.iprogrammerr.foodcontroller.model.IdTarget
-import com.iprogrammerr.foodcontroller.model.meal.Meal
+import com.iprogrammerr.foodcontroller.model.food.Food
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.scalar.HourMinutes
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.TimeDialog
 import com.iprogrammerr.foodcontroller.view.dialog.TimeTarget
+import com.iprogrammerr.foodcontroller.view.items.FoodWithActionTarget
 import com.iprogrammerr.foodcontroller.view.items.MealFoodView
+import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MealViewModel
 
-class MealFragment : Fragment(), TimeTarget, MessageTarget {
+class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMealBinding
@@ -66,7 +67,6 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget {
         }
     }
 
-    //TODO setup time picker, get data from view model
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
@@ -103,7 +103,8 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget {
                     this.binding.timeLayout.setOnClickListener {
                         TimeDialog.new(r.value().time()).show(this.childFragmentManager)
                     }
-                    setupFoodView(r.value())
+                    this.binding.food.layoutManager = LinearLayoutManager(this.context)
+                    this.binding.food.adapter = MealFoodView(r.value(), this)
                 } else {
                     ErrorDialog.new(r.exception()).show(this.childFragmentManager)
                 }
@@ -117,16 +118,6 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget {
         }
     }
 
-    private fun setupFoodView(meal: Meal) {
-        this.binding.food.layoutManager = LinearLayoutManager(this.context)
-        this.binding.food.adapter = MealFoodView(meal, object : IdTarget {
-
-            override fun hit(id: Long) {
-                //TODO reimplement this interface to allow popup menu with edit/delete
-            }
-        })
-    }
-
     override fun hit(time: Long) {
         this.binding.timeValue.text = HourMinutes(time).value()
         if (hasMeal()) {
@@ -137,17 +128,40 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget {
                 }
             })
         } else {
-            this.arguments!!.putLong("time", time)
+            this.arguments?.putLong("time", time)
         }
     }
 
     override fun hit(message: Message) {
-        if (message == Message.PORTION_ADDED) {
+        if (message == Message.PORTIONS_CHANGED) {
             this.viewModel.refresh()
+            this.root.propagate(Message.MEALS_CHANGED)
         }
     }
 
-    override fun isInterested(message: Message) = message == Message.PORTION_ADDED
+    override fun isInterested(message: Message) = message == Message.PORTIONS_CHANGED
 
     private fun hasMeal() = this.mealId != -1L
+
+    override fun hit(item: Food, action: WithActionTarget.Action) {
+        if (action == WithActionTarget.Action.EDIT) {
+            this.root.replace(
+                FoodPortionFragment.withWeight(item.definition().id(), this.mealId, item.weight()), true
+            )
+        } else {
+            this.viewModel.removeFood(item.id(), LifecycleCallback(this) { r1 ->
+                if (r1.isSuccess()) {
+                    this.viewModel.meal(LifecycleCallback(this) { r2 ->
+                        if (r2.isSuccess()) {
+                            this.binding.food.adapter = MealFoodView(r2.value(), this)
+                        } else {
+                            ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
+                        }
+                    })
+                } else {
+                    ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
+                }
+            })
+        }
+    }
 }

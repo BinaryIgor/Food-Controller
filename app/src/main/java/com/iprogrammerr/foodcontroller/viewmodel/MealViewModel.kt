@@ -15,10 +15,6 @@ class MealViewModel(
     private val meals: Meals
 ) : ViewModel() {
 
-    constructor(asynchronous: Asynchronous, meals: Meals) : this(
-        asynchronous, -1, meals
-    )
-
     constructor(id: Long) : this(
         ObjectsPool.single(Asynchronous::class.java),
         id,

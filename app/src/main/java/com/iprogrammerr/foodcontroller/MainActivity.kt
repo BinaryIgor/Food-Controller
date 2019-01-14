@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     private fun resolveMessage(message: Message, target: MessageTarget) {
-        if (message == Message.PORTION_ADDED) {
+        if (message == Message.PORTIONS_CHANGED) {
             this.supportFragmentManager.popBackStack(MealFragment::class.java.simpleName, 0)
         }
         target.hit(message)
