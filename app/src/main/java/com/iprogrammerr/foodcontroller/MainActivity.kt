@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     override fun propagate(message: Message) {
-        for (i in 0..this.supportFragmentManager.backStackEntryCount) {
+        for (i in 0 until this.supportFragmentManager.backStackEntryCount) {
             val fragment = this.supportFragmentManager
                 .findFragmentByTag(
                     this.supportFragmentManager.getBackStackEntryAt(i).name

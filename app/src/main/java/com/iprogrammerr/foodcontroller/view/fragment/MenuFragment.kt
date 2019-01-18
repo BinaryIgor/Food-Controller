@@ -15,9 +15,11 @@ import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
+import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MenuViewModel
 
-class MenuFragment : Fragment(), WeightTarget {
+class MenuFragment : Fragment(), WeightTarget, MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMenuBinding
@@ -30,7 +32,8 @@ class MenuFragment : Fragment(), WeightTarget {
         this.root = context as RootView
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         this.root.changeTitle(getString(R.string.menu))
         this.binding.day.setOnClickListener { this.root.replace(DayFragment(), true) }
@@ -78,4 +81,12 @@ class MenuFragment : Fragment(), WeightTarget {
             }
         })
     }
+
+    override fun hit(message: Message) {
+        if (message == Message.DAY_DELETED) {
+            this.viewModel.refresh()
+        }
+    }
+
+    override fun isInterested(message: Message) = message == Message.DAY_DELETED
 }

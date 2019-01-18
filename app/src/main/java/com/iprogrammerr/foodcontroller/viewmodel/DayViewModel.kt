@@ -17,6 +17,8 @@ class DayViewModel(
     private val meals: Meals
 ) : ViewModel() {
 
+    private val day = StickyScalar { this.days.day(date) }
+
     companion object {
         fun factory(date: Long) = object : ViewModelProvider.NewInstanceFactory() {
 
@@ -35,11 +37,8 @@ class DayViewModel(
         }
     }
 
-    private val day = StickyScalar { this.days.day(date) }
-
     fun day(callback: Callback<Day>) {
         this.asynchronous.execute({
-            println("Has day = ${this.day.value()}")
             this.day.value()
         }, callback)
     }
@@ -47,6 +46,13 @@ class DayViewModel(
     fun changeWeight(weight: Double, callback: Callback<Boolean>) {
         this.asynchronous.execute({
             this.day.value().changeWeight(weight)
+            true
+        }, callback)
+    }
+
+    fun deleteDay(callback: Callback<Boolean>) {
+        this.asynchronous.execute({
+            this.days.delete(this.day.value().id())
             true
         }, callback)
     }
