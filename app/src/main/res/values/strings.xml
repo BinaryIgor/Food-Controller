@@ -65,5 +65,6 @@
 
     <!--day-->
     <string name="delete_meal_confirmation">Czy na pewno chcesz usunąć wybrany posiłek?</string>
+    <string name="delete_day_confirmation">Czy na pewno chcesz usunąć dany dzień?</string>
     <!--day-->
 </resources>

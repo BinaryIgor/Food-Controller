@@ -36,16 +36,21 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(
             this,
-            DayViewModel.factory(this.arguments?.getLong("date", System.currentTimeMillis())
+            DayViewModel.factory(this.arguments?.getLong(DATE, System.currentTimeMillis())
                 ?: System.currentTimeMillis())
         ).get(DayViewModel::class.java)
     }
 
     companion object {
+
+        private const val DELETE_DAY = "deleteDay"
+        private const val DATE = "date"
+        private const val MEAL_ID = "mealId"
+
         fun new(date: Long): DayFragment {
             val fragment = DayFragment()
             val args = Bundle()
-            args.putLong("date", date)
+            args.putLong(DELETE_DAY, date)
             fragment.arguments = args
             return fragment
         }
@@ -116,7 +121,8 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         if (action == WithActionTarget.Action.EDIT) {
             this.root.replace(MealFragment.withMealId(item), true)
         } else if (action == WithActionTarget.Action.DELETE) {
-            this.arguments?.putLong("mealId", item)
+            this.arguments?.putLong(MEAL_ID, item)
+            this.arguments?.putBoolean(DELETE_DAY, false)
             TwoOptionsDialog.new(
                 getString(R.string.delete_meal_confirmation), getString(R.string.cancel),
                 getString(R.string.ok)
@@ -137,21 +143,34 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
     }
 
     override fun hitRight() {
-        this.viewModel.deleteMeal((this.arguments as Bundle).getLong("mealId"),
-            LifecycleCallback(this) { r1 ->
-                if (r1.isSuccess()) {
-                    this.viewModel.day(LifecycleCallback(this) { r2 -> onDayResult(r2) })
-                } else {
-                    ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
-                }
-            })
+        val args = this.arguments as Bundle
+        if (args.getBoolean(DELETE_DAY)) {
+
+        } else {
+            this.viewModel.deleteMeal((this.arguments as Bundle).getLong(MEAL_ID),
+                LifecycleCallback(this) { r1 ->
+                    if (r1.isSuccess()) {
+                        this.viewModel.day(LifecycleCallback(this) { r2 -> onDayResult(r2) })
+                    } else {
+                        ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
+                    }
+                })
+        }
     }
 
     override fun hit(message: Message) {
         if (message == Message.MEALS_CHANGED) {
             this.viewModel.refresh()
+        } else if (message == Message.DELETE_DAY_CLICKED) {
+            this.arguments?.putBoolean(DELETE_DAY, true)
+            TwoOptionsDialog.new(
+                getString(R.string.delete_day_confirmation),
+                getString(R.string.cancel),
+                getString(R.string.ok)
+            ).show(this.childFragmentManager)
         }
     }
 
-    override fun isInterested(message: Message) = message == Message.MEALS_CHANGED
+    override fun isInterested(message: Message) = message == Message.MEALS_CHANGED ||
+        message == Message.DELETE_DAY_CLICKED
 }
