@@ -6,7 +6,9 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.iprogrammerr.foodcontroller.databinding.ActivityMainBinding
+import com.iprogrammerr.foodcontroller.view.DeletePopup
 import com.iprogrammerr.foodcontroller.view.RootView
+import com.iprogrammerr.foodcontroller.view.fragment.DayFragment
 import com.iprogrammerr.foodcontroller.view.fragment.MealFragment
 import com.iprogrammerr.foodcontroller.view.fragment.MenuFragment
 import com.iprogrammerr.foodcontroller.view.message.Message
@@ -26,7 +28,15 @@ class MainActivity : AppCompatActivity(), RootView {
             if (this.supportFragmentManager.backStackEntryCount > 0)
                 onBackPressed()
         }
-        this.supportFragmentManager.addOnBackStackChangedListener { resolveBackVisibility() }
+        this.supportFragmentManager.addOnBackStackChangedListener {
+            resolveBackVisibility()
+            resolveMoreVisibility()
+        }
+        this.binding.more.setOnClickListener {
+            DeletePopup(this.binding.toolbar) {
+                propagate(Message.DELETE_DAY_CLICKED)
+            }.show()
+        }
     }
 
     override fun onStart() {
@@ -39,6 +49,17 @@ class MainActivity : AppCompatActivity(), RootView {
             this.binding.back.visibility = View.INVISIBLE
         } else {
             this.binding.back.visibility = View.VISIBLE
+        }
+    }
+
+    private fun resolveMoreVisibility() {
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.fragment)
+        fragment?.let { f ->
+            if (f.tag == DayFragment::class.java.simpleName) {
+                this.binding.more.visibility = View.VISIBLE
+            } else {
+                this.binding.more.visibility = View.INVISIBLE
+            }
         }
     }
 
