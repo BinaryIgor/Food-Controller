@@ -145,7 +145,14 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
     override fun hitRight() {
         val args = this.arguments as Bundle
         if (args.getBoolean(DELETE_DAY)) {
-
+            this.viewModel.deleteDay(LifecycleCallback(this) { r ->
+                if (r.isSuccess()) {
+                    this.root.propagate(Message.DAY_DELETED)
+                    requireFragmentManager().popBackStack()
+                } else {
+                    ErrorDialog.new(r.exception()).show(this.childFragmentManager)
+                }
+            })
         } else {
             this.viewModel.deleteMeal((this.arguments as Bundle).getLong(MEAL_ID),
                 LifecycleCallback(this) { r1 ->

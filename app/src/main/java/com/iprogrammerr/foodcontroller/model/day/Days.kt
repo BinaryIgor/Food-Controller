@@ -9,4 +9,6 @@ interface Days {
     fun exists(date: Long): Boolean
 
     fun create(weight: Double, caloriesGoal: Int, proteinGoal: Int)
+
+    fun delete(id: Long)
 }

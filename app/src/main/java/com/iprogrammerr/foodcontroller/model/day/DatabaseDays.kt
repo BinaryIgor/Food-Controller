@@ -81,6 +81,10 @@ class DatabaseDays(private val database: Database) : Days {
         this.database.insert("day", values)
     }
 
+    override fun delete(id: Long) {
+        this.database.delete("day", "id = $id")
+    }
+
     private fun dayStart(date: Long) =
         dayWithOffset(date, 0, 0, 0, 0)
 
