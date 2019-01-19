@@ -72,5 +72,19 @@
     <string name="years">Lata</string>
     <string name="months">Miesiące</string>
     <string name="days">Dni</string>
+    <string-array name="months">
+        <item>Styczeń</item>
+        <item>Luty</item>
+        <item>Marzec</item>
+        <item>Kwiecień</item>
+        <item>Maj</item>
+        <item>Czerwiec</item>
+        <item>Lipiec</item>
+        <item>Sierpień</item>
+        <item>Wrzesień</item>
+        <item>Październik</item>
+        <item>Listopad</item>
+        <item>Grudzień</item>
+    </string-array>
     <!--history-->
 </resources>
