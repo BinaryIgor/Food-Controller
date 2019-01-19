@@ -13,6 +13,8 @@ interface Day {
 
     fun changeWeight(weight: Double)
 
+    fun changeGoals(calories: Int, protein: Int)
+
     fun goals(): NutritionalValues
 
     fun meals(): List<Meal>
