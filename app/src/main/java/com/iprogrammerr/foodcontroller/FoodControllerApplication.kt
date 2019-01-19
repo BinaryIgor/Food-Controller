@@ -19,6 +19,8 @@ import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.food.Portions
 import com.iprogrammerr.foodcontroller.model.goals.Goals
 import com.iprogrammerr.foodcontroller.model.goals.PreferencesGoals
+import com.iprogrammerr.foodcontroller.model.history.DatabaseHistory
+import com.iprogrammerr.foodcontroller.model.history.History
 import com.iprogrammerr.foodcontroller.model.meal.DatabaseMeals
 import com.iprogrammerr.foodcontroller.model.meal.Meals
 import org.json.JSONObject
@@ -50,6 +52,7 @@ class FoodControllerApplication : Application() {
         ObjectsPool.add(Days::class.java, days)
         ObjectsPool.add(Weight::class.java, LastWeight(database, 65.0))
         ObjectsPool.add(Meals::class.java, DatabaseMeals(database))
+        ObjectsPool.add(History::class.java, DatabaseHistory(database))
         ObjectsPool.add(Categories::class.java, categories)
         ObjectsPool.add(FoodDefinitions::class.java, DatabaseFoodDefinitions(database))
         ObjectsPool.add(Portions::class.java, DatabasePortions(database))
