@@ -72,6 +72,15 @@ class DatabaseDay(
         return this.attributes["weight"] as Double
     }
 
+    override fun changeGoals(calories: Int, protein: Int) {
+        val values = ContentValues()
+        values.put("calories_goal", calories)
+        values.put("protein_goal", protein)
+        this.database.update("day", "id = ${this.id}", values)
+        this.attributes["caloriesGoal"] = calories
+        this.attributes["proteinGoal"] = protein
+    }
+
     override fun changeWeight(weight: Double) {
         val values = ContentValues()
         values.put("weight", weight)
@@ -99,7 +108,8 @@ class DatabaseDay(
                 .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
                 .append("INNER JOIN food f ON f.id = fm.food_id ")
                 .append("INNER JOIN food_definition fd on f.definition_id = fd.id ")
-                .append("WHERE m.day_id = ${this.id}").toString()
+                .append("WHERE m.day_id = ${this.id}")
+                .toString()
         ).use { rs ->
             this.meals.clear()
             var row = rs.next()
