@@ -37,7 +37,7 @@ class MenuFragment : Fragment(), WeightTarget, MessageTarget {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         this.root.changeTitle(getString(R.string.menu))
         this.binding.day.setOnClickListener { this.root.replace(DayFragment(), true) }
-        this.binding.history.setOnClickListener { this.root.replace(HistoryFragment(), true) }
+        this.binding.history.setOnClickListener { this.root.replace(YearsFragment(), true) }
         this.binding.base.setOnClickListener { this.root.replace(CategoriesFragment(), true) }
         this.binding.goals.setOnClickListener { this.root.replace(GoalsFragment(), true) }
         this.viewModel.dayStarted(LifecycleCallback(this) { r ->

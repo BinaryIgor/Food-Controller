@@ -8,10 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
-import com.iprogrammerr.foodcontroller.databinding.FragmentHistoryBinding
+import com.iprogrammerr.foodcontroller.databinding.FragmentMonthsBinding
 import com.iprogrammerr.foodcontroller.view.RootView
 
-class HistoryFragment : Fragment() {
+class MonthsFragment : Fragment() {
 
     private lateinit var root: RootView
 
@@ -20,10 +20,12 @@ class HistoryFragment : Fragment() {
         this.root = context as RootView
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentHistoryBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-        this.root.changeTitle(getString(R.string.history))
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+        val binding: FragmentMonthsBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_months, container, false
+        )
+        this.root.changeTitle(getString(R.string.months))
         return binding.root
     }
 }
