@@ -131,8 +131,6 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         }
     }
 
-    override fun isInterested(message: Message) = message == Message.FOOD_DEFINITION_CHANGED
-
     override fun onDestroyView() {
         super.onDestroyView()
         this.binding.searchInput.removeTextChangedListener(this)

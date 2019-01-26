@@ -145,9 +145,6 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
         }
     }
 
-    override fun isInterested(message: Message) =
-        message == Message.FOOD_DEFINITION_MOVED || message == Message.FOOD_DEFINITION_CHANGED
-
     override fun onDestroyView() {
         super.onDestroyView()
         this.binding.searchInput.removeTextChangedListener(this)

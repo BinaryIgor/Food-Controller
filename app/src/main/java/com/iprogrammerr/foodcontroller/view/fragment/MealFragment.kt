@@ -139,8 +139,6 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
         }
     }
 
-    override fun isInterested(message: Message) = message == Message.PORTIONS_CHANGED
-
     private fun hasMeal() = this.mealId != -1L
 
     override fun hit(item: Food, action: WithActionTarget.Action) {
@@ -154,6 +152,7 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
                     this.viewModel.meal(LifecycleCallback(this) { r2 ->
                         if (r2.isSuccess()) {
                             this.binding.food.adapter = MealFoodView(r2.value(), this)
+                            this.root.propagate(Message.MEALS_CHANGED)
                         } else {
                             ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
                         }
