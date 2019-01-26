@@ -84,18 +84,11 @@ class MainActivity : AppCompatActivity(), RootView {
                     this.supportFragmentManager.getBackStackEntryAt(i).name
                 )
             if (fragment is MessageTarget) {
-                if (fragment.isInterested(message)) {
-                    resolveMessage(message, fragment)
-                    break
-                }
+                fragment.hit(message)
             }
         }
-    }
-
-    private fun resolveMessage(message: Message, target: MessageTarget) {
         if (message == Message.PORTIONS_CHANGED) {
             this.supportFragmentManager.popBackStack(MealFragment::class.java.simpleName, 0)
         }
-        target.hit(message)
     }
 }

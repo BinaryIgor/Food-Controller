@@ -36,8 +36,10 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(
             this,
-            DayViewModel.factory(this.arguments?.getLong(DATE, System.currentTimeMillis())
-                ?: System.currentTimeMillis())
+            DayViewModel.factory(
+                this.arguments?.getLong(DATE, System.currentTimeMillis())
+                    ?: System.currentTimeMillis()
+            )
         ).get(DayViewModel::class.java)
     }
 
@@ -94,7 +96,8 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         this.binding.caloriesProgress.progress = values.calories()
         if (values.calories() > goals.calories()) {
             this.binding.caloriesValue.setTextColor(
-                ContextCompat.getColor(this.context as Context, R.color.invalid))
+                ContextCompat.getColor(this.context as Context, R.color.invalid)
+            )
         }
         this.binding.caloriesValue.text = "${values.calories()}/${goals.calories()}"
         this.binding.proteinProgress.max = goals.protein().roundToInt()
@@ -177,7 +180,4 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
             ).show(this.childFragmentManager)
         }
     }
-
-    override fun isInterested(message: Message) = message == Message.MEALS_CHANGED ||
-        message == Message.DELETE_DAY_CLICKED
 }

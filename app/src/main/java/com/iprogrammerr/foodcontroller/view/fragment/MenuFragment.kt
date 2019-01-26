@@ -87,6 +87,4 @@ class MenuFragment : Fragment(), WeightTarget, MessageTarget {
             this.viewModel.refresh()
         }
     }
-
-    override fun isInterested(message: Message) = message == Message.DAY_DELETED
 }
