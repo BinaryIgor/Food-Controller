@@ -51,17 +51,15 @@ class DaysViewModel(
         this.asynchronous.execute({
             var calories = 0
             var protein = 0.0
-            var average = 1
             for (d in this.days.value()) {
                 for (m in d.meals()) {
                     val values = m.nutritionalValues()
                     calories += values.calories()
                     protein += values.protein()
                 }
-                average += d.meals().size
             }
-            calories /= average
-            protein /= average
+            calories /= this.days.value().size
+            protein /= this.days.value().size
             object : NutritionalValues {
 
                 override fun calories() = calories
