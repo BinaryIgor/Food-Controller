@@ -17,6 +17,8 @@ import com.iprogrammerr.foodcontroller.model.food.DatabaseFoodDefinitions
 import com.iprogrammerr.foodcontroller.model.food.DatabasePortions
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.food.Portions
+import com.iprogrammerr.foodcontroller.model.format.Formats
+import com.iprogrammerr.foodcontroller.model.format.UiFormats
 import com.iprogrammerr.foodcontroller.model.goals.Goals
 import com.iprogrammerr.foodcontroller.model.goals.PreferencesGoals
 import com.iprogrammerr.foodcontroller.model.history.DatabaseHistory
@@ -60,5 +62,6 @@ class FoodControllerApplication : Application() {
             Goals::class.java,
             PreferencesGoals(PreferenceManager.getDefaultSharedPreferences(this), 70.0, 2500, 100)
         )
+        ObjectsPool.add(Formats::class.java, UiFormats())
     }
 }

@@ -13,63 +13,81 @@ import kotlin.collections.ArrayList
 class DatabaseDays(private val database: Database) : Days {
 
     override fun range(from: Long, to: Long): List<Day> {
-        TODO(
-            "not implemented"
-        ) //To change body of created functions use File | Settings | File Templates.
+        return this.database.query(
+            daysQuery(from, to)
+        ).use { rs ->
+            val days = ArrayList<Day>()
+            rs.next()
+            do {
+                val day = day(rs)
+                days.add(day)
+            } while (rs.current().long("d_id") != day.id())
+            days
+        }
     }
+
+    private fun daysQuery(start: Long, end: Long) =
+        StringBuilder(
+            "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, "
+        ).append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
+            .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
+            .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
+            .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
+            .append("LEFT JOIN food f ON fm.food_id = f.id ")
+            .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
+            .append("WHERE date >= ${dayStart(start)} AND date <= ${dayEnd(end)} ")
+            .append("ORDER BY date ASC")
+            .toString()
 
     override fun day(date: Long): Day {
         return this.database.query(
-            StringBuilder("SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
-                .append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
-                .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
-                .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
-                .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
-                .append("LEFT JOIN food f ON fm.food_id = f.id ")
-                .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
-                .append("WHERE date >= ${dayStart(date)} AND date <= ${dayEnd(date)}")
-                .toString()
+            daysQuery(date, date)
         ).use { r ->
+            r.next()
             day(r)
         }
     }
 
     private fun day(rows: Rows): Day {
+        var row = rows.current()
+        val id = row.long("d_id")
+        val date = row.long("date")
+        val weight = row.double("d_weight")
+        val caloriesGoal = row.int("calories_goal")
+        val proteinGoal = row.int("protein_goal")
         val meals: MutableList<Meal> = ArrayList()
-        var row = rows.next()
         if (row.has("f_id")) {
-            var food: MutableList<Food> = ArrayList()
-            var previousId = row.long("m_id")
             do {
-                val mealId = row.long("m_id")
-                val time = row.long("time")
-                if (mealId != previousId) {
-                    meals.add(DatabaseMeal(mealId, this.database, time, food))
-                    food = ArrayList()
-                }
-                food.add(
-                    ConstantFood(
-                        row.long("f_id"),
-                        row.string("name"),
-                        row.int("f_weight"),
-                        row.int("calories"),
-                        row.double("protein"),
-                        row.long("fd_id")
-                    )
-                )
-                if (!rows.hasNext()) {
-                    meals.add(DatabaseMeal(mealId, this.database, time, food))
-                    break
-                }
-                previousId = mealId
-                row = rows.next()
-            } while (true)
+                val meal = meal(rows)
+                meals.add(meal)
+                row = rows.current()
+            } while (row.long("d_id") == id && meal.id() != row.long("m_id"))
         }
-        return DatabaseDay(
-            row.long("d_id"),
-            this.database, row.long("date"), row.double("d_weight"),
-            row.int("calories_goal"), row.int("protein_goal"), meals
-        )
+        return DatabaseDay(id, this.database, date, weight, caloriesGoal, proteinGoal, meals)
+    }
+
+    private fun meal(rows: Rows): Meal {
+        val food: MutableList<Food> = ArrayList()
+        var row = rows.current()
+        val id = row.long("m_id")
+        val time = row.long("time")
+        do {
+            val mealId = row.long("m_id")
+            if (mealId != id) {
+                break
+            }
+            food.add(
+                ConstantFood(
+                    row.long("f_id"), row.string("name"), row.int("f_weight"),
+                    row.int("calories"), row.double("protein"), row.long("fd_id")
+                )
+            )
+            if (!rows.hasNext()) {
+                break
+            }
+            row = rows.next()
+        } while (true)
+        return DatabaseMeal(id, this.database, time, food)
     }
 
     override fun exists(date: Long) = this.database

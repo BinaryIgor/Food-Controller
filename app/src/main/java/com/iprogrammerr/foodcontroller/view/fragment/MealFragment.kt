@@ -67,8 +67,10 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
         this.binding.add.setOnClickListener { addFoodOr() }
         setupTimeView()
@@ -125,6 +127,8 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
                 if (!r.isSuccess()) {
                     ErrorDialog.new(r.exception())
                         .show(this.childFragmentManager)
+                } else {
+                    this.root.propagate(Message.MEALS_CHANGED)
                 }
             })
         } else {

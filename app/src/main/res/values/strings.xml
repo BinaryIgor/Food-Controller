@@ -16,13 +16,15 @@
     <string name="cancel">Anuluj</string>
     <string name="ok">Ok</string>
     <string name="kg">kg</string>
+    <string name="g">g</string>
     <string name="calories">Kalorie</string>
     <string name="protein">Białko</string>
+    <string name="protein_g">Białko(g)</string>
     <string name="weight">Waga</string>
     <string name="add">Dodaj</string>
     <string name="colon">:</string>
     <string name="meal_number">Posiłek %s</string>
-    <string name="time_template">%d:%d</string>
+    <string name="time_template">%02d:%02d</string>
     <string name="day">Dzień</string>
     <string name="name">Nazwa</string>
     <string name="save">Zapisz</string>
@@ -42,6 +44,7 @@
     <string name="ten">10</string>
     <string name="hundred">100</string>
     <string name="choose">Wybierz</string>
+    <string name="average_consumption">Średnie spożycie</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>

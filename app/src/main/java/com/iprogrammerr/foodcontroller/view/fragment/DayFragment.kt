@@ -52,7 +52,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         fun new(date: Long): DayFragment {
             val fragment = DayFragment()
             val args = Bundle()
-            args.putLong(DELETE_DAY, date)
+            args.putLong(DATE, date)
             fragment.arguments = args
             return fragment
         }
@@ -88,7 +88,6 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         }
     }
 
-    //TODO update goals?
     private fun drawProgress(day: Day) {
         val values = eatenValues(day)
         val goals = day.goals()
@@ -166,6 +165,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
                     }
                 })
         }
+        this.root.propagate(Message.DAYS_CHANGED)
     }
 
     override fun hit(message: Message) {
