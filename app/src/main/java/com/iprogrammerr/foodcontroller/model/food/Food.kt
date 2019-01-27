@@ -12,5 +12,5 @@ interface Food {
 
     fun values(): NutritionalValues
 
-    fun definition(): FoodDefinition
+    fun definitionId(): Long
 }

@@ -27,8 +27,11 @@ class DatabaseFoodDefinitions(private val database: Database) : FoodDefinitions 
     }
 
     private fun definition(row: Row) = DatabaseFoodDefinition(
-        row.long("id"), this.database, row.string("name"),
-        row.int("calories"), row.double("protein"), row.long("category_id")
+        row.long("id"),
+        this.database,
+        row.string("name"),
+        row.int("calories"),
+        row.double("protein")
     )
 
     override fun definition(id: Long): FoodDefinition {
@@ -40,8 +43,7 @@ class DatabaseFoodDefinitions(private val database: Database) : FoodDefinitions 
 
     override fun delete(id: Long) {
         val usage = this.database.query(
-            StringBuilder()
-                .append("SELECT COUNT(*) c from food_definition fd ")
+            StringBuilder("SELECT COUNT(*) c from food_definition fd ")
                 .append("INNER JOIN food f on fd.id = f.definition_id ")
                 .append("INNER JOIN food_meal fm on f.id = fm.food_id ")
                 .append("WHERE fd.id = $id")
