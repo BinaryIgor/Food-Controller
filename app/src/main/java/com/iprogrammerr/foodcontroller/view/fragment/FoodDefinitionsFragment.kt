@@ -20,9 +20,11 @@ class FoodDefinitionsFragment : Fragment() {
         this.root = context as RootView
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentFoodDefinitionsBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_food_definitions, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+        val binding: FragmentFoodDefinitionsBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_food_definitions, container, false
+        )
         this.root.changeTitle(getString(R.string.products))
         return binding.root
     }

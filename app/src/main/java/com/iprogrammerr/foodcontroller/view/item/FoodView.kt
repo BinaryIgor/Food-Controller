@@ -9,9 +9,10 @@ import com.iprogrammerr.foodcontroller.view.items.FoodWithActionTarget
 import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
 import kotlin.math.roundToInt
 
-class FoodView(private val binding: ItemFoodBinding, private val target: FoodWithActionTarget) :
-    RecyclerView.ViewHolder(binding.root),
-    Drawable<Food> {
+class FoodView(
+    private val binding: ItemFoodBinding,
+    private val target: FoodWithActionTarget
+) : RecyclerView.ViewHolder(binding.root), Drawable<Food> {
 
     override fun draw(item: Food) {
         this.binding.name.text = item.name()

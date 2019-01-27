@@ -4,6 +4,10 @@ import android.database.Cursor
 
 class DatabaseRows(private val cursor: Cursor) : Rows {
 
+    override fun current(): Row {
+        return DatabaseRow(this.cursor)
+    }
+
     override fun next(): Row {
         this.cursor.moveToNext()
         return DatabaseRow(this.cursor)

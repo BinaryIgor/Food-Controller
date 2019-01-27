@@ -66,8 +66,9 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        this.binding =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_category_food_definitions, container, false)
+        this.binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_category_food_definitions, container, false
+        )
         this.binding.food.layoutManager = LinearLayoutManager(this.context)
         drawAllOrFiltered()
         this.binding.add.setOnClickListener {

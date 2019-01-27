@@ -13,30 +13,48 @@ import kotlin.collections.ArrayList
 class DatabaseDays(private val database: Database) : Days {
 
     override fun range(from: Long, to: Long): List<Day> {
-        TODO(
-            "not implemented"
-        ) //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun day(date: Long): Day {
         return this.database.query(
-            StringBuilder("SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
-                .append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
-                .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
-                .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
-                .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
-                .append("LEFT JOIN food f ON fm.food_id = f.id ")
-                .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
-                .append("WHERE date >= ${dayStart(date)} AND date <= ${dayEnd(date)}")
-                .toString()
-        ).use { r ->
-            day(r)
+            daysQuery(from, to)
+        ).use { rs ->
+            val days = ArrayList<Day>()
+            var id = rs.next().long("d_id")
+            do{
+                days.add(day(rs)
+                {
+                    rs.current().long("d_id") == id
+                }
+                )
+                id = rs.current().long("d_id")
+            } while (false)
+            days
         }
     }
 
-    private fun day(rows: Rows): Day {
+    private fun daysQuery(start: Long, end: Long) =
+        StringBuilder(
+            "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
+            .append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
+            .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
+            .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
+            .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
+            .append("LEFT JOIN food f ON fm.food_id = f.id ")
+            .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
+            .append("WHERE date >= ${dayStart(start)} AND date <= ${dayEnd(end)} ")
+            .append("ORDER BY date ASC")
+            .toString()
+
+    override fun day(date: Long): Day {
+        return this.database.query(
+            daysQuery(date, date)
+        ).use { r ->
+            r.next()
+            day(r) { true }
+        }
+    }
+
+    private fun day(rows: Rows, condition: () -> Boolean): Day {
         val meals: MutableList<Meal> = ArrayList()
-        var row = rows.next()
+        var row = rows.current()
         if (row.has("f_id")) {
             var food: MutableList<Food> = ArrayList()
             var previousId = row.long("m_id")
@@ -63,7 +81,7 @@ class DatabaseDays(private val database: Database) : Days {
                 }
                 previousId = mealId
                 row = rows.next()
-            } while (true)
+            } while (condition())
         }
         return DatabaseDay(
             row.long("d_id"),
