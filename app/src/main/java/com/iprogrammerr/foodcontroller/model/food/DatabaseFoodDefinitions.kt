@@ -7,23 +7,39 @@ import com.iprogrammerr.foodcontroller.database.Row
 class DatabaseFoodDefinitions(private val database: Database) : FoodDefinitions {
 
     override fun create(name: String, calories: Int, protein: Double, categoryId: Long) {
+        val previous = this.database.query(
+            "SELECT id FROM food_definition WHERE name = '$name' AND deleted = 1"
+        ).use { rs ->
+            val row = rs.next()
+            if (row.has("id")) {
+                row.long("id")
+            } else {
+                -1L
+            }
+        }
         val values = ContentValues()
         values.put("name", name)
         values.put("calories", calories)
         values.put("protein", protein)
         values.put("category_id", categoryId)
-        this.database.insert("food_definition", values)
+        if (previous < 0) {
+            this.database.insert("food_definition", values)
+        } else {
+            values.put("deleted", 0)
+            this.database.update("food_definition", "id = $previous", values)
+        }
     }
 
     override fun all(): List<FoodDefinition> {
-        return this.database.query("SELECT * from food_definition ORDER BY name ASC")
-            .use { rs ->
-                val food: MutableList<FoodDefinition> = ArrayList()
-                while (rs.hasNext()) {
-                    food.add(definition(rs.next()))
-                }
-                food
+        return this.database.query(
+            "SELECT * from food_definition WHERE deleted = 0 ORDER BY name ASC"
+        ).use { rs ->
+            val food: MutableList<FoodDefinition> = ArrayList()
+            while (rs.hasNext()) {
+                food.add(definition(rs.next()))
             }
+            food
+        }
     }
 
     private fun definition(row: Row) = DatabaseFoodDefinition(

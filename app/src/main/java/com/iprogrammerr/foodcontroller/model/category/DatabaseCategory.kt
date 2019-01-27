@@ -35,23 +35,24 @@ class DatabaseCategory(private val id: Long, private val database: Database) : C
     }
 
     override fun food(): List<FoodDefinition> {
-        return this.database.query("select * from food_definition where category_id = ${this.id}")
-            .use { rs ->
-                val products: MutableList<FoodDefinition> = ArrayList()
-                while (rs.hasNext()) {
-                    val r = rs.next()
-                    products.add(
-                        DatabaseFoodDefinition(
-                            r.long("id"),
-                            this.database,
-                            r.string("name"),
-                            r.int("calories"),
-                            r.double("protein")
-                        )
+        return this.database.query(
+            "SELECT * FROM food_definition WHERE category_id = ${this.id} AND deleted = 0"
+        ).use { rs ->
+            val products: MutableList<FoodDefinition> = ArrayList()
+            while (rs.hasNext()) {
+                val r = rs.next()
+                products.add(
+                    DatabaseFoodDefinition(
+                        r.long("id"),
+                        this.database,
+                        r.string("name"),
+                        r.int("calories"),
+                        r.double("protein")
                     )
-                }
-                products
+                )
             }
+            products
+        }
     }
 
     override fun addFood(id: Long) {
