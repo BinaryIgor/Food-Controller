@@ -144,7 +144,7 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
     override fun hit(item: Food, action: WithActionTarget.Action) {
         if (action == WithActionTarget.Action.EDIT) {
             this.root.replace(
-                FoodPortionFragment.withWeight(item.definition().id(), this.mealId, item.weight()), true
+                FoodPortionFragment.withWeight(item.definitionId(), this.mealId, item.weight()), true
             )
         } else {
             this.viewModel.removeFood(item.id(), LifecycleCallback(this) { r1 ->

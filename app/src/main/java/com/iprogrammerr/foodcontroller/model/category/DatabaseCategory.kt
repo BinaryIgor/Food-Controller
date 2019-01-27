@@ -42,9 +42,11 @@ class DatabaseCategory(private val id: Long, private val database: Database) : C
                     val r = rs.next()
                     products.add(
                         DatabaseFoodDefinition(
-                            r.long("id"), this.database,
-                            r.string("name"), r.int("calories"),
-                            r.double("protein"), r.long("category_id")
+                            r.long("id"),
+                            this.database,
+                            r.string("name"),
+                            r.int("calories"),
+                            r.double("protein")
                         )
                     )
                 }

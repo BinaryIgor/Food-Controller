@@ -3,7 +3,7 @@ package com.iprogrammerr.foodcontroller.model.day
 import android.content.ContentValues
 import com.iprogrammerr.foodcontroller.database.Database
 import com.iprogrammerr.foodcontroller.database.Rows
-import com.iprogrammerr.foodcontroller.model.food.DatabaseFood
+import com.iprogrammerr.foodcontroller.model.food.ConstantFood
 import com.iprogrammerr.foodcontroller.model.food.Food
 import com.iprogrammerr.foodcontroller.model.meal.DatabaseMeal
 import com.iprogrammerr.foodcontroller.model.meal.Meal
@@ -20,10 +20,7 @@ class DatabaseDays(private val database: Database) : Days {
 
     override fun day(date: Long): Day {
         return this.database.query(
-            StringBuilder()
-                .append(
-                    "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, "
-                )
+            StringBuilder("SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, ")
                 .append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
                 .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
                 .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
@@ -51,10 +48,13 @@ class DatabaseDays(private val database: Database) : Days {
                     food = ArrayList()
                 }
                 food.add(
-                    DatabaseFood(
-                        row.long("f_id"), this.database, row.string("name"),
-                        row.int("f_weight"), row.int("calories"),
-                        row.double("protein"), row.long("fd_id")
+                    ConstantFood(
+                        row.long("f_id"),
+                        row.string("name"),
+                        row.int("f_weight"),
+                        row.int("calories"),
+                        row.double("protein"),
+                        row.long("fd_id")
                     )
                 )
                 if (!rows.hasNext()) {
