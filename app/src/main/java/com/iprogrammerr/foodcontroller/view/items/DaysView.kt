@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
-import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.view.item.DayView
 import java.text.DateFormat
@@ -13,7 +12,7 @@ import java.text.DateFormat
 class DaysView(
     private val format: DateFormat,
     private val days: List<Day>,
-    private val target: IdTarget
+    private val target: DateTarget
 ) : RecyclerView.Adapter<DayView>() {
 
     override fun onCreateViewHolder(group: ViewGroup, position: Int) =

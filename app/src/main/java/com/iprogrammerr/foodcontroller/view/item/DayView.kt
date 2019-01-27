@@ -2,16 +2,16 @@ package com.iprogrammerr.foodcontroller.view.item
 
 import android.support.v7.widget.RecyclerView
 import com.iprogrammerr.foodcontroller.databinding.ItemDayBinding
-import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.day.Day
+import com.iprogrammerr.foodcontroller.view.items.DateTarget
 import java.text.DateFormat
 import kotlin.math.roundToInt
 
 class DayView(
     private val binding: ItemDayBinding,
     private val format: DateFormat,
-    private val target: IdTarget
+    private val target: DateTarget
 ) : RecyclerView.ViewHolder(binding.root), Drawable<Day> {
 
     override fun draw(item: Day) {
@@ -20,9 +20,11 @@ class DayView(
         val values = dayValues(item)
         this.binding.caloriesProgress.max = goals.calories()
         this.binding.caloriesProgress.progress = values.calories()
+        this.binding.caloriesValue.text = "${values.calories()}/${goals.calories()}"
         this.binding.proteinProgress.max = goals.protein().roundToInt()
         this.binding.proteinProgress.progress = values.protein().roundToInt()
-        this.binding.root.setOnClickListener { this.target.hit(item.id()) }
+        this.binding.proteinValue.text = "${values.protein().roundToInt()}/${goals.protein().roundToInt()}"
+        this.binding.root.setOnClickListener { this.target.hit(item.date()) }
     }
 
     private fun dayValues(day: Day): NutritionalValues {

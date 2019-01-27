@@ -8,6 +8,8 @@ import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.result.Callback
+import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DaysViewModel(
@@ -16,7 +18,7 @@ class DaysViewModel(
     month: Calendar
 ) : ViewModel() {
 
-    private val days by lazy {
+    private val days = StickyScalar {
         month.set(Calendar.DAY_OF_MONTH, 1)
         val start = month.timeInMillis
         month.set(Calendar.DAY_OF_MONTH, month.getActualMaximum(Calendar.DAY_OF_MONTH))
@@ -35,13 +37,14 @@ class DaysViewModel(
                         month
                     ) as T
                 else -> throw Exception(
-                    "$clazz is not a ${DaysViewModel::class.java.simpleName}")
+                    "$clazz is not a ${DaysViewModel::class.java.simpleName}"
+                )
             }
         }
     }
 
     fun days(callback: Callback<List<Day>>) {
-        this.asynchronous.execute({ this.days }, callback)
+        this.asynchronous.execute({ this.days.value() }, callback)
     }
 
     fun averageConsumption(callback: Callback<NutritionalValues>) {
@@ -49,7 +52,7 @@ class DaysViewModel(
             var calories = 0
             var protein = 0.0
             var average = 1
-            for (d in this.days) {
+            for (d in this.days.value()) {
                 for (m in d.meals()) {
                     val values = m.nutritionalValues()
                     calories += values.calories()
@@ -66,5 +69,9 @@ class DaysViewModel(
                 override fun protein() = protein
             }
         }, callback)
+    }
+
+    fun refresh() {
+        this.days.unstick()
     }
 }

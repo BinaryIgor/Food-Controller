@@ -12,17 +12,19 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.ObjectsPool
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentDaysBinding
-import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.format.Formats
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
+import com.iprogrammerr.foodcontroller.view.items.DateTarget
 import com.iprogrammerr.foodcontroller.view.items.DaysView
+import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.DaysViewModel
 import java.util.*
 import kotlin.math.roundToInt
 
-class DaysFragment : Fragment(), IdTarget {
+class DaysFragment : Fragment(), DateTarget, MessageTarget {
 
     private lateinit var root: RootView
     private val format = ObjectsPool.single(Formats::class.java).date()
@@ -72,7 +74,13 @@ class DaysFragment : Fragment(), IdTarget {
         return binding.root
     }
 
-    override fun hit(id: Long) {
-        println("Day $id")
+    override fun hit(date: Long) {
+        this.root.replace(DayFragment.new(date), true)
+    }
+
+    override fun hit(message: Message) {
+        if (message == Message.DAYS_CHANGED || message == Message.MEALS_CHANGED) {
+            this.viewModel.refresh()
+        }
     }
 }

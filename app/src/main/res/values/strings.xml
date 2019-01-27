@@ -24,7 +24,7 @@
     <string name="add">Dodaj</string>
     <string name="colon">:</string>
     <string name="meal_number">Posiłek %s</string>
-    <string name="time_template">%d:%d</string>
+    <string name="time_template">%02d:%02d</string>
     <string name="day">Dzień</string>
     <string name="name">Nazwa</string>
     <string name="save">Zapisz</string>
