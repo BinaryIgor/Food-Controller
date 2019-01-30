@@ -24,6 +24,7 @@
     <string name="add">Dodaj</string>
     <string name="colon">:</string>
     <string name="meal_number">Posiłek %s</string>
+    <string name="meal_details_template">O %02d:%02d zjedzono:</string>
     <string name="time_template">%02d:%02d</string>
     <string name="day">Dzień</string>
     <string name="name">Nazwa</string>
@@ -32,6 +33,7 @@
     <string name="edit_definition">Edytuj definicję</string>
     <string name="new_product">Nowy produkt</string>
     <string name="move">Przenieś</string>
+    <string name="details">Szczegóły</string>
     <string name="edit">Edytuj</string>
     <string name="delete">Usuń</string>
     <string name="definition_moved">Definicja została przeniesiona</string>
