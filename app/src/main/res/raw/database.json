@@ -9,21 +9,38 @@
     "Inne"
   ],
   "food_1": [
-    {"name": "Ryż", "calories": 350, "protein": 10},
-    {"name": "Kasza gryczana", "calories": 348, "protein": 11},
-    {"name": "Kasza jaglana", "calories": 350, "protein": 10}
+    {"name": "Ryż pełnoziarnisty", "calories": 344, "protein": 8},
+    {"name": "Ryż biały", "calories": 344, "protein": 7},
+    {"name": "Kasza gryczana", "calories": 346, "protein": 11},
+    {"name": "Kasza jaglana", "calories": 348, "protein": 11},
+    {"name": "Kasza jęczmienna", "calories": 344, "protein": 9},
+    {"name": "Chleb pszenny", "calories": 250, "protein": 8},
+    {"name": "Chleb żytni", "calories": 227, "protein": 6.3},
+    {"name": "Bułka pszenna", "calories": 250, "protein": 8},
+    {"name": "Bułka pełnoziarnista", "calories": 250, "protein": 10}
   ],
   "food_2": [
-    {"name": "Ziemniak", "calories": 79, "protein": 1.9}
+    {"name": "Ziemniak", "calories": 79, "protein": 1.9},
+    {"name": "Fasola biała", "calories": 315, "protein": 21.4},
+    {"name": "Żółta soczewica", "calories": 459, "protein": 23},
+    {"name": "Zielona soczewica", "calories": 351, "protein": 24},
+    {"name": "Czerwona soczewica", "calories": 341, "protein": 25.4},
+    {"name": "Czarna soczewica", "calories": 334, "protein": 26}
   ],
   "food_3": [
     {"name": "Mleko 3.2%", "calories": 61, "protein": 3.2},
     {"name": "Mleko 2%", "calories": 51, "protein": 3.2},
-    {"name": "Mleko 0.5%", "calories": 39, "protein": 3.2}
+    {"name": "Mleko 0.5%", "calories": 39, "protein": 3.2},
+    {"name": "Jogurt naturalny", "calories": 60, "protein": 4.3},
+    {"name": "Jogurt owocowy", "calories": 90, "protein": 2.5},
+    {"name": "Kefir naturalny", "calories": 51, "protein": 3.6},
+    {"name": "Maślanka", "calories": 45, "protein": 3.4},
+    {"name": "Masło", "calories": 751, "protein": 0.6}
   ],
   "food_4": [
     {"name": "Makrela wędzona", "calories": 221, "protein": 20.7},
     {"name": "Filet z piersi kurczaka", "calories": 120, "protein": 18},
+    {"name": "Kaszanka", "calories": 196, "protein": 8.5},
     {"name": "Jaja", "calories": 140, "protein": 12.5}
   ],
   "food_5": [
