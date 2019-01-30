@@ -17,10 +17,7 @@ import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
 import com.iprogrammerr.foodcontroller.view.RootView
-import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
-import com.iprogrammerr.foodcontroller.view.dialog.TwoOptionsDialog
-import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
-import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
+import com.iprogrammerr.foodcontroller.view.dialog.*
 import com.iprogrammerr.foodcontroller.view.items.IdWithActionTarget
 import com.iprogrammerr.foodcontroller.view.items.MealsView
 import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
@@ -120,15 +117,21 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
     }
 
     override fun hit(item: Long, action: WithActionTarget.Action) {
-        if (action == WithActionTarget.Action.EDIT) {
-            this.root.replace(MealFragment.withMealId(item), true)
-        } else if (action == WithActionTarget.Action.DELETE) {
-            this.arguments?.putLong(MEAL_ID, item)
-            this.arguments?.putBoolean(DELETE_DAY, false)
-            TwoOptionsDialog.new(
-                getString(R.string.delete_meal_confirmation), getString(R.string.cancel),
-                getString(R.string.ok)
-            ).show(this.childFragmentManager)
+        when (action) {
+            WithActionTarget.Action.DETAILS -> {
+                MealDetailsDialog.new(item).show(this.childFragmentManager)
+            }
+            WithActionTarget.Action.EDIT -> {
+                this.root.replace(MealFragment.withMealId(item), true)
+            }
+            else -> {
+                this.arguments?.putLong(MEAL_ID, item)
+                this.arguments?.putBoolean(DELETE_DAY, false)
+                TwoOptionsDialog.new(
+                    getString(R.string.delete_meal_confirmation), getString(R.string.cancel),
+                    getString(R.string.ok)
+                ).show(this.childFragmentManager)
+            }
         }
     }
 
