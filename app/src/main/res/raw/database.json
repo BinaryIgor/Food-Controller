@@ -6,34 +6,81 @@
     "Mięso, wędliny, ryby i jaja",
     "Warzywa i owoce",
     "Cukier i słodycze",
+    "Potrawy",
     "Inne"
   ],
   "food_1": [
-    {"name": "Ryż", "calories": 350, "protein": 10},
-    {"name": "Kasza gryczana", "calories": 348, "protein": 11},
-    {"name": "Kasza jaglana", "calories": 350, "protein": 10}
+    {"name": "Ryż pełnoziarnisty", "calories": 344, "protein": 8},
+    {"name": "Ryż biały", "calories": 344, "protein": 7},
+    {"name": "Kasza gryczana", "calories": 346, "protein": 11},
+    {"name": "Kasza jaglana", "calories": 348, "protein": 11},
+    {"name": "Kasza jęczmienna", "calories": 344, "protein": 9},
+    {"name": "Chleb pszenny", "calories": 250, "protein": 8},
+    {"name": "Chleb żytni", "calories": 227, "protein": 6.3},
+    {"name": "Bułka pszenna", "calories": 250, "protein": 8},
+    {"name": "Bułka pełnoziarnista", "calories": 250, "protein": 10}
   ],
   "food_2": [
-    {"name": "Ziemniak", "calories": 79, "protein": 1.9}
+    {"name": "Ziemniak", "calories": 79, "protein": 1.9},
+    {"name": "Fasola biała", "calories": 315, "protein": 21.4},
+    {"name": "Żółta soczewica", "calories": 459, "protein": 23},
+    {"name": "Zielona soczewica", "calories": 351, "protein": 24},
+    {"name": "Czerwona soczewica", "calories": 341, "protein": 25.4},
+    {"name": "Czarna soczewica", "calories": 334, "protein": 26}
   ],
   "food_3": [
     {"name": "Mleko 3.2%", "calories": 61, "protein": 3.2},
     {"name": "Mleko 2%", "calories": 51, "protein": 3.2},
-    {"name": "Mleko 0.5%", "calories": 39, "protein": 3.2}
+    {"name": "Mleko 0.5%", "calories": 39, "protein": 3.2},
+    {"name": "Jogurt naturalny", "calories": 60, "protein": 4.3},
+    {"name": "Jogurt owocowy", "calories": 90, "protein": 2.5},
+    {"name": "Kefir naturalny", "calories": 51, "protein": 3.6},
+    {"name": "Maślanka", "calories": 45, "protein": 3.4},
+    {"name": "Masło", "calories": 751, "protein": 0.6},
+    {"name": "Serek wiejski", "calories": 100, "protein": 11},
+    {"name": "Twaróg chudy", "calories": 115, "protein": 15},
+    {"name": "Twaróg półtlusty", "calories": 130, "protein": 15},
+    {"name": "Twaróg tłusty", "calories": 150, "protein": 15},
+    {"name": "Ser żółty", "calories": 330, "protein": 25}
   ],
   "food_4": [
     {"name": "Makrela wędzona", "calories": 221, "protein": 20.7},
     {"name": "Filet z piersi kurczaka", "calories": 120, "protein": 18},
+    {"name": "Udko z kurczaka", "calories": 150, "protein": 16.8},
+    {"name": "Schab", "calories": 130, "protein": 23},
+    {"name": "Schab w panierce", "calories": 200, "protein": 20},
+    {"name": "Mięso mielone z szynki", "calories": 130, "protein": 20},
+    {"name": "Mięso mielone z indyka", "calories": 137, "protein": 17},
+    {"name": "Kiełbasa", "calories": 250, "protein": 15},
+    {"name": "Kiełbasa biała", "calories": 250, "protein": 15},
+    {"name": "Filet z łososia", "calories": 200, "protein": 20},
+    {"name": "Kaszanka", "calories": 196, "protein": 8.5},
     {"name": "Jaja", "calories": 140, "protein": 12.5}
   ],
   "food_5": [
     {"name": "Warzywa", "calories": 50, "protein":1},
-    {"name": "Banan", "calories": 100, "protein": 1}
+    {"name": "Banan", "calories": 100, "protein": 1},
+    {"name": "Jabłko", "calories": 50, "protein": 0.4},
+    {"name": "Orzechy włoskie", "calories": 666, "protein": 18},
+    {"name": "Orzechy ziemne", "calories": 610, "protein": 18},
+    {"name": "Orzechy laskowe", "calories": 666, "protein": 17}
   ],
   "food_6": [
-    {"name": "Miód", "calories": 330, "protein": 0}
+    {"name": "Miód", "calories": 330, "protein": 0},
+    {"name": "Czekolada gorzka", "calories": 550, "protein": 9.2},
+    {"name": "Makowiec", "calories": 350, "protein": 8},
+    {"name": "Sernik", "calories": 250, "protein": 10},
+    {"name": "Pączek", "calories": 350, "protein": 8},
+    {"name": "Ciasto drożdżowe", "calories": 350, "protein": 9}
   ],
   "food_7": [
+    {"name": "Pierogi z mięsem", "calories": 200, "protein": 12},
+    {"name": "Pierogi z serem", "calories": 200, "protein": 11},
+    {"name": "Pizza", "calories": 245, "protein": 10},
+    {"name": "Krokiety z mięsem", "calories": 289, "protein": 11},
+    {"name": "Kebab", "calories": 195, "protein": 8}
+  ],
+  "food_8": [
     {"name": "Piwo", "calories":50, "protein": 0.5}
   ]
 }
