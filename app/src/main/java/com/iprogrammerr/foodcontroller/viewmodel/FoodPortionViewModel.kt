@@ -8,6 +8,7 @@ import com.iprogrammerr.foodcontroller.model.food.Food
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
 import com.iprogrammerr.foodcontroller.model.food.Portions
+import com.iprogrammerr.foodcontroller.model.format.Formats
 import com.iprogrammerr.foodcontroller.model.meal.Meals
 import com.iprogrammerr.foodcontroller.model.result.Callback
 import kotlin.math.roundToInt
@@ -15,13 +16,14 @@ import kotlin.math.roundToInt
 class FoodPortionViewModel(
     private val asynchronous: Asynchronous,
     private val definitionId: Long,
-    private val definitions: FoodDefinitions,
+    definitions: FoodDefinitions,
     private val portions: Portions,
-    private val meals: Meals
+    private val meals: Meals,
+    val formats: Formats
 ) : ViewModel() {
 
     private val definition by lazy {
-        this.definitions.definition(this.definitionId)
+        definitions.definition(this.definitionId)
     }
 
     companion object {
@@ -35,7 +37,8 @@ class FoodPortionViewModel(
                         definitionId,
                         ObjectsPool.single(FoodDefinitions::class.java),
                         ObjectsPool.single(Portions::class.java),
-                        ObjectsPool.single(Meals::class.java)
+                        ObjectsPool.single(Meals::class.java),
+                        ObjectsPool.single(Formats::class.java)
                     ) as T
                 else -> throw Exception(
                     "$clazz is not a ${FoodPortionViewModel::class.java.simpleName}"
