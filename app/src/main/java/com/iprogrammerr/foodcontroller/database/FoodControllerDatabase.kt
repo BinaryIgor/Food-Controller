@@ -108,6 +108,6 @@ class FoodControllerDatabase(context: Context, private val source: JSONObject) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }

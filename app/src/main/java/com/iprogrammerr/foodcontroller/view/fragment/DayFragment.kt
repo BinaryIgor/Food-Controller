@@ -1,5 +1,6 @@
 package com.iprogrammerr.foodcontroller.view.fragment
 
+import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -42,9 +43,9 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
 
     companion object {
 
-        private const val DELETE_DAY = "deleteDay"
-        private const val DATE = "date"
-        private const val MEAL_ID = "mealId"
+        private const val DELETE_DAY = "DELETE_DAY"
+        private const val DATE = "DATE"
+        private const val MEAL_ID = "MEAL_ID"
 
         fun new(date: Long): DayFragment {
             val fragment = DayFragment()
@@ -79,6 +80,9 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
             }
             this.binding.add.setOnClickListener {
                 this.root.replace(MealFragment.withDayId(result.value().id()), true)
+            }
+            this.binding.goals.setOnClickListener {
+                DayGoalsDialog.new(this.arguments!!.getLong(DATE)).show(requireFragmentManager())
             }
         } else {
             ErrorDialog.new(result.exception()).show(this.childFragmentManager)
@@ -172,8 +176,13 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
     }
 
     override fun hit(message: Message) {
-        if (message == Message.MEALS_CHANGED) {
+        if (message == Message.MEALS_CHANGED || message == Message.GOALS_CHANGED) {
             this.viewModel.refresh()
+            if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                this.viewModel.day(LifecycleCallback(this) { r ->
+                    onDayResult(r)
+                })
+            }
         } else if (message == Message.DELETE_DAY_CLICKED) {
             this.arguments?.putBoolean(DELETE_DAY, true)
             TwoOptionsDialog.new(
