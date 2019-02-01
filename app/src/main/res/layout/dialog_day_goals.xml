@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dpSmall">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TitleStyle"
+            android:text="@string/calories"
+            />
+
+        <EditText
+            android:id="@+id/caloriesInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_marginBottom="@dimen/dpSmall"
+            android:textSize="@dimen/spLarge"
+            android:hint="@string/kcal_hint"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TitleStyle"
+            android:text="@string/protein"/>
+
+        <EditText
+            android:id="@+id/proteinInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dpMedium"
+            android:inputType="number"
+            android:textSize="@dimen/spLarge"
+            android:hint="@string/protein_hint"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dpSmall"
+            android:orientation="horizontal">
+
+            <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/left"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dpSmall"
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+
+            <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/right"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dpSmall"
+                android:layout_weight="1"
+                android:text="@string/ok" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

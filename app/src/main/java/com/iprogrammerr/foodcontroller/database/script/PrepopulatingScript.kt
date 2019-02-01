@@ -5,12 +5,15 @@ import android.database.sqlite.SQLiteDatabase
 import org.json.JSONArray
 import org.json.JSONObject
 
-class PrepopulatingScript(private val database: SQLiteDatabase, private val source: JSONObject) : Script {
+class PrepopulatingScript(
+    private val database: SQLiteDatabase,
+    private val source: JSONObject
+) : Script {
 
     override fun execute() {
         insertCategories(this.source.getJSONArray("categories"))
         insertDefinitions(
-            this.database.rawQuery("select id from category order by id asc", null).use { c ->
+            this.database.rawQuery("SELECT id FROM category ORDER BY id ASC", null).use { c ->
                 val cs = ArrayList<Long>()
                 while (c.moveToNext()) {
                     cs.add(c.getLong(0))

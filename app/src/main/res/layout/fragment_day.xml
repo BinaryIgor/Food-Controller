@@ -19,6 +19,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     style="@style/TitleStyle"
+                    android:textColor="@color/caloriesForeground"
                     android:text="@string/calories"
                     />
 
@@ -58,6 +59,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     style="@style/TitleStyle"
+                    android:textColor="@color/proteinForeground"
                     android:text="@string/protein"
                     />
 
@@ -93,6 +95,14 @@
                 style="@style/MainButtonStyle"
                 android:layout_marginBottom="@dimen/dpSmall"
                 android:text="@string/weight"/>
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+            android:id="@+id/goals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MainButtonStyle"
+            android:layout_marginBottom="@dimen/dpSmall"
+            android:text="@string/goals"/>
 
         <com.iprogrammerr.foodcontroller.view.CustomButton
                 android:id="@+id/add"
