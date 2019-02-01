@@ -34,10 +34,14 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     }
 
     companion object {
+
+        private const val MEAL_ID = "MEAL_ID"
+        private const val CRITERIA = "CRITERIA"
+
         fun new(mealId: Long): FoodFragment {
             val fragment = FoodFragment()
             val args = Bundle()
-            args.putLong("mealId", mealId)
+            args.putLong(MEAL_ID, mealId)
             fragment.arguments = args
             return fragment
         }
@@ -67,7 +71,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     }
 
     private fun drawAllOrFiltered() {
-        val criteria = this.arguments!!.getString("criteria", "")
+        val criteria = this.arguments!!.getString(CRITERIA, "")
         if (criteria.isBlank()) {
             this.viewModel.all(
                 LifecycleCallback(this) { r -> drawListOrDialog(r) })
@@ -108,8 +112,8 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         s?.let { s ->
             val criteria = s.toString()
             val args = this.arguments as Bundle
-            if (args.getString("criteria", "") != criteria) {
-                args.putString("criteria", criteria)
+            if (args.getString(CRITERIA, "") != criteria) {
+                args.putString(CRITERIA, criteria)
                 drawAllOrFiltered()
             }
         }
@@ -119,7 +123,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         this.root.replace(
             FoodPortionFragment.new(
                 id,
-                (this.arguments as Bundle).getLong("mealId")
+                (this.arguments as Bundle).getLong(MEAL_ID)
             ), true
         )
 

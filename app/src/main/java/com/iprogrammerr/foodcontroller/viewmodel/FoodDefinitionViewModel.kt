@@ -1,18 +1,20 @@
 package com.iprogrammerr.foodcontroller.viewmodel
 
 import android.arch.lifecycle.ViewModel
+import com.iprogrammerr.foodcontroller.ObjectsPool
 import com.iprogrammerr.foodcontroller.model.Asynchronous
 import com.iprogrammerr.foodcontroller.model.category.Categories
 import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinitions
+import com.iprogrammerr.foodcontroller.model.format.Formats
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.ObjectsPool
 
 class FoodDefinitionViewModel(
     private val asynchronous: Asynchronous,
     private val definitions: FoodDefinitions,
-    categories: Categories
+    categories: Categories,
+    val formats: Formats
 ) : ViewModel() {
 
     private lateinit var last: FoodDefinition
@@ -23,7 +25,8 @@ class FoodDefinitionViewModel(
     constructor() : this(
         ObjectsPool.single(Asynchronous::class.java),
         ObjectsPool.single(FoodDefinitions::class.java),
-        ObjectsPool.single(Categories::class.java)
+        ObjectsPool.single(Categories::class.java),
+        ObjectsPool.single(Formats::class.java)
     )
 
     fun update(id: Long, name: String, calories: Int, protein: Double,
