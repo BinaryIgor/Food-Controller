@@ -2,63 +2,61 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dpSmall">
+
+        <TextView
+            style="@style/TitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dpSmall">
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TitleStyle"
-                android:text="@string/weight"/>
+            android:text="@string/weight" />
 
         <EditText
-                android:id="@+id/weightInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpSmall"
-                android:textSize="@dimen/spLarge"
-                android:inputType="numberDecimal"
-                android:hint="@string/weight_hint"/>
+            android:id="@+id/weightInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dpSmall"
+            android:hint="@string/weight_hint"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/spLarge" />
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TitleStyle"
-                android:text="@string/calories"
-                />
+            style="@style/TitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calories" />
 
         <EditText
-                android:id="@+id/caloriesInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:layout_marginBottom="@dimen/dpSmall"
-                android:textSize="@dimen/spLarge"
-                android:hint="@string/kcal_hint"/>
+            android:id="@+id/caloriesInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dpSmall"
+            android:hint="@string/kcal_hint"
+            android:inputType="number"
+            android:textSize="@dimen/spLarge" />
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TitleStyle"
-                android:text="@string/protein"/>
+            style="@style/TitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/protein" />
 
         <EditText
-                android:id="@+id/proteinInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dpMedium"
-                android:inputType="number"
-                android:textSize="@dimen/spLarge"
-                android:hint="@string/protein_hint"/>
+            android:id="@+id/proteinInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dpMedium"
+            android:hint="@string/protein_hint"
+            android:inputType="number"
+            android:textSize="@dimen/spLarge" />
 
         <com.iprogrammerr.foodcontroller.view.CustomButton
-                android:id="@+id/save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/MainButtonStyle"
-                android:text="@string/save"
-                />
+            android:id="@+id/save"
+            style="@style/MainButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
     </LinearLayout>
 </layout>
