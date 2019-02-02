@@ -1,6 +1,7 @@
 package com.iprogrammerr.foodcontroller.model.history
 
 import com.iprogrammerr.foodcontroller.database.Database
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -15,7 +16,7 @@ class DatabaseHistory(private val database: Database) : History {
             if (r.has("min") && r.has("max")) {
                 val c = Calendar.getInstance()
                 c.timeInMillis = r.long("min")
-                if (hasYearHistory(c[Calendar.YEAR])) {
+                if (hasYearHistory(c.get(Calendar.YEAR))) {
                     years.add(c[Calendar.YEAR])
                 }
                 if (years.isNotEmpty()) {
@@ -33,22 +34,14 @@ class DatabaseHistory(private val database: Database) : History {
 
     private fun hasYearHistory(year: Int): Boolean {
         val calendar = Calendar.getInstance()
-        calendar[Calendar.YEAR] = year
-        calendar[Calendar.MONTH] = 0
-        calendar[Calendar.DAY_OF_MONTH] = 0
-        calendar[Calendar.HOUR_OF_DAY] = 0
-        calendar[Calendar.MINUTE] = 0
+        calendar.set(year,0, 1, 0,0, 0)
         val min = calendar.timeInMillis
-        calendar[Calendar.MONTH] = 11
-        calendar[Calendar.DAY_OF_MONTH] = 31
-        calendar[Calendar.HOUR_OF_DAY] = 23
-        calendar[Calendar.MINUTE] = 59
+        calendar.set(year, 11, 31, 23, 59, 59)
         return this.database.query(
             StringBuilder("SELECT COUNT(d.id) c FROM day d ")
                 .append("INNER JOIN meal m ON d.id = m.day_id ")
                 .append("INNER JOIN food_meal fm ON m.id = fm.meal_id ")
-                .append("WHERE date >= $min AND date <= ${calendar.timeInMillis} ")
-                .append("ORDER by date ASC")
+                .append("WHERE date >= $min AND date <= ${calendar.timeInMillis}")
                 .toString()
         ).use { rs ->
             rs.next().long("c") > 0
@@ -77,14 +70,9 @@ class DatabaseHistory(private val database: Database) : History {
 
     private fun monthsQuery(year: Int): String {
         val calendar = Calendar.getInstance()
-        calendar[Calendar.YEAR] = year
-        calendar[Calendar.MONTH] = 0
-        calendar[Calendar.DAY_OF_MONTH] = 0
-        calendar[Calendar.HOUR_OF_DAY] = 0
+        calendar.set(year,0, 1, 0,0, 0)
         val min = calendar.timeInMillis
-        calendar[Calendar.MONTH] = 11
-        calendar[Calendar.DAY_OF_MONTH] = 31
-        calendar[Calendar.HOUR_OF_DAY] = 23
+        calendar.set(year, 11, 31, 23, 59, 59)
         return StringBuilder("SELECT date FROM day d ")
             .append("INNER JOIN meal m ON d.id = m.day_id ")
             .append("INNER JOIN food_meal fm ON m.id = fm.meal_id ")
