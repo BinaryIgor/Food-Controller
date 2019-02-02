@@ -16,23 +16,28 @@ import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.AdapterTarget
 import com.iprogrammerr.foodcontroller.view.items.MonthsView
+import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MonthsViewModel
 import java.util.*
 
-class MonthsFragment : Fragment(), AdapterTarget<Calendar> {
+class MonthsFragment : Fragment(), AdapterTarget<Calendar>, MessageTarget {
 
     private lateinit var root: RootView
     private val viewModel by lazy {
         ViewModelProviders.of(
-            this, MonthsViewModel.factory(this.arguments!!.getInt("year"))
+            this, MonthsViewModel.factory(this.arguments!!.getInt(YEAR))
         ).get(MonthsViewModel::class.java)
     }
 
     companion object {
+
+        private const val YEAR = "YEAR"
+
         fun new(year: Int): MonthsFragment {
             val fragment = MonthsFragment()
             val args = Bundle()
-            args.putInt("year", year)
+            args.putInt(YEAR, year)
             fragment.arguments = args
             return fragment
         }
@@ -50,8 +55,12 @@ class MonthsFragment : Fragment(), AdapterTarget<Calendar> {
         )
         this.viewModel.months(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                binding.months.layoutManager = LinearLayoutManager(this.context)
-                binding.months.adapter = MonthsView(r.value(), this)
+                if (r.value().isEmpty()) {
+                    requireFragmentManager().popBackStack()
+                } else {
+                    binding.months.layoutManager = LinearLayoutManager(this.context)
+                    binding.months.adapter = MonthsView(r.value(), this)
+                }
             } else {
                 ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
@@ -62,5 +71,11 @@ class MonthsFragment : Fragment(), AdapterTarget<Calendar> {
 
     override fun hit(item: Calendar) {
         this.root.replace(DaysFragment.new(item), true)
+    }
+
+    override fun hit(message: Message) {
+        if (message == Message.DAYS_CHANGED) {
+            this.viewModel.refresh()
+        }
     }
 }

@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/dpSmall"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noHistory"
+            style="@style/TitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_history"
+            android:visibility="gone" />
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+            android:id="@+id/ok"
+            style="@style/MainButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dpMedium"
+            android:text="@string/ok"
+            android:visibility="gone" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/years"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/dpSmall"/>
+        android:layout_height="match_parent"/>
+    </LinearLayout>
 </layout>

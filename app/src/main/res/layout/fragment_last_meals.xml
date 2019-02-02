@@ -4,8 +4,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/dpSmall"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/dpSmall">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/meals"
@@ -14,20 +14,20 @@
 
         <TextView
             android:id="@+id/noMeals"
+            style="@style/TitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TitleStyle"
-            android:layout_above="@+id/ok"
-            android:visibility="gone"
-            android:text="@string/no_meals"/>
+            android:text="@string/no_meals"
+            android:visibility="gone" />
+
         <com.iprogrammerr.foodcontroller.view.CustomButton
             android:id="@+id/ok"
+            style="@style/MainButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            style="@style/MainButtonStyle"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/dpSmall"
-            android:text="@string/ok"/>
+            android:layout_below="@+id/noMeals"
+            android:layout_marginTop="@dimen/dpMedium"
+            android:text="@string/ok"
+            android:visibility="invisible" />
     </RelativeLayout>
 </layout>

@@ -27,7 +27,7 @@ class LastMealsFragment : Fragment(), AdapterTarget<Meal> {
     private val viewModel by lazy {
         ViewModelProviders.of(
             this,
-            LastMealsViewModel.factory(this.arguments!!.getLong(MEAL_ID), 15)
+            LastMealsViewModel.factory(this.arguments!!.getLong(MEAL_ID), 50)
         ).get(LastMealsViewModel::class.java)
     }
 
@@ -67,8 +67,8 @@ class LastMealsFragment : Fragment(), AdapterTarget<Meal> {
 
     private fun draw(meals: List<Meal>) {
         if (meals.isEmpty()) {
-            this.binding.noMeals.visibility = View.VISIBLE
             this.binding.ok.visibility = View.VISIBLE
+            this.binding.noMeals.visibility = View.VISIBLE
             this.binding.ok.setOnClickListener { requireFragmentManager().popBackStack() }
         } else {
             this.binding.meals.layoutManager = LinearLayoutManager(this.context)

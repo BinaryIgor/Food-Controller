@@ -1,14 +1,14 @@
 package com.iprogrammerr.foodcontroller.viewmodel
 
 import android.arch.lifecycle.ViewModel
+import com.iprogrammerr.foodcontroller.ObjectsPool
 import com.iprogrammerr.foodcontroller.model.Asynchronous
-import com.iprogrammerr.foodcontroller.model.scalar.StickableScalar
-import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.day.Weight
 import com.iprogrammerr.foodcontroller.model.goals.Goals
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.ObjectsPool
+import com.iprogrammerr.foodcontroller.model.scalar.StickableScalar
+import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 
 class MenuViewModel(
     private val asynchronous: Asynchronous,
@@ -23,8 +23,10 @@ class MenuViewModel(
         StickyScalar { this.weight.value() }
 
     constructor() : this(
-        ObjectsPool.single(Asynchronous::class.java), ObjectsPool.single(Days::class.java),
-        ObjectsPool.single(Weight::class.java), ObjectsPool.single(Goals::class.java)
+        ObjectsPool.single(Asynchronous::class.java),
+        ObjectsPool.single(Days::class.java),
+        ObjectsPool.single(Weight::class.java),
+        ObjectsPool.single(Goals::class.java)
     )
 
     fun dayStarted(callback: Callback<Boolean>) {
@@ -43,6 +45,7 @@ class MenuViewModel(
     }
 
     fun refresh() {
+        println("Refresh!")
         this.started.unstick()
         this.lastWeight.unstick()
     }

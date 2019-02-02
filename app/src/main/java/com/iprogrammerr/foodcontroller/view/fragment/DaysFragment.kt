@@ -30,15 +30,18 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
     private val format = ObjectsPool.single(Formats::class.java).date()
     private val viewModel by lazy {
         val month = Calendar.getInstance()
-        month.timeInMillis = this.arguments!!.getLong("month")
+        month.timeInMillis = this.arguments!!.getLong(MONTH)
         ViewModelProviders.of(this, DaysViewModel.factory(month)).get(DaysViewModel::class.java)
     }
 
     companion object {
+
+        private const val MONTH = "MONTH"
+
         fun new(month: Calendar): DaysFragment {
             val fragment = DaysFragment()
             val args = Bundle()
-            args.putLong("month", month.timeInMillis)
+            args.putLong(MONTH, month.timeInMillis)
             fragment.arguments = args
             return fragment
         }
@@ -64,8 +67,12 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
         })
         this.viewModel.days(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                binding.days.layoutManager = LinearLayoutManager(this.context)
-                binding.days.adapter = DaysView(this.format, r.value(), this)
+                if (r.value().isEmpty()) {
+                    requireFragmentManager().popBackStack()
+                } else {
+                    binding.days.layoutManager = LinearLayoutManager(this.context)
+                    binding.days.adapter = DaysView(this.format, r.value(), this)
+                }
             } else {
                 ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }

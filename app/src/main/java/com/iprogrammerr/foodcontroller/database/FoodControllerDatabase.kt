@@ -107,6 +107,11 @@ class FoodControllerDatabase(context: Context, private val source: JSONObject) :
         PrepopulatingScript(db, this.source).execute()
     }
 
+    override fun onOpen(db: SQLiteDatabase?) {
+        super.onOpen(db)
+        db?.execSQL("PRAGMA foreign_keys=ON")
+    }
+
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
 
     }
