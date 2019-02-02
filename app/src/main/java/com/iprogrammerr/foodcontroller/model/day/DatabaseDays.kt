@@ -7,6 +7,7 @@ import com.iprogrammerr.foodcontroller.model.food.ConstantFood
 import com.iprogrammerr.foodcontroller.model.food.Food
 import com.iprogrammerr.foodcontroller.model.meal.DatabaseMeal
 import com.iprogrammerr.foodcontroller.model.meal.Meal
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -14,34 +15,42 @@ class DatabaseDays(private val database: Database) : Days {
 
     override fun range(from: Long, to: Long): List<Day> {
         return this.database.query(
-            daysQuery(from, to)
+            StringBuilder(
+                "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, "
+            ).append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
+                .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
+                .append("FROM day d INNER JOIN meal m ON d.id = m.day_id ")
+                .append("INNER JOIN food_meal fm ON m.id = fm.meal_id ")
+                .append("INNER JOIN food f ON fm.food_id = f.id ")
+                .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
+                .append("WHERE date >= ${dayStart(from)} AND date <= ${dayEnd(to)} ")
+                .append("ORDER BY date ASC")
+                .toString()
         ).use { rs ->
             val days = ArrayList<Day>()
-            rs.next()
-            do {
-                val day = day(rs)
-                days.add(day)
-            } while (rs.current().long("d_id") != day.id())
+            if (rs.next().has("d_id")) {
+                do {
+                    val day = day(rs)
+                    days.add(day)
+                } while (rs.current().long("d_id") != day.id())
+            }
             days
         }
     }
 
-    private fun daysQuery(start: Long, end: Long) =
-        StringBuilder(
-            "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, "
-        ).append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
-            .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
-            .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
-            .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
-            .append("LEFT JOIN food f ON fm.food_id = f.id ")
-            .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
-            .append("WHERE date >= ${dayStart(start)} AND date <= ${dayEnd(end)} ")
-            .append("ORDER BY date ASC")
-            .toString()
-
     override fun day(date: Long): Day {
         return this.database.query(
-            daysQuery(date, date)
+            StringBuilder(
+                "SELECT d.id as d_id, d.date, d.weight as d_weight, d.calories_goal, d.protein_goal, "
+            ).append("m.id as m_id, m.time, f.id as f_id, f.weight as f_weight, ")
+                .append("fd.id as fd_id, fd.name, fd.calories, fd.protein ")
+                .append("FROM day d LEFT JOIN meal m ON d.id = m.day_id ")
+                .append("LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
+                .append("LEFT JOIN food f ON fm.food_id = f.id ")
+                .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
+                .append("WHERE date >= ${dayStart(date)} AND date <= ${dayEnd(date)} ")
+                .append("ORDER BY date ASC")
+                .toString()
         ).use { r ->
             r.next()
             day(r)

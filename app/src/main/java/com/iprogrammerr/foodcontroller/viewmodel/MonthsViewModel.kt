@@ -6,13 +6,14 @@ import com.iprogrammerr.foodcontroller.ObjectsPool
 import com.iprogrammerr.foodcontroller.model.Asynchronous
 import com.iprogrammerr.foodcontroller.model.history.History
 import com.iprogrammerr.foodcontroller.model.result.Callback
+import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import java.util.*
 
 class MonthsViewModel(
     private val asynchronous: Asynchronous, history: History, year: Int
 ) : ViewModel() {
 
-    private val months by lazy {
+    private val months = StickyScalar {
         history.months(year)
     }
 
@@ -34,6 +35,10 @@ class MonthsViewModel(
     }
 
     fun months(callback: Callback<List<Calendar>>) {
-        this.asynchronous.execute({ this.months }, callback)
+        this.asynchronous.execute({ this.months.value() }, callback)
+    }
+
+    fun refresh() {
+        this.months.unstick()
     }
 }

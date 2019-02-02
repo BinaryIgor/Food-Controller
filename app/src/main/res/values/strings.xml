@@ -80,6 +80,7 @@
     <!--meal-->
 
     <!--history-->
+    <string name="no_history">Brak wpisów w historii, zjedz coś!</string>
     <string name="years">Lata</string>
     <string name="months">Miesiące</string>
     <string name="days">Dni</string>

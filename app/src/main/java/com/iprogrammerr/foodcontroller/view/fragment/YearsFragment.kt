@@ -16,11 +16,14 @@ import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.AdapterTarget
 import com.iprogrammerr.foodcontroller.view.items.YearsView
+import com.iprogrammerr.foodcontroller.view.message.Message
+import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.YearsViewModel
 
-class YearsFragment : Fragment(), AdapterTarget<Int> {
+class YearsFragment : Fragment(), AdapterTarget<Int>, MessageTarget {
 
     private lateinit var root: RootView
+    private lateinit var binding: FragmentYearsBinding
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(YearsViewModel::class.java)
     }
@@ -32,22 +35,38 @@ class YearsFragment : Fragment(), AdapterTarget<Int> {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        val binding: FragmentYearsBinding = DataBindingUtil.inflate(
+        this.binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_years, container, false
         )
         this.viewModel.years(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                binding.years.layoutManager = LinearLayoutManager(this.context)
-                binding.years.adapter = YearsView(r.value(), this)
+                draw(r.value())
             } else {
                 ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
         this.root.changeTitle(getString(R.string.years))
-        return binding.root
+        return this.binding.root
+    }
+
+    private fun draw(years: List<Int>) {
+        if (years.isEmpty()) {
+            this.binding.noHistory.visibility = View.VISIBLE
+            this.binding.ok.visibility = View.VISIBLE
+            this.binding.ok.setOnClickListener { requireFragmentManager().popBackStack() }
+        } else {
+            this.binding.years.layoutManager = LinearLayoutManager(this.context)
+            this.binding.years.adapter = YearsView(years, this)
+        }
     }
 
     override fun hit(item: Int) {
         this.root.replace(MonthsFragment.new(item), true)
+    }
+
+    override fun hit(message: Message) {
+        if (message == Message.DAYS_CHANGED) {
+            this.viewModel.refresh()
+        }
     }
 }

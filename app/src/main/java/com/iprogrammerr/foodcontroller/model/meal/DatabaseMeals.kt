@@ -19,14 +19,15 @@ class DatabaseMeals(private val database: Database) : Meals {
                 .toString()
         ).use { rs ->
             val last = HashMap<String, Meal>(limit)
-            rs.next()
-            do {
-                val meal = meal(rs)
-                val hash = uniqueHash(meal)
-                if (!last.containsKey(hash)) {
-                    last[hash] = meal
-                }
-            } while (rs.current().long("m_id") != meal.id() && last.size < limit)
+            if (rs.next().has("m_id")) {
+                do {
+                    val meal = meal(rs)
+                    val hash = uniqueHash(meal)
+                    if (!last.containsKey(hash)) {
+                        last[hash] = meal
+                    }
+                } while (last.size < limit && rs.current().long("m_id") != meal.id())
+            }
             ArrayList(
                 last.values.sortedWith(
                     Comparator { first, second ->

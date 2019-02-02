@@ -9,7 +9,6 @@ import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.result.Callback
 import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DaysViewModel(
@@ -51,15 +50,17 @@ class DaysViewModel(
         this.asynchronous.execute({
             var calories = 0
             var protein = 0.0
-            for (d in this.days.value()) {
-                for (m in d.meals()) {
-                    val values = m.nutritionalValues()
-                    calories += values.calories()
-                    protein += values.protein()
+            if (this.days.value().isNotEmpty()) {
+                for (d in this.days.value()) {
+                    for (m in d.meals()) {
+                        val values = m.nutritionalValues()
+                        calories += values.calories()
+                        protein += values.protein()
+                    }
                 }
+                calories /= this.days.value().size
+                protein /= this.days.value().size
             }
-            calories /= this.days.value().size
-            protein /= this.days.value().size
             object : NutritionalValues {
 
                 override fun calories() = calories

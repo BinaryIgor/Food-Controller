@@ -156,7 +156,6 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         if (args.getBoolean(DELETE_DAY)) {
             this.viewModel.deleteDay(LifecycleCallback(this) { r ->
                 if (r.isSuccess()) {
-                    this.root.propagate(Message.DAY_DELETED)
                     requireFragmentManager().popBackStack()
                 } else {
                     ErrorDialog.new(r.exception()).show(this.childFragmentManager)
