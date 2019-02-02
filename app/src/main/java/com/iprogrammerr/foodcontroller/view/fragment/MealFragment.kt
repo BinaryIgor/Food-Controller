@@ -29,20 +29,25 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMealBinding
-    private var mealId = -1L
     private val viewModel by lazy {
-        if (this.mealId == -1L) {
+        val mealId = this.arguments!!.getLong(MEAL_ID, -1)
+        if (mealId < 0) {
             ViewModelProviders.of(this).get(MealViewModel::class.java)
         } else {
-            ViewModelProviders.of(this, MealViewModel.factory(this.mealId))
+            ViewModelProviders.of(this, MealViewModel.factory(mealId))
                 .get(MealViewModel::class.java)
         }
     }
 
     companion object {
-        fun withMealId(id: Long) = withId(id, "mealId")
 
-        fun withDayId(id: Long) = withId(id, "dayId")
+        private const val MEAL_ID = "MEAL_ID"
+        private const val DAY_ID = "DAY_ID"
+        private const val TIME = "TIME"
+
+        fun withMealId(id: Long) = withId(id, MEAL_ID)
+
+        fun withDayId(id: Long) = withId(id, DAY_ID)
 
         private fun withId(id: Long, key: String): MealFragment {
             val fragment = MealFragment()
@@ -60,36 +65,48 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val args = this.arguments as Bundle
-        this.mealId = args.getLong("mealId", -1L)
         if (!hasMeal()) {
-            args.putLong("time", System.currentTimeMillis())
+            this.arguments!!.putLong(TIME, System.currentTimeMillis())
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
-        this.binding.add.setOnClickListener { addFoodOr() }
+        this.binding.add.setOnClickListener { addFood() }
+        this.binding.last.setOnClickListener { addMeal() }
         setupTimeView()
         this.root.changeTitle(getString(R.string.meal))
         return this.binding.root
     }
 
-    private fun addFoodOr() {
+    private fun addFood() {
+        val args = this.arguments as Bundle
         if (hasMeal()) {
-            this.root.replace(FoodFragment.new(this.mealId), true)
+            this.root.replace(FoodFragment.new(args.getLong(MEAL_ID)), true)
         } else {
-            val args = this.arguments as Bundle
-            this.viewModel.create(args.getLong("time"),
-                args.getLong("dayId"),
+            this.viewModel.create(args.getLong(TIME), args.getLong(DAY_ID),
                 LifecycleCallback(this) { r ->
                     if (r.isSuccess()) {
-                        args.putLong("mealId", r.value())
-                        this.mealId = r.value()
-                        this.root.replace(FoodFragment.new(this.mealId), true)
+                        args.putLong(MEAL_ID, r.value())
+                        this.root.replace(FoodFragment.new(args.getLong(MEAL_ID)), true)
+                    } else {
+                        ErrorDialog.new(r.exception()).show(this.childFragmentManager)
+                    }
+                })
+        }
+    }
+
+    private fun addMeal() {
+        val args = this.arguments as Bundle
+        if (hasMeal()) {
+            this.root.replace(LastMealsFragment.new(args.getLong(MEAL_ID)), true)
+        } else {
+            this.viewModel.create(args.getLong(TIME), args.getLong(DAY_ID),
+                LifecycleCallback(this) { r ->
+                    if (r.isSuccess()) {
+                        args.putLong(MEAL_ID, r.value())
+                        this.root.replace(LastMealsFragment.new(args.getLong(MEAL_ID)), true)
                     } else {
                         ErrorDialog.new(r.exception()).show(this.childFragmentManager)
                     }
@@ -112,7 +129,7 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
                 }
             })
         } else {
-            val time = (this.arguments as Bundle).getLong("time")
+            val time = (this.arguments as Bundle).getLong(TIME)
             this.binding.timeValue.text = HourMinutes(time).value()
             this.binding.timeLayout.setOnClickListener {
                 TimeDialog.new(time).show(this.childFragmentManager)
@@ -132,23 +149,25 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
                 }
             })
         } else {
-            this.arguments?.putLong("time", time)
+            this.arguments?.putLong(TIME, time)
         }
     }
 
     override fun hit(message: Message) {
-        if (message == Message.PORTIONS_CHANGED) {
+        if (message == Message.PORTIONS_CHANGED || message == Message.MEAL_CHANGED) {
             this.viewModel.refresh()
             this.root.propagate(Message.MEALS_CHANGED)
         }
     }
 
-    private fun hasMeal() = this.mealId != -1L
+    private fun hasMeal() = this.arguments!!.getLong(MEAL_ID, -1) > -1
 
     override fun hit(item: Food, action: WithActionTarget.Action) {
         if (action == WithActionTarget.Action.EDIT) {
             this.root.replace(
-                FoodPortionFragment.withWeight(item.definitionId(), this.mealId, item.weight()), true
+                FoodPortionFragment.withWeight(item.definitionId(),
+                    this.arguments!!.getLong(MEAL_ID), item.weight()),
+                true
             )
         } else {
             this.viewModel.removeFood(item.id(), LifecycleCallback(this) { r1 ->

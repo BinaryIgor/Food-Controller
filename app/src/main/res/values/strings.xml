@@ -47,6 +47,8 @@
     <string name="hundred">100</string>
     <string name="choose">Wybierz</string>
     <string name="average_consumption">Średnie spożycie</string>
+    <string name="last">Ostatnie</string>
+    <string name="last_meals">Ostatnie posiłki</string>
 
     <!--validation-->
     <string name="name_invalid">Nazwa musi zawierać co najmniej 3 litery</string>
@@ -72,6 +74,10 @@
     <string name="delete_meal_confirmation">Czy na pewno chcesz usunąć wybrany posiłek?</string>
     <string name="delete_day_confirmation">Czy na pewno chcesz usunąć dany dzień?</string>
     <!--day-->
+
+    <!--meal-->
+    <string name="no_meals">Zjedz coś, aby móc wykorzystywać ostatnio zjedzone posiłki</string>
+    <!--meal-->
 
     <!--history-->
     <string name="years">Lata</string>

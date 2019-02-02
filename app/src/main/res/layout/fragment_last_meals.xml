@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/dpSmall"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/meals"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/noMeals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TitleStyle"
+            android:layout_above="@+id/ok"
+            android:visibility="gone"
+            android:text="@string/no_meals"/>
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+            android:id="@+id/ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            style="@style/MainButtonStyle"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dpSmall"
+            android:text="@string/ok"/>
+    </RelativeLayout>
+</layout>

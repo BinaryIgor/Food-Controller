@@ -61,7 +61,9 @@ class DatabaseDays(private val database: Database) : Days {
                 val meal = meal(rows)
                 meals.add(meal)
                 row = rows.current()
-            } while (row.long("d_id") == id && meal.id() != row.long("m_id"))
+            } while (row.long("d_id") == id &&
+                meal.id() != row.long("m_id") &&
+                row.has("f_id"))
         }
         return DatabaseDay(id, this.database, date, weight, caloriesGoal, proteinGoal, meals)
     }
