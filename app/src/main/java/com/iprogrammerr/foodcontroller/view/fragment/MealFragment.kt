@@ -5,7 +5,6 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentMealBinding
 import com.iprogrammerr.foodcontroller.model.food.Food
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
+import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
 import com.iprogrammerr.foodcontroller.model.scalar.HourMinutes
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
@@ -73,9 +73,10 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_meal, container, false)
+        setupTimeView()
         this.binding.add.setOnClickListener { addFood() }
         this.binding.last.setOnClickListener { addMeal() }
-        setupTimeView()
+        this.binding.food.layoutManager = GridOrLinear(requireContext(), this.binding.food).value()
         this.root.changeTitle(getString(R.string.meal))
         return this.binding.root
     }
@@ -122,7 +123,6 @@ class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget
                     this.binding.timeLayout.setOnClickListener {
                         TimeDialog.new(r.value().time()).show(this.childFragmentManager)
                     }
-                    this.binding.food.layoutManager = LinearLayoutManager(this.context)
                     this.binding.food.adapter = MealFoodView(r.value(), this)
                 } else {
                     ErrorDialog.new(r.exception()).show(this.childFragmentManager)

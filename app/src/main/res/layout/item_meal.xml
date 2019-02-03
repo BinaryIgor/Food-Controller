@@ -1,60 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/adapter"
-            android:layout_marginBottom="@dimen/dpSmall"
-            android:padding="@dimen/dpSmall">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/adapter"
+        android:padding="@dimen/dpSmall">
 
         <LinearLayout
             android:id="@+id/titleLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/DescriptionStyle"
-                tools:text="Posiłek I"
-                />
 
-        <TextView
+            <TextView
+                android:id="@+id/title"
+                style="@style/DescriptionStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                tools:text="Posiłek I" />
+
+            <TextView
                 style="@style/DescriptionStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dpLittle"
                 android:layout_marginEnd="@dimen/dpSmall"
-                android:text="@string/colon"
-                />
+                android:text="@string/colon" />
+
+            <TextView
+                android:id="@+id/hour"
+                style="@style/DescriptionStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="13:00" />
+        </LinearLayout>
 
         <TextView
-                android:id="@+id/hour"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                style="@style/DescriptionStyle"
-                tools:text="13:00"
-                />
-        </LinearLayout>
-        <TextView
             android:id="@+id/values"
-            android:layout_below="@+id/titleLayout"
+            style="@style/DescriptionStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/DescriptionStyle"
-            tools:text="300kcal, 200g białka"
-            />
+            android:layout_below="@+id/titleLayout"
+            tools:text="300kcal, 200g białka" />
+
         <ImageView
             android:id="@+id/more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/more"
-            />
+            android:layout_centerVertical="true"
+            android:src="@drawable/more" />
     </RelativeLayout>
 </layout>

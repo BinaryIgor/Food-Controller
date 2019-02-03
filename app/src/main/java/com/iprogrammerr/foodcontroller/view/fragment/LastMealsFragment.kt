@@ -13,6 +13,7 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentLastMealsBinding
 import com.iprogrammerr.foodcontroller.model.meal.Meal
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
+import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.AdapterTarget
@@ -71,7 +72,7 @@ class LastMealsFragment : Fragment(), AdapterTarget<Meal> {
             this.binding.noMeals.visibility = View.VISIBLE
             this.binding.ok.setOnClickListener { requireFragmentManager().popBackStack() }
         } else {
-            this.binding.meals.layoutManager = LinearLayoutManager(this.context)
+            this.binding.meals.layoutManager = GridOrLinear(this.requireContext(), this.binding.meals).value()
             this.binding.meals.adapter = DetailedMealsView(meals, this)
         }
     }

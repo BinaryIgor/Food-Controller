@@ -5,7 +5,6 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -17,6 +16,7 @@ import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.food.FoodDefinition
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
+import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.FoodDefinitionsView
@@ -52,10 +52,8 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         this.root = context as RootView
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_food,
             container, false
@@ -63,7 +61,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         this.binding.add.setOnClickListener {
             this.root.replace(FoodDefinitionFragment.withCategories(), true)
         }
-        this.binding.food.layoutManager = LinearLayoutManager(this.context)
+        this.binding.food.layoutManager = GridOrLinear(requireContext(), this.binding.food).value()
         drawAllOrFiltered()
         this.binding.searchInput.addTextChangedListener(this)
         this.root.changeTitle(getString(R.string.choose_food))
