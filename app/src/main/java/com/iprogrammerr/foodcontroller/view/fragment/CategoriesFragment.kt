@@ -13,6 +13,7 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentCategoriesBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
+import com.iprogrammerr.foodcontroller.view.LinearOffsetDecoration
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.CategoriesView
@@ -30,10 +31,12 @@ class CategoriesFragment : Fragment(), IdTarget {
         this.root = context as RootView
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
         val binding: FragmentCategoriesBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_categories, container, false)
         binding.categories.layoutManager = LinearLayoutManager(this.context)
+        binding.categories.addItemDecoration(LinearOffsetDecoration(requireContext()))
         this.viewModel.categories(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
                 binding.categories.adapter = CategoriesView(r.value(), this)

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/dpSmall">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/caloriesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dpSmall"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TitleStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/calories"
+                        android:textColor="@color/caloriesForeground" />
+
+                    <ProgressBar
+                        android:id="@+id/caloriesProgress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/calories_progress"
+                        tools:max="100"
+                        tools:progress="78" />
+
+                    <TextView
+                        android:id="@+id/caloriesValue"
+                        style="@style/DescriptionStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dpLittle"
+                        android:layout_weight="1"
+                        android:textColor="@color/caloriesForeground"
+                        tools:text="1200/3000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/proteinLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dpMedium"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TitleStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/protein"
+                        android:textColor="@color/proteinForeground" />
+
+                    <ProgressBar
+                        android:id="@+id/proteinProgress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/protein_progress"
+                        tools:max="120"
+                        tools:progress="20" />
+
+                    <TextView
+                        android:id="@+id/proteinValue"
+                        style="@style/DescriptionStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dpLittle"
+                        android:layout_weight="1"
+                        android:textColor="@color/caloriesForeground"
+                        tools:text="20/120" />
+                </LinearLayout>
+            </LinearLayout>
+            <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/add"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="@string/add" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/weight"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dpSmall"
+                android:layout_weight="1"
+                android:text="@string/weight" />
+
+            <com.iprogrammerr.foodcontroller.view.CustomButton
+                android:id="@+id/goals"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dpSmall"
+                android:layout_weight="1"
+                android:text="@string/goals" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/meals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dpMedium" />
+    </LinearLayout>
+</layout>

@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.result.Result
+import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.*
 import com.iprogrammerr.foodcontroller.view.items.IdWithActionTarget
@@ -65,9 +65,12 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_day, container, false)
-        this.binding.meals.layoutManager = LinearLayoutManager(this.context)
+        this.binding.meals.layoutManager = GridOrLinear(
+            requireContext(),
+            this.binding.meals
+        ).value()
         this.viewModel.day(LifecycleCallback(this) { r -> onDayResult(r) })
-        this.root.changeTitle(getString(R.string.day))
+        this.root.changeTitle(this.viewModel.formats.date().format(this.arguments!!.getLong(DATE)))
         return this.binding.root
     }
 

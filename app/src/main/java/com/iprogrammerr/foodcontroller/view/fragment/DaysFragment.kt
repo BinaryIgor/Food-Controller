@@ -5,7 +5,6 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentDaysBinding
 import com.iprogrammerr.foodcontroller.model.format.Formats
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
+import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.DateTarget
@@ -70,7 +70,9 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
                 if (r.value().isEmpty()) {
                     requireFragmentManager().popBackStack()
                 } else {
-                    binding.days.layoutManager = LinearLayoutManager(this.context)
+                    binding.days.layoutManager = GridOrLinear(
+                        requireContext(), binding.days
+                    ).value()
                     binding.days.adapter = DaysView(this.format, r.value(), this)
                 }
             } else {

@@ -6,6 +6,7 @@ import com.iprogrammerr.foodcontroller.ObjectsPool
 import com.iprogrammerr.foodcontroller.model.Asynchronous
 import com.iprogrammerr.foodcontroller.model.day.Day
 import com.iprogrammerr.foodcontroller.model.day.Days
+import com.iprogrammerr.foodcontroller.model.format.Formats
 import com.iprogrammerr.foodcontroller.model.meal.Meals
 import com.iprogrammerr.foodcontroller.model.result.Callback
 import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
@@ -14,7 +15,8 @@ class DayViewModel(
     private val asynchronous: Asynchronous,
     date: Long,
     private val days: Days,
-    private val meals: Meals
+    private val meals: Meals,
+    val formats: Formats
 ) : ViewModel() {
 
     private val day = StickyScalar { this.days.day(date) }
@@ -29,7 +31,8 @@ class DayViewModel(
                         ObjectsPool.single(Asynchronous::class.java),
                         date,
                         ObjectsPool.single(Days::class.java),
-                        ObjectsPool.single(Meals::class.java)
+                        ObjectsPool.single(Meals::class.java),
+                        ObjectsPool.single(Formats::class.java)
                     ) as T
                 else -> throw Exception(
                     "$clazz is not a ${DayViewModel::class.java.simpleName}")

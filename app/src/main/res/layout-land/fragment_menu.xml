@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/dpSmall">
+
+        <TextView
+            android:id="@+id/greetings"
+            style="@style/TitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/day"
+            android:layout_marginBottom="@dimen/dpLarge"
+            android:text="@string/no_day_greeting" />
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+            android:id="@+id/day"
+            style="@style/MainButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/greetings"
+            app:layout_constraintEnd_toStartOf="@+id/history"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:layout_marginEnd="@dimen/dpSmall"
+            android:text="@string/begin" />
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+            android:id="@+id/history"
+            style="@style/MainButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/greetings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/day"
+            android:layout_marginStart="@dimen/dpSmall"
+            android:text="@string/history" />
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+            android:id="@+id/base"
+            style="@style/MainButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/goals"
+            android:layout_marginTop="@dimen/dpMedium"
+            android:layout_marginStart="@dimen/dpSmall"
+            android:text="@string/base" />
+
+        <com.iprogrammerr.foodcontroller.view.CustomButton
+            android:id="@+id/goals"
+            style="@style/MainButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/day"
+            app:layout_constraintEnd_toStartOf="@+id/base"
+            app:layout_constraintHorizontal_weight="1"
+            android:layout_marginTop="@dimen/dpMedium"
+            android:layout_marginEnd="@dimen/dpSmall"
+            android:text="@string/goals" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
