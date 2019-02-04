@@ -10,7 +10,9 @@ import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 import java.util.*
 
 class MonthsViewModel(
-    private val asynchronous: Asynchronous, history: History, year: Int
+    private val asynchronous: Asynchronous,
+    history: History,
+    year: Int
 ) : ViewModel() {
 
     private val months = StickyScalar {

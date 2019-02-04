@@ -118,17 +118,11 @@ class FoodPortionFragment : Fragment(), TextWatcher {
 
     }
 
-    override fun beforeTextChanged(
-        s: CharSequence?, start: Int, count: Int,
-        after: Int
-    ) {
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
     }
 
-    override fun onTextChanged(
-        s: CharSequence?, start: Int, before: Int,
-        count: Int
-    ) {
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         if (this::values.isInitialized) {
             this.binding.calories.text = this.values.calories().toString()
             this.binding.protein.text = this.viewModel.formats.number()

@@ -17,8 +17,7 @@ class MenuViewModel(
     private val goals: Goals
 ) : ViewModel() {
 
-    private val started: StickableScalar<Boolean> =
-        StickyScalar { this.days.exists(System.currentTimeMillis()) }
+    private var lastStarted = false
     private val lastWeight: StickableScalar<Double> =
         StickyScalar { this.weight.value() }
 
@@ -30,7 +29,14 @@ class MenuViewModel(
     )
 
     fun dayStarted(callback: Callback<Boolean>) {
-        this.asynchronous.execute({ this.started.value() }, callback)
+        this.asynchronous.execute({
+            val started = this.days.exists(System.currentTimeMillis())
+            if (!started && this.lastStarted) {
+                this.lastWeight.unstick()
+            }
+            this.lastStarted = started
+            started
+        }, callback)
     }
 
     fun lastWeight(callback: Callback<Double>) {
@@ -42,11 +48,5 @@ class MenuViewModel(
             this.days.create(weight, this.goals.calories().value(), this.goals.protein().value())
             true
         }, callback)
-    }
-
-    fun refresh() {
-        println("Refresh!")
-        this.started.unstick()
-        this.lastWeight.unstick()
     }
 }

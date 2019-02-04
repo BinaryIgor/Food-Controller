@@ -13,11 +13,16 @@ class MealsView(
     private val target: IdWithActionTarget
 ) : RecyclerView.Adapter<MealView>() {
 
-    override fun onCreateViewHolder(group: ViewGroup, position: Int) = MealView(
-        DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_meal, group,
-            false),
-        this.target
-    )
+    override fun onCreateViewHolder(group: ViewGroup, position: Int) =
+        MealView(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(group.context),
+                R.layout.item_meal,
+                group,
+                false
+            ),
+            this.target
+        )
 
     override fun getItemCount() = this.meals.size
 

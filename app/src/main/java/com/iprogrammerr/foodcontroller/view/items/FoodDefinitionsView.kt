@@ -42,11 +42,22 @@ class FoodDefinitionsView(
     override fun onCreateViewHolder(group: ViewGroup, type: Int) =
         when {
             this::moreTarget.isInitialized -> ArrowedView(
-                DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_arrowed, group, false),
-                this, this.moreTarget
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(group.context),
+                    R.layout.item_arrowed,
+                    group,
+                    false
+                ),
+                this,
+                this.moreTarget
             )
             else -> ArrowedView(
-                DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_arrowed, group, false),
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(group.context),
+                    R.layout.item_arrowed,
+                    group,
+                    false
+                ),
                 this
             )
         }

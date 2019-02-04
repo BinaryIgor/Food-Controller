@@ -17,7 +17,10 @@ class MonthsView(
     override fun onCreateViewHolder(group: ViewGroup, position: Int) =
         ArrowedView(
             DataBindingUtil.inflate(
-                LayoutInflater.from(group.context), R.layout.item_arrowed, group, false
+                LayoutInflater.from(group.context),
+                R.layout.item_arrowed,
+                group,
+                false
             ),
             this
         )

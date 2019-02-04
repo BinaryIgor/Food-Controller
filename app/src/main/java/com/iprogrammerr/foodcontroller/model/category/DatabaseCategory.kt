@@ -8,7 +8,10 @@ import java.util.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.set
 
-class DatabaseCategory(private val id: Long, private val database: Database) : Category {
+class DatabaseCategory(
+    private val id: Long,
+    private val database: Database
+) : Category {
 
     constructor(id: Long, name: String, database: Database) : this(id, database) {
         this.fields["name"] = name

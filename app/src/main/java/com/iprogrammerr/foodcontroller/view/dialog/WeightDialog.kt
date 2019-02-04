@@ -15,16 +15,20 @@ import kotlin.math.roundToInt
 
 class WeightDialog : DialogFragment() {
 
-    private lateinit var target: WeightTarget
+    private lateinit var target: Target
 
     companion object {
+
+        private const val MIN_WEIGHT = "MIN_WEIGHT"
+        private const val MAX_WEIGHT = "MAX_WEIGHT"
+        private const val WEIGHT = "WEIGHT"
 
         fun new(minWeight: Int, maxWeight: Int, weight: Double): WeightDialog {
             val dialog = WeightDialog()
             val args = Bundle()
-            args.putInt("minWeight", minWeight)
-            args.putInt("maxWeight", maxWeight)
-            args.putDouble("weight", weight)
+            args.putInt(MIN_WEIGHT, minWeight)
+            args.putInt(MAX_WEIGHT, maxWeight)
+            args.putDouble(WEIGHT, weight)
             dialog.arguments = args
             return dialog
         }
@@ -37,22 +41,26 @@ class WeightDialog : DialogFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (this.parentFragment == null) {
-            this.target = context as WeightTarget
+            this.target = context as Target
         } else {
-            this.target = this.parentFragment as WeightTarget
+            this.target = this.parentFragment as Target
         }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = AlertDialog.Builder(context).create()
-        val binding: DialogWeightBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_weight, null, false)
+        val dialog = AlertDialog.Builder(this.context).create()
+        val binding: DialogWeightBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this.context),
+            R.layout.dialog_weight,
+            null,
+            false
+        )
         val args = this.arguments as Bundle
-        val minWeight = args.getInt("minWeight")
-        val maxWeight = args.getInt("maxWeight")
+        val minWeight = args.getInt(MIN_WEIGHT)
+        val maxWeight = args.getInt(MAX_WEIGHT)
         setupPicker(binding.kg, minWeight, maxWeight)
         setupPicker(binding.g, 0, 9)
-        val weight = args.getDouble("weight")
+        val weight = args.getDouble(WEIGHT)
         val kilograms: Int = weight.toInt()
         val grams: Int = ((weight - kilograms) * 10).roundToInt() % 10
         binding.kg.value = kilograms
@@ -79,5 +87,9 @@ class WeightDialog : DialogFragment() {
         if (manager.findFragmentByTag(tag()) == null) {
             show(manager, tag())
         }
+    }
+
+    interface Target {
+        fun hit(weight: Double)
     }
 }

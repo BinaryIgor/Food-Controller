@@ -29,6 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/caloriesForeground"
                 android:text="@string/calories" />
 
             <ProgressBar
@@ -66,6 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/proteinForeground"
                 android:text="@string/protein" />
 
             <ProgressBar

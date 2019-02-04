@@ -14,11 +14,15 @@ import com.iprogrammerr.foodcontroller.databinding.DialogInformationBinding
 class InformationDialog : DialogFragment() {
 
     companion object {
+
+        private const val TITLE = "TITLE"
+        private const val DESCRIPTION = "DESCRIPTION"
+
         fun new(title: String, description: String): InformationDialog {
             val dialog = InformationDialog()
             val args = Bundle()
-            args.putString("title", title)
-            args.putString("description", description)
+            args.putString(TITLE, title)
+            args.putString(DESCRIPTION, description)
             dialog.arguments = args
             return dialog
         }
@@ -29,12 +33,16 @@ class InformationDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = AlertDialog.Builder(context).create()
-        val binding: DialogInformationBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_information, null, false)
-        val arguments = this.arguments as Bundle
-        binding.title.text = arguments["title"] as String
-        val description = arguments["description"] as String
+        val dialog = AlertDialog.Builder(this.context).create()
+        val binding: DialogInformationBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_information,
+            null,
+            false
+        )
+        val args = this.arguments as Bundle
+        binding.title.text = args.getString(TITLE, "")
+        val description = args.getString(DESCRIPTION, "")
         if (description.isEmpty()) {
             binding.description.visibility = View.GONE
         } else {

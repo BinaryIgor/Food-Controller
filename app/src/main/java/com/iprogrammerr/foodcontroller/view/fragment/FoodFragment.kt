@@ -107,7 +107,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         s: CharSequence?, start: Int, before: Int,
         count: Int
     ) {
-        s?.let { s ->
+        s?.let {
             val criteria = s.toString()
             val args = this.arguments as Bundle
             if (args.getString(CRITERIA, "") != criteria) {

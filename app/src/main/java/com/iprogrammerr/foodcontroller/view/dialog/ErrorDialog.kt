@@ -13,14 +13,17 @@ import com.iprogrammerr.foodcontroller.databinding.DialogErrorBinding
 class ErrorDialog : DialogFragment() {
 
     private val description by lazy {
-        this.arguments?.let { args -> args.getString("description", "") } ?: ""
+        this.arguments?.let { args -> args.getString(DESCRIPTION, "") } ?: ""
     }
 
     companion object {
+
+        private const val DESCRIPTION = "DESCRIPTION"
+
         fun new(description: String): ErrorDialog {
             val dialog = ErrorDialog()
             val args = Bundle()
-            args.putString("description", description)
+            args.putString(DESCRIPTION, description)
             dialog.arguments = args
             return dialog
         }
@@ -29,9 +32,13 @@ class ErrorDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = AlertDialog.Builder(context).create()
-        val binding: DialogErrorBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_error, null, false)
+        val dialog = AlertDialog.Builder(this.context).create()
+        val binding: DialogErrorBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this.context),
+            R.layout.dialog_error,
+            null,
+            false
+        )
         binding.description.text = this.description
         binding.ok.setOnClickListener { dialog.dismiss() }
         dialog.setView(binding.root)

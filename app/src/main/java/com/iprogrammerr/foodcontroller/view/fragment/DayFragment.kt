@@ -27,7 +27,7 @@ import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.DayViewModel
 import kotlin.math.roundToInt
 
-class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDialog.Target, MessageTarget {
+class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOptionsDialog.Target, MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentDayBinding
@@ -159,6 +159,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
         if (args.getBoolean(DELETE_DAY)) {
             this.viewModel.deleteDay(LifecycleCallback(this) { r ->
                 if (r.isSuccess()) {
+                    this.root.propagate(Message.DAYS_CHANGED)
                     requireFragmentManager().popBackStack()
                 } else {
                     ErrorDialog.new(r.exception()).show(this.childFragmentManager)
@@ -174,12 +175,12 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDial
                     }
                 })
         }
-        this.root.propagate(Message.DAYS_CHANGED)
     }
 
     override fun hit(message: Message) {
         if (message == Message.MEALS_CHANGED || message == Message.GOALS_CHANGED) {
             this.viewModel.refresh()
+            this.root.propagate(Message.DAYS_CHANGED)
             if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 this.viewModel.day(LifecycleCallback(this) { r ->
                     onDayResult(r)

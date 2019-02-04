@@ -15,7 +15,7 @@ class MoveDeleteFoodViewModel(
     private val definitions: FoodDefinitions
 ) : ViewModel() {
 
-    private val allCategories = StickyScalar { this.categories.all() }
+    private val allCategories = StickyScalar { this.categories.value() }
 
     constructor() : this(
         ObjectsPool.single(Asynchronous::class.java),

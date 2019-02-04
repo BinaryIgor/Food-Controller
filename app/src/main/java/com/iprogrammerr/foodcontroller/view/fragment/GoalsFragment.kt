@@ -31,11 +31,12 @@ class GoalsFragment : Fragment() {
         this.root = context as RootView
     }
 
-    //TODO weight format
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_goals, container, false)
-        this.binding.weightInput.setText(this.viewModel.goals().weight().value().toString())
+        this.binding.weightInput.setText(
+            this.viewModel.weightFormat.formatted(this.viewModel.goals().weight().value())
+        )
         this.binding.caloriesInput.setText(this.viewModel.goals().calories().value().toString())
         this.binding.proteinInput.setText(this.viewModel.goals().protein().value().toString())
         this.binding.save.setOnClickListener { save() }
