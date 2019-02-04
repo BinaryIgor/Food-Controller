@@ -9,12 +9,19 @@ import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.category.Category
 import com.iprogrammerr.foodcontroller.view.item.ArrowedView
 
-class CategoriesView(private val categories: List<Category>, private val mainTarget: IdTarget) :
-    RecyclerView.Adapter<ArrowedView>(), PositionTarget {
+class CategoriesView(
+    private val categories: List<Category>,
+    private val mainTarget: IdTarget
+) : RecyclerView.Adapter<ArrowedView>(), PositionTarget {
 
     override fun onCreateViewHolder(group: ViewGroup, type: Int) =
         ArrowedView(
-            DataBindingUtil.inflate(LayoutInflater.from(group.context), R.layout.item_arrowed, group, false),
+            DataBindingUtil.inflate(
+                LayoutInflater.from(group.context),
+                R.layout.item_arrowed,
+                group,
+                false
+            ),
             this
         )
 

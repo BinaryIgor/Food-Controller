@@ -45,7 +45,6 @@ class MenuViewModel(
     }
 
     fun refresh() {
-        println("Refresh!")
         this.started.unstick()
         this.lastWeight.unstick()
     }

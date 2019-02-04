@@ -52,7 +52,6 @@ class MealViewModel(
         this.asynchronous.execute({
             this.id = this.meals.create(time, dayId)
             this.meal.unstick()
-            println("New meal id = ${this.id}")
             this.id
         }, callback)
     }

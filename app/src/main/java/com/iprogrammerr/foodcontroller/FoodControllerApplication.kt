@@ -52,7 +52,7 @@ class FoodControllerApplication : Application() {
         ObjectsPool.add(Asynchronous::class.java, asynchronous)
         ObjectsPool.add(Database::class.java, database)
         ObjectsPool.add(Days::class.java, days)
-        ObjectsPool.add(Weight::class.java, LastWeight(database, 65.0))
+        ObjectsPool.add(Weight::class.java, LastWeight(database, 70.0))
         ObjectsPool.add(Meals::class.java, DatabaseMeals(database))
         ObjectsPool.add(History::class.java, DatabaseHistory(database))
         ObjectsPool.add(Categories::class.java, categories)

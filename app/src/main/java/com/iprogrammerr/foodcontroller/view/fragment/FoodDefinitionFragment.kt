@@ -128,7 +128,7 @@ class FoodDefinitionFragment : Fragment() {
     }
 
     private fun save() {
-        val name = this.binding.nameInput.text.toString()
+        val name = this.binding.nameInput.text.toString().trim()
         val calories = IntFromView(this.binding.caloriesInput).value()
         val protein = DoubleFromView(this.binding.proteinInput).value()
         val args = this.arguments as Bundle
