@@ -16,7 +16,7 @@ class CategoriesViewModel(
     constructor() : this(ObjectsPool.single(Asynchronous::class.java),
         ObjectsPool.single(Categories::class.java))
 
-    private val categories = StickyScalar { this.source.all() }
+    private val categories = StickyScalar { this.source.value() }
 
     fun categories(callback: Callback<List<Category>>) {
         this.asynchronous.execute({ this.categories.value() }, callback)

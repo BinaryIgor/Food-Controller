@@ -26,7 +26,7 @@ class CategoriesSelectableView(
             ?: DataBindingUtil.inflate(
                 LayoutInflater.from(this.context), R.layout.item_spinner, parent, false
             )
-        binding.description.text = getItem(position).name()
+        binding.description.text = getItem(position)!!.name()
         return binding.root
     }
 
@@ -37,7 +37,7 @@ class CategoriesSelectableView(
             ?: DataBindingUtil.inflate(
                 LayoutInflater.from(this.context), R.layout.item_spinner_dropdown, parent, false
             )
-        binding.description.text = getItem(position).name()
+        binding.description.text = getItem(position)!!.name()
         return binding.root
     }
 

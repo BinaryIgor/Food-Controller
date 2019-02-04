@@ -7,7 +7,6 @@ import com.iprogrammerr.foodcontroller.model.food.ConstantFood
 import com.iprogrammerr.foodcontroller.model.food.Food
 import com.iprogrammerr.foodcontroller.model.meal.DatabaseMeal
 import com.iprogrammerr.foodcontroller.model.meal.Meal
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -89,8 +88,12 @@ class DatabaseDays(private val database: Database) : Days {
             }
             food.add(
                 ConstantFood(
-                    row.long("f_id"), row.string("name"), row.int("f_weight"),
-                    row.int("calories"), row.double("protein"), row.long("fd_id")
+                    row.long("f_id"),
+                    row.string("name"),
+                    row.int("f_weight"),
+                    row.int("calories"),
+                    row.double("protein"),
+                    row.long("fd_id")
                 )
             )
             if (!rows.hasNext()) {
@@ -124,10 +127,8 @@ class DatabaseDays(private val database: Database) : Days {
     private fun dayEnd(date: Long) =
         dayWithOffset(date, 23, 59, 59, 999)
 
-    private fun dayWithOffset(
-        date: Long, hour: Int, minute: Int, second: Int,
-        millisecond: Int
-    ): Long {
+    private fun dayWithOffset(date: Long, hour: Int, minute: Int, second: Int,
+        millisecond: Int): Long {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = date
         calendar.set(Calendar.HOUR_OF_DAY, hour)

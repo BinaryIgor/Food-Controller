@@ -19,7 +19,7 @@ class FoodDefinitionViewModel(
 
     private lateinit var last: FoodDefinition
     private val categories by lazy {
-        categories.all()
+        categories.value()
     }
 
     constructor() : this(

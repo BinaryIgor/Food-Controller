@@ -51,6 +51,7 @@ class TimeDialog : DialogFragment() {
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(this.context).create()
         val binding: DialogTimeBinding = DataBindingUtil.inflate(
@@ -82,6 +83,7 @@ class TimeDialog : DialogFragment() {
         return dialog
     }
 
+    @Suppress("DEPRECATION")
     private fun time(picker: TimePicker): Long {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (picker.is24HourView) {

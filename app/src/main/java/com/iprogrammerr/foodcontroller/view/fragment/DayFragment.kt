@@ -169,7 +169,6 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
             this.viewModel.deleteMeal((this.arguments as Bundle).getLong(MEAL_ID),
                 LifecycleCallback(this) { r1 ->
                     if (r1.isSuccess()) {
-                        this.root.propagate(Message.DAYS_CHANGED)
                         this.viewModel.day(LifecycleCallback(this) { r2 -> onDayResult(r2) })
                     } else {
                         ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
@@ -181,6 +180,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
     override fun hit(message: Message) {
         if (message == Message.MEALS_CHANGED || message == Message.GOALS_CHANGED) {
             this.viewModel.refresh()
+            this.root.propagate(Message.DAYS_CHANGED)
             if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 this.viewModel.day(LifecycleCallback(this) { r ->
                     onDayResult(r)

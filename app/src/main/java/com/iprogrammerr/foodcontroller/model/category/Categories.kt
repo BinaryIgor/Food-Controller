@@ -1,5 +1,5 @@
 package com.iprogrammerr.foodcontroller.model.category
 
 interface Categories {
-    fun all(): List<Category>
+    fun value(): List<Category>
 }

@@ -121,7 +121,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        s?.let { s ->
+        s?.let {
             val criteria = s.toString()
             val args = this.arguments as Bundle
             if (args.getString(CRITERIA, "") != criteria) {
