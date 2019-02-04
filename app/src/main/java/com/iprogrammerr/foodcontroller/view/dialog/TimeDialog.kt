@@ -16,19 +16,23 @@ import java.util.*
 
 class TimeDialog : DialogFragment() {
 
-    private lateinit var target: TimeTarget
+    private lateinit var target: Target
     private val calendar by lazy {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = (this.arguments as Bundle).getLong("time")
+        calendar.timeInMillis = (this.arguments as Bundle).getLong(TIME)
         calendar
     }
 
     companion object {
+
+        private const val TIME = "TIME"
+        private const val TWENTY_FOUR = "TWENTY_FOUR"
+
         fun new(time: Long, twentyFour: Boolean): TimeDialog {
             val dialog = TimeDialog()
             val args = Bundle()
-            args.putLong("time", time)
-            args.putBoolean("twentyFour", twentyFour)
+            args.putLong(TIME, time)
+            args.putBoolean(TWENTY_FOUR, twentyFour)
             dialog.arguments = args
             return dialog
         }
@@ -41,18 +45,22 @@ class TimeDialog : DialogFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (this.parentFragment == null) {
-            this.target = context as TimeTarget
+            this.target = context as Target
         } else {
-            this.target = this.parentFragment as TimeTarget
+            this.target = this.parentFragment as Target
         }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = AlertDialog.Builder(context).create()
-        val binding: DialogTimeBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_time, null, false)
+        val dialog = AlertDialog.Builder(this.context).create()
+        val binding: DialogTimeBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this.context),
+            R.layout.dialog_time,
+            null,
+            false
+        )
         val args = this.arguments as Bundle
-        binding.time.setIs24HourView(args.getBoolean("twentyFour"))
+        binding.time.setIs24HourView(args.getBoolean(TWENTY_FOUR))
         val hour = if (binding.time.is24HourView) {
             this.calendar[Calendar.HOUR_OF_DAY]
         } else {
@@ -97,5 +105,9 @@ class TimeDialog : DialogFragment() {
         if (manager.findFragmentByTag(tag()) == null) {
             show(manager, tag())
         }
+    }
+
+    interface Target {
+        fun hit(time: Long)
     }
 }

@@ -17,7 +17,6 @@ import com.iprogrammerr.foodcontroller.model.scalar.HourMinutes
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.TimeDialog
-import com.iprogrammerr.foodcontroller.view.dialog.TimeTarget
 import com.iprogrammerr.foodcontroller.view.items.FoodWithActionTarget
 import com.iprogrammerr.foodcontroller.view.items.MealFoodView
 import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
@@ -25,7 +24,7 @@ import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MealViewModel
 
-class MealFragment : Fragment(), TimeTarget, MessageTarget, FoodWithActionTarget {
+class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActionTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMealBinding

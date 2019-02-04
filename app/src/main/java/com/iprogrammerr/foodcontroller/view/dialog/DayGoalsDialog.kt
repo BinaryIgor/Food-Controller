@@ -39,7 +39,6 @@ class DayGoalsDialog : DialogFragment() {
         fun new(date: Long): DayGoalsDialog {
             val dialog = DayGoalsDialog()
             val args = Bundle()
-            println("DATE = ${date}")
             args.putLong(DATE, date)
             dialog.arguments = args
             return dialog

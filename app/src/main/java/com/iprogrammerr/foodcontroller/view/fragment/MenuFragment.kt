@@ -14,12 +14,9 @@ import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
-import com.iprogrammerr.foodcontroller.view.dialog.WeightTarget
-import com.iprogrammerr.foodcontroller.view.message.Message
-import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MenuViewModel
 
-class MenuFragment : Fragment(), WeightTarget {
+class MenuFragment : Fragment(), WeightDialog.Target {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMenuBinding

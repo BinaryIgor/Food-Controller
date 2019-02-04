@@ -27,7 +27,7 @@ import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.DayViewModel
 import kotlin.math.roundToInt
 
-class DayFragment : Fragment(), IdWithActionTarget, WeightTarget, TwoOptionsDialog.Target, MessageTarget {
+class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOptionsDialog.Target, MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentDayBinding

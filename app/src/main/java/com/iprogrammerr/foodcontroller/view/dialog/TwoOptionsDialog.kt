@@ -17,13 +17,19 @@ class TwoOptionsDialog : DialogFragment() {
     private lateinit var target: Target
 
     companion object {
+
+        private const val TITLE = "TITLE"
+        private const val DESCRIPTION = "DESCRIPTION"
+        private const val LEFT = "LEFT"
+        private const val RIGHT = "RIGHT"
+
         fun new(title: String, description: String, left: String, right: String): TwoOptionsDialog {
             val dialog = TwoOptionsDialog()
             val args = Bundle()
-            args.putString("title", title)
-            args.putString("description", description)
-            args.putString("left", left)
-            args.putString("right", right)
+            args.putString(TITLE, title)
+            args.putString(DESCRIPTION, description)
+            args.putString(LEFT, left)
+            args.putString(RIGHT, right)
             dialog.arguments = args
             return dialog
         }
@@ -49,20 +55,20 @@ class TwoOptionsDialog : DialogFragment() {
             LayoutInflater.from(this.context), R.layout.dialog_two_options, null, false
         )
         val arguments = this.arguments as Bundle
-        binding.title.text = arguments.getString("title", "")
-        val description = arguments.getString("description", "")
+        binding.title.text = arguments.getString(TITLE, "")
+        val description = arguments.getString(DESCRIPTION, "")
         if (description.isEmpty()) {
             binding.description.visibility = View.GONE
         } else {
             binding.description.text = description
         }
-        binding.left.text = arguments.getString("left", "")
+        binding.left.text = arguments.getString(LEFT, "")
         binding.left.setOnClickListener {
             dialog.dismiss()
             this.target.hitLeft()
 
         }
-        binding.right.text = arguments.getString("right", "")
+        binding.right.text = arguments.getString(RIGHT, "")
         binding.right.setOnClickListener {
             dialog.dismiss()
             this.target.hitRight()

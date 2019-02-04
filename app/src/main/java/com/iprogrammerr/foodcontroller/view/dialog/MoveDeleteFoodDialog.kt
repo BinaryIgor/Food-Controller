@@ -30,11 +30,16 @@ class MoveDeleteFoodDialog : DialogFragment() {
     }
 
     companion object {
+
+        private const val ID = "ID"
+        private const val TITLE = "TITLE"
+        private const val CATEGORY_ID = "CATEGORY_ID"
+
         fun new(id: Long, title: String): MoveDeleteFoodDialog {
             val fragment = MoveDeleteFoodDialog()
             val args = Bundle()
-            args.putLong("id", id)
-            args.putString("title", title)
+            args.putLong(ID, id)
+            args.putString(TITLE, title)
             fragment.arguments = args
             return fragment
         }
@@ -49,10 +54,14 @@ class MoveDeleteFoodDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(this.context).create()
-        val binding: DialogMoveDeleteBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(this.context), R.layout.dialog_move_delete, null, false)
+        val binding: DialogMoveDeleteBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this.context),
+            R.layout.dialog_move_delete,
+            null,
+            false
+        )
         val args = this.arguments as Bundle
-        binding.title.text = args.getString("title")
+        binding.title.text = args.getString(TITLE)
         this.viewModel.categories(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
                 setupSpinner(binding.categories, r.value())
@@ -73,8 +82,9 @@ class MoveDeleteFoodDialog : DialogFragment() {
         spinner.adapter = CategoriesSelectableView(this.context as Context, items)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                arguments?.putLong("category_id", items[position].id())
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int,
+                id: Long) {
+                arguments?.putLong(CATEGORY_ID, items[position].id())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -83,11 +93,11 @@ class MoveDeleteFoodDialog : DialogFragment() {
     }
 
     private fun moveFood(root: View) {
-        val id = this.arguments!!.getLong("category_id", -1)
+        val id = this.arguments!!.getLong(CATEGORY_ID, -1)
         if (id < 0) {
             Snackbar.make(root, getString(R.string.choose_category), Snackbar.LENGTH_LONG).show()
         } else {
-            this.viewModel.move(id, this.arguments!!.getLong("id", -1),
+            this.viewModel.move(id, this.arguments!!.getLong(ID, -1),
                 LifecycleCallback(this) { r ->
                     if (r.isSuccess()) {
                         dismiss()
@@ -101,7 +111,7 @@ class MoveDeleteFoodDialog : DialogFragment() {
     }
 
     private fun deleteFood(root: View) {
-        this.viewModel.delete(this.arguments!!.getLong("id"),
+        this.viewModel.delete(this.arguments!!.getLong(ID),
             LifecycleCallback(this) { r ->
                 if (r.isSuccess()) {
                     dismiss()
