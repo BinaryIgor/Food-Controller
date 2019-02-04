@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">FoodController</string>
-    <string name="no_day_greeting">Witaj! Czyż nie aby czas najwyższy dzień rozpocząć?</string>
-    <string name="day_greeting">Witaj! Dzień rozpoczęty</string>
     <string name="menu">Menu</string>
-    <string name="begin">Rozpocznij</string>
-    <string name="back">Wróć</string>
-    <string name="history">Historia</string>
-    <string name="base">Baza</string>
-    <string name="goals">Cele</string>
     <string name="categories">Kategorie</string>
     <string name="category">Kategoria</string>
     <string name="meal">Posiłek</string>
@@ -69,6 +62,17 @@
     <!--templates-->
     <string name="values_template">%d kcal, %d g białka</string>
     <!--templates-->
+
+    <!--menu-->
+    <string name="no_day_greeting">Witaj! Czyż nie aby czas najwyższy dzień rozpocząć?</string>
+    <string name="day_greeting">Witaj! Dzień rozpoczęty</string>
+    <string name="begin">Rozpocznij</string>
+    <string name="back">Wróć</string>
+    <string name="history">Historia</string>
+    <string name="base">Baza</string>
+    <string name="goals">Cele</string>
+    <string name="day_ended">Dzień się zakończył. Czy chcesz rozpocząć nowy?</string>
+    <!--menu-->
 
     <!--day-->
     <string name="delete_meal_confirmation">Czy na pewno chcesz usunąć wybrany posiłek?</string>
