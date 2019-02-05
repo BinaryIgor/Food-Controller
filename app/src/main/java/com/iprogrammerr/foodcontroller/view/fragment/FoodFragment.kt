@@ -29,9 +29,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     private lateinit var root: RootView
     private lateinit var binding: FragmentFoodBinding
     private lateinit var food: FoodDefinitionsView
-    private val viewModel by lazy {
-        ViewModelProviders.of(this).get(FoodViewModel::class.java)
-    }
+    private lateinit var viewModel: FoodViewModel
 
     companion object {
 
@@ -50,6 +48,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
+        this.viewModel = ViewModelProviders.of(this).get(FoodViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -96,17 +95,11 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
     }
 
-    override fun beforeTextChanged(
-        s: CharSequence?, start: Int, count: Int,
-        after: Int
-    ) {
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
     }
 
-    override fun onTextChanged(
-        s: CharSequence?, start: Int, before: Int,
-        count: Int
-    ) {
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         s?.let {
             val criteria = s.toString()
             val args = this.arguments as Bundle
@@ -128,7 +121,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (message == Message.FOOD_DEFINITION_CHANGED) {
+        if (this::viewModel.isInitialized && message == Message.FOOD_DEFINITION_CHANGED) {
             this.viewModel.refresh()
         }
     }

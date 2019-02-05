@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentYearsBinding
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
+import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.AdapterTarget
@@ -24,13 +25,12 @@ class YearsFragment : Fragment(), AdapterTarget<Int>, MessageTarget {
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentYearsBinding
-    private val viewModel by lazy {
-        ViewModelProviders.of(this).get(YearsViewModel::class.java)
-    }
+    private lateinit var viewModel: YearsViewModel
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
+        this.viewModel = ViewModelProviders.of(this).get(YearsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +55,7 @@ class YearsFragment : Fragment(), AdapterTarget<Int>, MessageTarget {
             this.binding.ok.visibility = View.VISIBLE
             this.binding.ok.setOnClickListener { requireFragmentManager().popBackStack() }
         } else {
-            this.binding.years.layoutManager = LinearLayoutManager(this.context)
+            this.binding.years.layoutManager = GridOrLinear(requireContext(), binding.years).value()
             this.binding.years.adapter = YearsView(years, this)
         }
     }
@@ -65,7 +65,7 @@ class YearsFragment : Fragment(), AdapterTarget<Int>, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (message == Message.DAYS_CHANGED) {
+        if (this::viewModel.isInitialized && message == Message.DAYS_CHANGED) {
             this.viewModel.refresh()
         }
     }

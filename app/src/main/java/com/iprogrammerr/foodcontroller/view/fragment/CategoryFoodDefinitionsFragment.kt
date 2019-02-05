@@ -41,14 +41,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     private val id by lazy {
         this.arguments?.let { it.getLong(ID, -1) } ?: -1
     }
-    private val viewModel by lazy {
-        ViewModelProviders.of(
-            this,
-            CategoryFoodDefinitionsViewModel.factory(
-                DatabaseCategory(this.id, ObjectsPool.single(Database::class.java))
-            )
-        ).get(CategoryFoodDefinitionsViewModel::class.java)
-    }
+    private lateinit var viewModel: CategoryFoodDefinitionsViewModel
 
     companion object {
 
@@ -67,6 +60,12 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
+        this.viewModel = ViewModelProviders.of(
+            this,
+            CategoryFoodDefinitionsViewModel.factory(
+                DatabaseCategory(this.id, ObjectsPool.single(Database::class.java))
+            )
+        ).get(CategoryFoodDefinitionsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -141,7 +140,7 @@ class CategoryFoodDefinitionsFragment : Fragment(), TextWatcher, IdTarget, Adapt
     }
 
     override fun hit(message: Message) {
-        if (message == Message.FOOD_DEFINITION_CHANGED || message == Message.FOOD_DEFINITION_MOVED) {
+        if (this::viewModel.isInitialized && message == Message.FOOD_DEFINITION_CHANGED || message == Message.FOOD_DEFINITION_MOVED) {
             this.viewModel.refresh()
             if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
                 drawAllOrFiltered()

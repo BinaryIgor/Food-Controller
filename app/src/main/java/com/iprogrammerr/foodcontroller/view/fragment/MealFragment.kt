@@ -28,15 +28,7 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentMealBinding
-    private val viewModel by lazy {
-        val mealId = this.arguments!!.getLong(MEAL_ID, -1)
-        if (mealId < 0) {
-            ViewModelProviders.of(this).get(MealViewModel::class.java)
-        } else {
-            ViewModelProviders.of(this, MealViewModel.factory(mealId))
-                .get(MealViewModel::class.java)
-        }
-    }
+    private lateinit var viewModel: MealViewModel
 
     companion object {
 
@@ -60,6 +52,13 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
+        val mealId = this.arguments!!.getLong(MEAL_ID, -1)
+        this.viewModel = if (mealId < 0) {
+            ViewModelProviders.of(this).get(MealViewModel::class.java)
+        } else {
+            ViewModelProviders.of(this, MealViewModel.factory(mealId))
+                .get(MealViewModel::class.java)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,7 +152,7 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
     }
 
     override fun hit(message: Message) {
-        if (message == Message.PORTIONS_CHANGED || message == Message.MEAL_CHANGED) {
+        if (this::viewModel.isInitialized && (message == Message.PORTIONS_CHANGED || message == Message.MEAL_CHANGED)) {
             this.viewModel.refresh()
             this.root.propagate(Message.MEALS_CHANGED)
         }

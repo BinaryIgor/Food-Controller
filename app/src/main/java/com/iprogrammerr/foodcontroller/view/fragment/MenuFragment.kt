@@ -35,7 +35,7 @@ class MenuFragment : Fragment(), WeightDialog.Target, TwoOptionsDialog.Target {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
-        this.root.changeTitle(getString(R.string.menu))
+        this.root.changeTitle(getString(R.string.app_name))
         this.binding.history.setOnClickListener { this.root.replace(YearsFragment(), true) }
         this.binding.base.setOnClickListener { this.root.replace(CategoriesFragment(), true) }
         this.binding.goals.setOnClickListener { this.root.replace(GoalsFragment(), true) }

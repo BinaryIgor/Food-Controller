@@ -31,15 +31,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
 
     private lateinit var root: RootView
     private lateinit var binding: FragmentDayBinding
-    private val viewModel: DayViewModel by lazy {
-        ViewModelProviders.of(
-            this,
-            DayViewModel.factory(
-                this.arguments?.getLong(DATE, System.currentTimeMillis())
-                    ?: System.currentTimeMillis()
-            )
-        ).get(DayViewModel::class.java)
-    }
+    private lateinit var viewModel: DayViewModel
 
     companion object {
 
@@ -60,6 +52,12 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
         super.onAttach(context)
         this.root = context as RootView
         this.arguments = this.arguments?.let { it } ?: Bundle()
+        this.viewModel = ViewModelProviders.of(
+            this,
+            DayViewModel.factory(
+                this.arguments!!.getLong(DATE, System.currentTimeMillis())
+            )
+        ).get(DayViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -169,6 +167,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
             this.viewModel.deleteMeal((this.arguments as Bundle).getLong(MEAL_ID),
                 LifecycleCallback(this) { r1 ->
                     if (r1.isSuccess()) {
+                        this.root.propagate(Message.MEALS_CHANGED)
                         this.viewModel.day(LifecycleCallback(this) { r2 -> onDayResult(r2) })
                     } else {
                         ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
@@ -178,7 +177,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
     }
 
     override fun hit(message: Message) {
-        if (message == Message.MEALS_CHANGED || message == Message.GOALS_CHANGED) {
+        if (this::viewModel.isInitialized && (message == Message.MEALS_CHANGED || message == Message.GOALS_CHANGED)) {
             this.viewModel.refresh()
             this.root.propagate(Message.DAYS_CHANGED)
             if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
