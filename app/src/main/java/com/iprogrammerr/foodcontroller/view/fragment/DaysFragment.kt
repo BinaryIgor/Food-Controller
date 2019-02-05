@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.iprogrammerr.foodcontroller.ObjectsPool
 import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentDaysBinding
+import com.iprogrammerr.foodcontroller.model.NutritionalValues
 import com.iprogrammerr.foodcontroller.model.format.Formats
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
 import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
@@ -28,15 +29,12 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
 
     private lateinit var root: RootView
     private val format = ObjectsPool.single(Formats::class.java).date()
-    private val viewModel by lazy {
-        val month = Calendar.getInstance()
-        month.timeInMillis = this.arguments!!.getLong(MONTH)
-        ViewModelProviders.of(this, DaysViewModel.factory(month)).get(DaysViewModel::class.java)
-    }
+    private lateinit var viewModel: DaysViewModel
 
     companion object {
 
         private const val MONTH = "MONTH"
+        private const val MONTH_VALUE = "MONTH_VALUE"
 
         fun new(month: Calendar): DaysFragment {
             val fragment = DaysFragment()
@@ -50,6 +48,16 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         this.root = context as RootView
+        val month = Calendar.getInstance()
+        month.timeInMillis = this.arguments!!.getLong(MONTH)
+        this.arguments!!.putString(
+            MONTH_VALUE,
+            this.context!!.resources.getStringArray(R.array.months)[month[Calendar.MONTH]]
+        )
+        this.viewModel = ViewModelProviders.of(
+            this,
+            DaysViewModel.factory(month)
+        ).get(DaysViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -57,10 +65,9 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
         val binding: FragmentDaysBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_days, container, false
         )
-        this.viewModel.averageConsumption(LifecycleCallback(this) { r ->
+        this.viewModel.statistics(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                binding.caloriesValue.text = r.value().calories().toString()
-                binding.proteinValue.text = r.value().protein().roundToInt().toString()
+                drawStatistics(binding, r.value())
             } else {
                 ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
@@ -79,8 +86,20 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
                 ErrorDialog.new(r.exception()).show(this.childFragmentManager)
             }
         })
-        this.root.changeTitle(getString(R.string.days))
+        this.root.changeTitle(this.arguments!!.getString(MONTH_VALUE, ""))
         return binding.root
+    }
+
+    private fun drawStatistics(binding: FragmentDaysBinding,
+        statistics: Pair<NutritionalValues, NutritionalValues>) {
+        val achieved = statistics.first
+        val goals = statistics.second
+        binding.caloriesValue.text = "${achieved.calories()}/${goals.calories()}"
+        binding.caloriesProgress.max = goals.calories()
+        binding.caloriesProgress.progress = achieved.calories()
+        binding.proteinValue.text = "${achieved.protein().roundToInt()}/${goals.protein().roundToInt()}"
+        binding.proteinProgress.max = goals.protein().roundToInt()
+        binding.proteinProgress.progress = achieved.protein().roundToInt()
     }
 
     override fun hit(date: Long) {
@@ -88,7 +107,7 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (message == Message.DAYS_CHANGED || message == Message.MEALS_CHANGED) {
+        if (this::viewModel.isInitialized && (message == Message.DAYS_CHANGED || message == Message.MEALS_CHANGED)) {
             this.viewModel.refresh()
         }
     }

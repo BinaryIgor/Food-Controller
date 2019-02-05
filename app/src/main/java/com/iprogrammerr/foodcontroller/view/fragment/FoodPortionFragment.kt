@@ -64,10 +64,8 @@ class FoodPortionFragment : Fragment(), TextWatcher {
         this.root = context as RootView
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
         this.binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_food_portion, container, false
         )

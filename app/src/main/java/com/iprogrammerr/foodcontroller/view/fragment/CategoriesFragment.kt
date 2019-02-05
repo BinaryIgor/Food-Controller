@@ -5,7 +5,6 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.iprogrammerr.foodcontroller.R
 import com.iprogrammerr.foodcontroller.databinding.FragmentCategoriesBinding
 import com.iprogrammerr.foodcontroller.model.IdTarget
 import com.iprogrammerr.foodcontroller.model.result.LifecycleCallback
-import com.iprogrammerr.foodcontroller.view.LinearOffsetDecoration
+import com.iprogrammerr.foodcontroller.model.scalar.GridOrLinear
 import com.iprogrammerr.foodcontroller.view.RootView
 import com.iprogrammerr.foodcontroller.view.dialog.ErrorDialog
 import com.iprogrammerr.foodcontroller.view.items.CategoriesView
@@ -33,10 +32,10 @@ class CategoriesFragment : Fragment(), IdTarget {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        val binding: FragmentCategoriesBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_categories, container, false)
-        binding.categories.layoutManager = LinearLayoutManager(this.context)
-        binding.categories.addItemDecoration(LinearOffsetDecoration(requireContext()))
+        val binding: FragmentCategoriesBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_categories, container, false
+        )
+        binding.categories.layoutManager = GridOrLinear(this.context!!, binding.categories).value()
         this.viewModel.categories(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
                 binding.categories.adapter = CategoriesView(r.value(), this)

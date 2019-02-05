@@ -46,10 +46,12 @@ class DaysViewModel(
         this.asynchronous.execute({ this.days.value() }, callback)
     }
 
-    fun averageConsumption(callback: Callback<NutritionalValues>) {
+    fun statistics(callback: Callback<Pair<NutritionalValues, NutritionalValues>>) {
         this.asynchronous.execute({
             var calories = 0
             var protein = 0.0
+            var caloriesGoal = 0
+            var proteinGoal = 0.0
             if (this.days.value().isNotEmpty()) {
                 for (d in this.days.value()) {
                     for (m in d.meals()) {
@@ -57,16 +59,29 @@ class DaysViewModel(
                         calories += values.calories()
                         protein += values.protein()
                     }
+                    val goals = d.goals()
+                    caloriesGoal += goals.calories()
+                    proteinGoal += goals.protein()
                 }
                 calories /= this.days.value().size
                 protein /= this.days.value().size
+                caloriesGoal /= this.days.value().size
+                proteinGoal /= this.days.value().size
             }
-            object : NutritionalValues {
+            Pair(
+                object : NutritionalValues {
 
-                override fun calories() = calories
+                    override fun calories() = calories
 
-                override fun protein() = protein
-            }
+                    override fun protein() = protein
+                },
+                object : NutritionalValues {
+
+                    override fun calories() = caloriesGoal
+
+                    override fun protein() = proteinGoal
+                }
+            )
         }, callback)
     }
 
