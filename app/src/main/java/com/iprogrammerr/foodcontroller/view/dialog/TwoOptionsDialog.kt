@@ -64,13 +64,13 @@ class TwoOptionsDialog : DialogFragment() {
         }
         binding.left.text = arguments.getString(LEFT, "")
         binding.left.setOnClickListener {
-            dialog.dismiss()
+            dismiss()
             this.target.hitLeft()
 
         }
         binding.right.text = arguments.getString(RIGHT, "")
         binding.right.setOnClickListener {
-            dialog.dismiss()
+            dismiss()
             this.target.hitRight()
         }
         dialog.setView(binding.root)

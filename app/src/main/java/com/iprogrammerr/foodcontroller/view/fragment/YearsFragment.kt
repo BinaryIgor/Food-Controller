@@ -5,7 +5,6 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,8 @@ import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.YearsViewModel
 
+private const val REFRESH = "REFRESH"
+
 class YearsFragment : Fragment(), AdapterTarget<Int>, MessageTarget {
 
     private lateinit var root: RootView
@@ -31,6 +32,11 @@ class YearsFragment : Fragment(), AdapterTarget<Int>, MessageTarget {
         super.onAttach(context)
         this.root = context as RootView
         this.viewModel = ViewModelProviders.of(this).get(YearsViewModel::class.java)
+        this.arguments = this.arguments?.let { it } ?: Bundle()
+        if (this.arguments!!.getBoolean(REFRESH, false)) {
+            this.viewModel.refresh()
+            this.arguments!!.putBoolean(REFRESH, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +71,12 @@ class YearsFragment : Fragment(), AdapterTarget<Int>, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (this::viewModel.isInitialized && message == Message.DAYS_CHANGED) {
-            this.viewModel.refresh()
+        if (message == Message.DAYS_CHANGED) {
+            if (this::viewModel.isInitialized) {
+                this.viewModel.refresh()
+            } else {
+                this.arguments!!.putBoolean(REFRESH, true)
+            }
         }
     }
 }

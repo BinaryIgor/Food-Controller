@@ -35,6 +35,7 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
 
         private const val MEAL_ID = "MEAL_ID"
         private const val CRITERIA = "CRITERIA"
+        private const val REFRESH = "REFRESH"
 
         fun new(mealId: Long): FoodFragment {
             val fragment = FoodFragment()
@@ -49,6 +50,10 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
         super.onAttach(context)
         this.root = context as RootView
         this.viewModel = ViewModelProviders.of(this).get(FoodViewModel::class.java)
+        if (this.arguments!!.getBoolean(REFRESH, false)) {
+            this.viewModel.refresh()
+            this.arguments!!.putBoolean(REFRESH, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -121,8 +126,12 @@ class FoodFragment : Fragment(), TextWatcher, IdTarget, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (this::viewModel.isInitialized && message == Message.FOOD_DEFINITION_CHANGED) {
-            this.viewModel.refresh()
+        if (message == Message.FOOD_DEFINITION_CHANGED) {
+            if (this::viewModel.isInitialized) {
+                this.viewModel.refresh()
+            } else {
+                this.arguments!!.putBoolean(REFRESH, true)
+            }
         }
     }
 

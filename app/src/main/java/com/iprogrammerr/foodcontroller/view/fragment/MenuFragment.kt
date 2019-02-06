@@ -17,6 +17,8 @@ import com.iprogrammerr.foodcontroller.view.dialog.TwoOptionsDialog
 import com.iprogrammerr.foodcontroller.view.dialog.WeightDialog
 import com.iprogrammerr.foodcontroller.viewmodel.MenuViewModel
 
+private const val STARTED = "STARTED"
+
 class MenuFragment : Fragment(), WeightDialog.Target, TwoOptionsDialog.Target {
 
     private lateinit var root: RootView
@@ -24,7 +26,6 @@ class MenuFragment : Fragment(), WeightDialog.Target, TwoOptionsDialog.Target {
     private val viewModel: MenuViewModel by lazy {
         ViewModelProviders.of(this).get(MenuViewModel::class.java)
     }
-    private val STARTED = "STARTED"
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -32,8 +33,10 @@ class MenuFragment : Fragment(), WeightDialog.Target, TwoOptionsDialog.Target {
         this.arguments = this.arguments?.let { it } ?: Bundle()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         this.root.changeTitle(getString(R.string.app_name))
         this.binding.history.setOnClickListener { this.root.replace(YearsFragment(), true) }
