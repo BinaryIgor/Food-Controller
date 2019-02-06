@@ -38,6 +38,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
         private const val DELETE_DAY = "DELETE_DAY"
         private const val DATE = "DATE"
         private const val MEAL_ID = "MEAL_ID"
+        private const val REFRESH = "REFRESH"
 
         fun new(date: Long): DayFragment {
             val fragment = DayFragment()
@@ -47,6 +48,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
             return fragment
         }
     }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -58,6 +60,10 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
                 this.arguments!!.getLong(DATE, System.currentTimeMillis())
             )
         ).get(DayViewModel::class.java)
+        if (this.arguments!!.getBoolean(REFRESH, false)) {
+            this.viewModel.refresh()
+            this.arguments!!.putBoolean(REFRESH, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -167,7 +173,7 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
             this.viewModel.deleteMeal((this.arguments as Bundle).getLong(MEAL_ID),
                 LifecycleCallback(this) { r1 ->
                     if (r1.isSuccess()) {
-                        this.root.propagate(Message.MEALS_CHANGED)
+                        this.root.propagate(Message.DAYS_CHANGED)
                         this.viewModel.day(LifecycleCallback(this) { r2 -> onDayResult(r2) })
                     } else {
                         ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
@@ -177,9 +183,12 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
     }
 
     override fun hit(message: Message) {
-        if (this::viewModel.isInitialized && (message == Message.MEALS_CHANGED || message == Message.GOALS_CHANGED)) {
-            this.viewModel.refresh()
-            this.root.propagate(Message.DAYS_CHANGED)
+        if (message == Message.MEAL_CHANGED || message == Message.PORTIONS_CHANGED || message == Message.GOALS_CHANGED) {
+            if (this::viewModel.isInitialized) {
+                this.viewModel.refresh()
+            } else {
+                this.arguments?.putBoolean(REFRESH, true)
+            }
             if (this.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 this.viewModel.day(LifecycleCallback(this) { r ->
                     onDayResult(r)

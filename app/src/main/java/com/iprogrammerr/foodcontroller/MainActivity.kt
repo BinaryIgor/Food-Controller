@@ -78,6 +78,10 @@ class MainActivity : AppCompatActivity(), RootView {
     }
 
     override fun propagate(message: Message) {
+        var secondMessage: Message? = null
+        if (message == Message.PORTIONS_CHANGED || message == Message.MEAL_CHANGED || message == Message.GOALS_CHANGED) {
+            secondMessage = Message.DAYS_CHANGED
+        }
         for (i in 0 until this.supportFragmentManager.backStackEntryCount) {
             val fragment = this.supportFragmentManager
                 .findFragmentByTag(
@@ -85,6 +89,7 @@ class MainActivity : AppCompatActivity(), RootView {
                 )
             if (fragment is MessageTarget) {
                 fragment.hit(message)
+                secondMessage?.let { fragment.hit(it) }
             }
         }
         if (message == Message.PORTIONS_CHANGED) {

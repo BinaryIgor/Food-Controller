@@ -29,6 +29,7 @@ class MonthsFragment : Fragment(), AdapterTarget<Calendar>, MessageTarget {
     companion object {
 
         private const val YEAR = "YEAR"
+        private const val REFRESH = "REFRESH"
 
         fun new(year: Int): MonthsFragment {
             val fragment = MonthsFragment()
@@ -46,6 +47,10 @@ class MonthsFragment : Fragment(), AdapterTarget<Calendar>, MessageTarget {
             this,
             MonthsViewModel.factory(this.arguments!!.getInt(YEAR))
         ).get(MonthsViewModel::class.java)
+        if (this.arguments!!.getBoolean(REFRESH, false)) {
+            this.viewModel.refresh()
+            this.arguments!!.putBoolean(REFRESH, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -74,8 +79,12 @@ class MonthsFragment : Fragment(), AdapterTarget<Calendar>, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (this::viewModel.isInitialized && message == Message.DAYS_CHANGED) {
-            this.viewModel.refresh()
+        if (message == Message.DAYS_CHANGED) {
+            if (this::viewModel.isInitialized) {
+                this.viewModel.refresh()
+            } else {
+                this.arguments!!.putBoolean(REFRESH, true)
+            }
         }
     }
 }

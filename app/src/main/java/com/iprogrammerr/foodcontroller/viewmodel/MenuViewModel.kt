@@ -7,7 +7,6 @@ import com.iprogrammerr.foodcontroller.model.day.Days
 import com.iprogrammerr.foodcontroller.model.day.Weight
 import com.iprogrammerr.foodcontroller.model.goals.Goals
 import com.iprogrammerr.foodcontroller.model.result.Callback
-import com.iprogrammerr.foodcontroller.model.scalar.StickableScalar
 import com.iprogrammerr.foodcontroller.model.scalar.StickyScalar
 
 class MenuViewModel(
@@ -18,8 +17,7 @@ class MenuViewModel(
 ) : ViewModel() {
 
     private var lastStarted = false
-    private val lastWeight: StickableScalar<Double> =
-        StickyScalar { this.weight.value() }
+    private val lastWeight = StickyScalar { this.weight.value() }
 
     constructor() : this(
         ObjectsPool.single(Asynchronous::class.java),

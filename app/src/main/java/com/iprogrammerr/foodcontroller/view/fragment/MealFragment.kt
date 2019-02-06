@@ -35,6 +35,7 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
         private const val MEAL_ID = "MEAL_ID"
         private const val DAY_ID = "DAY_ID"
         private const val TIME = "TIME"
+        private const val REFRESH = "REFRESH"
 
         fun withMealId(id: Long) = withId(id, MEAL_ID)
 
@@ -58,6 +59,10 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
         } else {
             ViewModelProviders.of(this, MealViewModel.factory(mealId))
                 .get(MealViewModel::class.java)
+        }
+        if (this.arguments!!.getBoolean(REFRESH, false)) {
+            this.viewModel.refresh()
+            this.arguments!!.putBoolean(REFRESH, false)
         }
     }
 
@@ -143,7 +148,7 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
                     ErrorDialog.new(r.exception())
                         .show(this.childFragmentManager)
                 } else {
-                    this.root.propagate(Message.MEALS_CHANGED)
+                    this.root.propagate(Message.MEAL_CHANGED)
                 }
             })
         } else {
@@ -152,9 +157,12 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
     }
 
     override fun hit(message: Message) {
-        if (this::viewModel.isInitialized && (message == Message.PORTIONS_CHANGED || message == Message.MEAL_CHANGED)) {
-            this.viewModel.refresh()
-            this.root.propagate(Message.MEALS_CHANGED)
+        if (message == Message.PORTIONS_CHANGED || message == Message.MEAL_CHANGED) {
+            if (this::viewModel.isInitialized) {
+                this.viewModel.refresh()
+            } else {
+                this.arguments!!.putBoolean(REFRESH, true)
+            }
         }
     }
 
@@ -173,7 +181,7 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
                     this.viewModel.meal(LifecycleCallback(this) { r2 ->
                         if (r2.isSuccess()) {
                             this.binding.food.adapter = MealFoodView(r2.value(), this)
-                            this.root.propagate(Message.MEALS_CHANGED)
+                            this.root.propagate(Message.MEAL_CHANGED)
                         } else {
                             ErrorDialog.new(r1.exception()).show(this.childFragmentManager)
                         }

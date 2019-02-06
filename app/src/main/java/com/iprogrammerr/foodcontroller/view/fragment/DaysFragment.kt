@@ -35,6 +35,7 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
 
         private const val MONTH = "MONTH"
         private const val MONTH_VALUE = "MONTH_VALUE"
+        private const val REFRESH = "REFRESH"
 
         fun new(month: Calendar): DaysFragment {
             val fragment = DaysFragment()
@@ -58,6 +59,10 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
             this,
             DaysViewModel.factory(month)
         ).get(DaysViewModel::class.java)
+        if (this.arguments!!.getBoolean(REFRESH, false)) {
+            this.viewModel.refresh()
+            this.arguments!!.putBoolean(REFRESH, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -65,22 +70,16 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
         val binding: FragmentDaysBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_days, container, false
         )
-        this.viewModel.statistics(LifecycleCallback(this) { r ->
-            if (r.isSuccess()) {
-                drawStatistics(binding, r.value())
-            } else {
-                ErrorDialog.new(r.exception()).show(this.childFragmentManager)
-            }
-        })
+        binding.days.layoutManager = GridOrLinear(
+            requireContext(), binding.days
+        ).value()
         this.viewModel.days(LifecycleCallback(this) { r ->
             if (r.isSuccess()) {
-                if (r.value().isEmpty()) {
+                if (r.value().days.isEmpty()) {
                     requireFragmentManager().popBackStack()
                 } else {
-                    binding.days.layoutManager = GridOrLinear(
-                        requireContext(), binding.days
-                    ).value()
-                    binding.days.adapter = DaysView(this.format, r.value(), this)
+                    binding.days.adapter = DaysView(this.format, r.value().days, this)
+                    drawStatistics(binding, r.value().realized(), r.value().goals())
                 }
             } else {
                 ErrorDialog.new(r.exception()).show(this.childFragmentManager)
@@ -90,16 +89,14 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
         return binding.root
     }
 
-    private fun drawStatistics(binding: FragmentDaysBinding,
-        statistics: Pair<NutritionalValues, NutritionalValues>) {
-        val achieved = statistics.first
-        val goals = statistics.second
-        binding.caloriesValue.text = "${achieved.calories()}/${goals.calories()}"
+    private fun drawStatistics(binding: FragmentDaysBinding, realized: NutritionalValues,
+        goals: NutritionalValues) {
+        binding.caloriesValue.text = "${realized.calories()}/${goals.calories()}"
         binding.caloriesProgress.max = goals.calories()
-        binding.caloriesProgress.progress = achieved.calories()
-        binding.proteinValue.text = "${achieved.protein().roundToInt()}/${goals.protein().roundToInt()}"
+        binding.caloriesProgress.progress = realized.calories()
+        binding.proteinValue.text = "${realized.protein().roundToInt()}/${goals.protein().roundToInt()}"
         binding.proteinProgress.max = goals.protein().roundToInt()
-        binding.proteinProgress.progress = achieved.protein().roundToInt()
+        binding.proteinProgress.progress = realized.protein().roundToInt()
     }
 
     override fun hit(date: Long) {
@@ -107,8 +104,12 @@ class DaysFragment : Fragment(), DateTarget, MessageTarget {
     }
 
     override fun hit(message: Message) {
-        if (this::viewModel.isInitialized && (message == Message.DAYS_CHANGED || message == Message.MEALS_CHANGED)) {
-            this.viewModel.refresh()
+        if (message == Message.DAYS_CHANGED) {
+            if (this::viewModel.isInitialized) {
+                this.viewModel.refresh()
+            } else {
+                this.arguments!!.putBoolean(REFRESH, true)
+            }
         }
     }
 }

@@ -67,7 +67,7 @@ class WeightDialog : DialogFragment() {
         binding.g.value = grams
         binding.cancel.setOnClickListener { dialog.dismiss() }
         binding.ok.setOnClickListener {
-            dialog.dismiss()
+            dismiss()
             binding.kg.clearFocus()
             binding.g.clearFocus()
             this.target.hit(binding.kg.value + (binding.g.value / 10.0))
