@@ -21,10 +21,13 @@ class DetailedMealView(
         )
         if (item.food().isNotEmpty()) {
             val food = item.food()
-            this.binding.food.append("${food[0].name()} ${food[0].weight()} g")
+            val builder = StringBuilder()
+            builder.append("${food[0].name()} ${food[0].weight()} g")
             for (i in 1 until food.size) {
-                this.binding.food.append("\n${food[i].name()} ${food[i].weight()} g")
+                builder.append(System.lineSeparator())
+                    .append("${food[i].name()} ${food[i].weight()} g")
             }
+            this.binding.food.text = builder.toString()
         }
         this.binding.root.setOnClickListener { this.target.hit(item) }
     }

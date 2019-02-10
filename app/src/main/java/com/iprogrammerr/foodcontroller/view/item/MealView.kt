@@ -10,8 +10,10 @@ import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
 import java.util.*
 import kotlin.math.roundToInt
 
-class MealView(private val binding: ItemMealBinding, private val target: IdWithActionTarget) :
-    RecyclerView.ViewHolder(binding.root), Drawable<Meal> {
+class MealView(
+    private val binding: ItemMealBinding,
+    private val target: IdWithActionTarget
+) : RecyclerView.ViewHolder(binding.root), Drawable<Meal> {
 
     override fun draw(item: Meal) {
         val context = this.binding.root.context
