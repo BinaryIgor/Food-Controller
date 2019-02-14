@@ -8,40 +8,41 @@ import com.iprogrammerr.foodcontroller.model.food.Food
 
 class DatabaseMeals(private val database: Database) : Meals {
 
-    override fun last(limit: Int): List<Meal> {
-        return this.database.query(
-            StringBuilder(
-                "SELECT m.id as m_id, time, f.id as f_id, f.weight, fd.id as fd_id, fd.name, fd.protein, fd.calories ")
-                .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
-                .append("INNER JOIN food f ON fm.food_id = f.id ")
-                .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
-                .append("ORDER BY time DESC LIMIT ${2 * limit}")
-                .toString()
-        ).use { rs ->
-            val last = HashMap<String, Meal>(limit)
-            if (rs.next().has("m_id")) {
-                do {
-                    val meal = meal(rs)
-                    val hash = uniqueHash(meal)
-                    if (!last.containsKey(hash)) {
-                        last[hash] = meal
-                    }
-                } while (last.size < limit && rs.current().long("m_id") != meal.id())
-            }
-            ArrayList(
-                last.values.sortedWith(
-                    Comparator { first, second ->
-                        val diff = first.time() - second.time()
-                        when {
-                            diff > 0 -> -1
-                            diff < 0 -> 1
-                            else -> 0
-                        }
-                    }
-                )
-            )
+    override fun last(limit: Int) = this.database.query(lastMealsQuery(2 * limit)).use { rs ->
+        val last = HashMap<String, Meal>(limit)
+        if (rs.next().has("m_id")) {
+            do {
+                val meal = meal(rs)
+                val hash = uniqueHash(meal)
+                if (!last.containsKey(hash)) {
+                    last[hash] = meal
+                }
+            } while (last.size < limit && rs.current().long("m_id") != meal.id())
         }
+        ArrayList(
+            last.values.sortedWith(
+                Comparator { first, second ->
+                    val diff = first.time() - second.time()
+                    when {
+                        diff > 0 -> -1
+                        diff < 0 -> 1
+                        else -> 0
+                    }
+                }
+            )
+        )
     }
+
+    private fun lastMealsQuery(limit: Int) =
+        StringBuilder(
+            "SELECT m.id as m_id, time, f.id as f_id, f.weight, fd.id as fd_id, fd.name, fd.protein, fd.calories "
+        )
+            .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
+            .append("INNER JOIN food f ON fm.food_id = f.id ")
+            .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
+            .append("WHERE m.id IN (SELECT id FROM meal ORDER BY time DESC LIMIT $limit)")
+            .toString()
+
 
     private fun uniqueHash(meal: Meal): String {
         val args = meal.food().sortedBy { f -> f.id() }
@@ -55,7 +56,8 @@ class DatabaseMeals(private val database: Database) : Meals {
     override fun meal(id: Long) =
         this.database.query(
             StringBuilder(
-                "SELECT m.id as m_id, time, f.id as f_id, f.weight, fd.id as fd_id, fd.name, fd.protein, fd.calories ")
+                "SELECT m.id as m_id, time, f.id as f_id, f.weight, fd.id as fd_id, fd.name, fd.protein, fd.calories "
+            )
                 .append("FROM meal m LEFT JOIN food_meal fm ON m.id = fm.meal_id ")
                 .append("LEFT JOIN food f ON fm.food_id = f.id ")
                 .append("LEFT JOIN food_definition fd ON f.definition_id = fd.id ")
