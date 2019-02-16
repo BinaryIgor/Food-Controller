@@ -23,6 +23,7 @@ import com.iprogrammerr.foodcontroller.view.items.WithActionTarget
 import com.iprogrammerr.foodcontroller.view.message.Message
 import com.iprogrammerr.foodcontroller.view.message.MessageTarget
 import com.iprogrammerr.foodcontroller.viewmodel.MealViewModel
+import java.util.*
 
 class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActionTarget {
 
@@ -39,7 +40,17 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
 
         fun withMealId(id: Long) = withId(id, MEAL_ID)
 
-        fun withDayId(id: Long) = withId(id, DAY_ID)
+        fun withDayId(id: Long, date: Long): MealFragment {
+            val fragment = withId(id, DAY_ID)
+            val current = Calendar.getInstance()
+            val meal = Calendar.getInstance()
+            meal.timeInMillis = date
+            meal[Calendar.HOUR_OF_DAY] = current[Calendar.HOUR_OF_DAY]
+            meal[Calendar.MINUTE] = current[Calendar.MINUTE]
+            meal[Calendar.SECOND] = current[Calendar.SECOND]
+            fragment.arguments!!.putLong(TIME, meal.timeInMillis)
+            return fragment
+        }
 
         private fun withId(id: Long, key: String): MealFragment {
             val fragment = MealFragment()
@@ -63,13 +74,6 @@ class MealFragment : Fragment(), TimeDialog.Target, MessageTarget, FoodWithActio
         if (this.arguments!!.getBoolean(REFRESH, false)) {
             this.viewModel.refresh()
             this.arguments!!.putBoolean(REFRESH, false)
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!hasMeal()) {
-            this.arguments!!.putLong(TIME, System.currentTimeMillis())
         }
     }
 

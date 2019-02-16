@@ -66,8 +66,10 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_day, container, false)
         this.binding.meals.layoutManager = GridOrLinear(
             requireContext(),
@@ -86,7 +88,9 @@ class DayFragment : Fragment(), IdWithActionTarget, WeightDialog.Target, TwoOpti
                 WeightDialog.new(result.value().weight()).show(this.childFragmentManager)
             }
             this.binding.add.setOnClickListener {
-                this.root.replace(MealFragment.withDayId(result.value().id()), true)
+                this.root.replace(
+                    MealFragment.withDayId(result.value().id(), this.arguments!!.getLong(DATE)), true
+                )
             }
             this.binding.goals.setOnClickListener {
                 DayGoalsDialog.new(this.arguments!!.getLong(DATE)).show(requireFragmentManager())
