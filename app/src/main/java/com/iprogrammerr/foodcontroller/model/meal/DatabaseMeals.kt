@@ -5,32 +5,25 @@ import com.iprogrammerr.foodcontroller.database.Database
 import com.iprogrammerr.foodcontroller.database.Rows
 import com.iprogrammerr.foodcontroller.model.food.ConstantFood
 import com.iprogrammerr.foodcontroller.model.food.Food
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DatabaseMeals(private val database: Database) : Meals {
 
     override fun last(limit: Int) = this.database.query(lastMealsQuery(2 * limit)).use { rs ->
-        val last = HashMap<String, Meal>(limit)
+        val uniques = HashSet<String>(limit)
+        val last = ArrayList<Meal>(limit)
         if (rs.next().has("m_id")) {
             do {
                 val meal = meal(rs)
                 val hash = uniqueHash(meal)
-                if (!last.containsKey(hash)) {
-                    last[hash] = meal
+                if (!uniques.contains(hash)) {
+                    uniques.add(hash)
+                    last.add(meal)
                 }
             } while (last.size < limit && rs.current().long("m_id") != meal.id())
         }
-        ArrayList(
-            last.values.sortedWith(
-                Comparator { first, second ->
-                    val diff = first.time() - second.time()
-                    when {
-                        diff > 0 -> -1
-                        diff < 0 -> 1
-                        else -> 0
-                    }
-                }
-            )
-        )
+        last
     }
 
     private fun lastMealsQuery(limit: Int) =
@@ -40,7 +33,8 @@ class DatabaseMeals(private val database: Database) : Meals {
             .append("FROM meal m INNER JOIN food_meal fm ON m.id = fm.meal_id ")
             .append("INNER JOIN food f ON fm.food_id = f.id ")
             .append("INNER JOIN food_definition fd ON f.definition_id = fd.id ")
-            .append("WHERE m.id IN (SELECT id FROM meal ORDER BY time DESC LIMIT $limit)")
+            .append("WHERE m.id IN (SELECT id FROM meal ORDER BY time DESC LIMIT $limit) ")
+            .append("ORDER BY time DESC")
             .toString()
 
 
